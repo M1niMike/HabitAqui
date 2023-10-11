@@ -15,6 +15,5 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Client> Clients { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Manager> Managers { get; set; }
-    public DbSet<Testing> Testings { get; set; }
 }
 
