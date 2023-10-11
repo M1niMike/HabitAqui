@@ -1,0 +1,40 @@
+﻿<Properties StartupConfiguration="{3F9B2841-739E-440F-9EE1-486DC4FD9CDC}|Default">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="TP2324/Models/Curso.cs">
+    <Files>
+      <File FileName="TP2324/appsettings.json" />
+      <File FileName="TP2324/Properties/launchSettings.json" />
+      <File FileName="TP2324/Program.cs" />
+      <File FileName="TP2324/Models/Curso.cs" Line="8" Column="36" />
+      <File FileName="TP2324/Data/ApplicationDbContext.cs" />
+      <File FileName="TP2324/Migrations/20231004121308_initial.cs" Line="21" Column="38" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="TP2324" expanded="True">
+            <Node name="TP2324" expanded="True">
+              <Node name="Areas" expanded="True">
+                <Node name="Identity" expanded="True">
+                  <Node name="Pages" expanded="True" />
+                </Node>
+              </Node>
+              <Node name="Data" expanded="True" />
+              <Node name="Migrations" expanded="True" />
+              <Node name="Models" expanded="True">
+                <Node name="Curso.cs" selected="True" />
+              </Node>
+              <Node name="Properties" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.TP2324 PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" FirstBuild="True" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+</Properties>
