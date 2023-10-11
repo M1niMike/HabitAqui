@@ -144,3 +144,4 @@ C:\Users\mikae\ISEC\PWEB\PWEB_TP_23_24\TP2324\TP2324\obj\Debug\net6.0\refint\TP2
 C:\Users\mikae\ISEC\PWEB\PWEB_TP_23_24\TP2324\TP2324\obj\Debug\net6.0\TP2324.pdb
 C:\Users\mikae\ISEC\PWEB\PWEB_TP_23_24\TP2324\TP2324\obj\Debug\net6.0\TP2324.genruntimeconfig.cache
 C:\Users\mikae\ISEC\PWEB\PWEB_TP_23_24\TP2324\TP2324\obj\Debug\net6.0\ref\TP2324.dll
+C:\Users\mikae\ISEC\PWEB\PWEB_TP_23_24\TP2324\TP2324\bin\Debug\net6.0\BootstrapIcons.AspNetCore.dll
