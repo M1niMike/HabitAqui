@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\PWEB_23_24.props" />
+</Project>
