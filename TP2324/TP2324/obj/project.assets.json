@@ -2455,26 +2455,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\mikae\\.nuget\\packages\\": {}
+    "/Users/pedromnh/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mikae\\ISEC\\PWEB\\PWEB_TP_23_24\\TP2324\\TP2324\\TP2324.csproj",
+      "projectUniqueName": "/Users/pedromnh/Library/CloudStorage/Dropbox/1. ISEC/PWEB/Aulas/CR/PWEB_TP_23_24/TP2324/TP2324/TP2324.csproj",
       "projectName": "TP2324",
-      "projectPath": "C:\\Users\\mikae\\ISEC\\PWEB\\PWEB_TP_23_24\\TP2324\\TP2324\\TP2324.csproj",
-      "packagesPath": "C:\\Users\\mikae\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mikae\\ISEC\\PWEB\\PWEB_TP_23_24\\TP2324\\TP2324\\obj\\",
+      "projectPath": "/Users/pedromnh/Library/CloudStorage/Dropbox/1. ISEC/PWEB/Aulas/CR/PWEB_TP_23_24/TP2324/TP2324/TP2324.csproj",
+      "packagesPath": "/Users/pedromnh/.nuget/packages/",
+      "outputPath": "/Users/pedromnh/Library/CloudStorage/Dropbox/1. ISEC/PWEB/Aulas/CR/PWEB_TP_23_24/TP2324/TP2324/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\mikae\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/pedromnh/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "/usr/local/share/dotnet/sdk/7.0.308/Sdks/Microsoft.NET.Sdk.Web/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2526,7 +2525,8 @@
           "net47",
           "net471",
           "net472",
-          "net48"
+          "net48",
+          "net481"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -2538,7 +2538,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\6.0.318\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.308/RuntimeIdentifierGraph.json"
       }
     }
   }
