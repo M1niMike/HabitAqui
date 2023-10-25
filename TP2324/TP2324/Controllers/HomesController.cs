@@ -20,11 +20,33 @@ namespace TP2324.Controllers
         }
 
         // GET: Homes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(bool? toRent, bool? toPurchase)
         {
-              return _context.Homes != null ? 
+            IQueryable<Home> homesQuery = _context.Homes;
+
+            if (toRent == true && toPurchase == true)
+            {
+                homesQuery = homesQuery.Where(c => c.toRent && c.toPurchase);
+            }
+            else if (toRent == true)
+            {
+                homesQuery = homesQuery.Where(c => c.toRent);
+            }
+            else if (toPurchase == true)
+            {
+                homesQuery = homesQuery.Where(c => c.toPurchase);
+            }
+            else if (toRent == null && toPurchase == null)
+            {
+                homesQuery = homesQuery.Where(c => c.toRent == false || c.toRent == true);
+                return _context.Homes != null ?
                           View(await _context.Homes.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Homes'  is null.");
+                          Problem("Entity set 'ApplicationDbContext.Cursos'  is null.");
+            }
+            
+
+            var homes = await homesQuery.ToListAsync();
+            return View(homes);
         }
 
         // GET: Homes/Details/5

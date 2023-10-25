@@ -20,9 +20,12 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Rent">Arrendar</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Homes" asp-action="Index" asp-route-toRent="true">Arrendar</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Homes" asp-action="Index" asp-route-toPurchase="true">Comprar</a>
+                        </li>
+                       @*  <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Client">Cliente</a>
                         </li>
                         <li class="nav-item">
@@ -30,7 +33,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Manager">Gestor</a>
-                        </li>
+                        </li> *@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Homes" asp-action="Index">Habitações</a>
                         </li>

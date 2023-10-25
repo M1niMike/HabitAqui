@@ -4,12 +4,18 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Habitações</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Adicionar Habitação</a>
+    <br />
+    <a asp-action="Index">Todos</a>
+    <a asp-action="Index" asp-route-toRent="true">Arrendar</a>
+    <a asp-action="Index" asp-route-toPurchase="true">Comprar</a>
+    @*<a asp-action="Index" asp-route-emdestaque="true">Disponível</a>*@
 </p>
-<table class="table">
+
+<table class="table table-bordered table-striped table-hover">
     <thead>
         <tr>
             <th>
