@@ -4,7 +4,12 @@
     {
         public int Id { get; set; }
         public string Type { get; set; }
-        public float Price { get; set; }
+
+        public bool toRent { get; set; }
+        public bool toPurchase { get; set; }
+        public int PriceToRent { get; set; }
+        public int PriceToPurchase { get; set; }
+
         public int NumRooms { get; set; }
         public int NumWC { get; set; }
         public string Address { get; set; }

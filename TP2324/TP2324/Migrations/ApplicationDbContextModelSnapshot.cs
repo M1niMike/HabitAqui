@@ -17,7 +17,7 @@ namespace TP2324.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.22")
+                .HasAnnotation("ProductVersion", "6.0.23")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -246,7 +246,7 @@ namespace TP2324.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Admins", (string)null);
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("TP2324.Models.Client", b =>
@@ -277,7 +277,7 @@ namespace TP2324.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("TP2324.Models.Employee", b =>
@@ -302,7 +302,59 @@ namespace TP2324.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employees", (string)null);
+                    b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("TP2324.Models.Home", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumParks")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumRooms")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumWC")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PriceToPurchase")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PriceToRent")
+                        .HasColumnType("int");
+
+                    b.Property<float>("SquareFootage")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Wifi")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("toPurchase")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("toRent")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Homes");
                 });
 
             modelBuilder.Entity("TP2324.Models.Manager", b =>
@@ -327,32 +379,7 @@ namespace TP2324.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Managers", (string)null);
-                });
-
-            modelBuilder.Entity("TP2324.Models.Testing", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Mail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Pass")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Testings", (string)null);
+                    b.ToTable("Managers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

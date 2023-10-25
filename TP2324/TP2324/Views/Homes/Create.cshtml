@@ -1,0 +1,88 @@
+@model TP2324.Models.Home
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Home</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriceToRent" class="control-label"></label>
+                <input asp-for="PriceToRent" class="form-control" />
+                <span asp-validation-for="PriceToRent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriceToPurchase" class="control-label"></label>
+                <input asp-for="PriceToPurchase" class="form-control" />
+                <span asp-validation-for="PriceToPurchase" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumRooms" class="control-label"></label>
+                <input asp-for="NumRooms" class="form-control" />
+                <span asp-validation-for="NumRooms" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumWC" class="control-label"></label>
+                <input asp-for="NumWC" class="form-control" />
+                <span asp-validation-for="NumWC" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SquareFootage" class="control-label"></label>
+                <input asp-for="SquareFootage" class="form-control" />
+                <span asp-validation-for="SquareFootage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumParks" class="control-label"></label>
+                <input asp-for="NumParks" class="form-control" />
+                <span asp-validation-for="NumParks" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Wifi" /> @Html.DisplayNameFor(model => model.Wifi)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="toRent" /> @Html.DisplayNameFor(model => model.toRent)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="toPurchase" /> @Html.DisplayNameFor(model => model.toPurchase)
+                </label>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
