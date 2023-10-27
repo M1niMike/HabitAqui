@@ -10,12 +10,16 @@
         public int PriceToRent { get; set; }
         public int PriceToPurchase { get; set; }
 
-        public int NumRooms { get; set; }
+       // public int NumRooms { get; set; }
         public int NumWC { get; set; }
         public string Address { get; set; }
         public float SquareFootage { get; set; }
         public int NumParks { get; set; }
         public bool Wifi { get; set; }
         public string Description { get; set; }
+
+        public int? CategoryId { get; set; }
+        public Category Category { get; set; }
+
     }
 }

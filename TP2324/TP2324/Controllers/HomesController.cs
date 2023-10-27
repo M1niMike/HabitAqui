@@ -22,7 +22,7 @@ namespace TP2324.Controllers
         // GET: Homes
         public async Task<IActionResult> Index(bool? toRent, bool? toPurchase)
         {
-            IQueryable<Home> homesQuery = _context.Homes;
+            IQueryable<Home> homesQuery = _context.Homes.Include(m => m.Category);
 
             if (toRent == true && toPurchase == true)
             {
@@ -40,14 +40,15 @@ namespace TP2324.Controllers
             {
                 homesQuery = homesQuery.Where(c => c.toRent == false || c.toRent == true);
                 return _context.Homes != null ?
-                          View(await _context.Homes.ToListAsync()) :
+                          View(await _context.Homes.Include(m => m.Category).ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Cursos'  is null.");
             }
-            
+
 
             var homes = await homesQuery.ToListAsync();
             return View(homes);
         }
+
 
         // GET: Homes/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -57,7 +58,7 @@ namespace TP2324.Controllers
                 return NotFound();
             }
 
-            var home = await _context.Homes
+            var home = await _context.Homes.Include(m => m.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (home == null)
             {
@@ -70,7 +71,19 @@ namespace TP2324.Controllers
         // GET: Homes/Create
         public IActionResult Create()
         {
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
             return View();
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> Index(string? pesquisa)
+        {
+            return View(await _context.Homes
+                .Where(e => e.Address.Contains(pesquisa) || e.Category.Name.Contains(pesquisa))
+                .Include(m => m.Category)
+                .ToListAsync());
         }
 
         // POST: Homes/Create
@@ -78,14 +91,16 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Type,PriceToRent,PriceToPurchase,NumRooms,NumWC,Address,SquareFootage,NumParks,Wifi,Description,toRent,toPurchase")] Home home)
+        public async Task<IActionResult> Create([Bind("Id,Type,CategoryId,PriceToRent,PriceToPurchase,NumWC,Address,SquareFootage,NumParks,Wifi,Description,toRent,toPurchase")] Home home)
         {
+            ModelState.Remove(nameof(home.Category));
             if (ModelState.IsValid)
             {
                 _context.Add(home);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", home.CategoryId);
             return View(home);
         }
 
@@ -102,6 +117,9 @@ namespace TP2324.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", home.CategoryId);
+
             return View(home);
         }
 
@@ -110,12 +128,14 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,PriceToRent,PriceToPurchase,NumRooms,NumWC,Address,SquareFootage,NumParks,Wifi,Description,toRent,toPurchase")] Home home)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,CategoryId,PriceToRent,PriceToPurchase,NumWC,Address,SquareFootage,NumParks,Wifi,Description,toRent,toPurchase")] Home home)
         {
             if (id != home.Id)
             {
                 return NotFound();
             }
+
+            ModelState.Remove(nameof(home.Category));
 
             if (ModelState.IsValid)
             {

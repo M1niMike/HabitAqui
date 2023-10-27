@@ -249,6 +249,23 @@ namespace TP2324.Migrations
                     b.ToTable("Admins");
                 });
 
+            modelBuilder.Entity("TP2324.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
             modelBuilder.Entity("TP2324.Models.Client", b =>
                 {
                     b.Property<int>("Id")
@@ -317,14 +334,14 @@ namespace TP2324.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NumParks")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumRooms")
                         .HasColumnType("int");
 
                     b.Property<int>("NumWC")
@@ -353,6 +370,8 @@ namespace TP2324.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Homes");
                 });
@@ -431,6 +450,20 @@ namespace TP2324.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TP2324.Models.Home", b =>
+                {
+                    b.HasOne("TP2324.Models.Category", "Category")
+                        .WithMany("Homes")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("TP2324.Models.Category", b =>
+                {
+                    b.Navigation("Homes");
                 });
 #pragma warning restore 612, 618
         }

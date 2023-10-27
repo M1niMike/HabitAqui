@@ -19,6 +19,10 @@
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Category" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+            </div>
+            <div class="form-group">
                 <label asp-for="PriceToRent" class="control-label"></label>
                 <input asp-for="PriceToRent" class="form-control" />
                 <span asp-validation-for="PriceToRent" class="text-danger"></span>
@@ -27,11 +31,6 @@
                 <label asp-for="PriceToPurchase" class="control-label"></label>
                 <input asp-for="PriceToPurchase" class="form-control" />
                 <span asp-validation-for="PriceToPurchase" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NumRooms" class="control-label"></label>
-                <input asp-for="NumRooms" class="form-control" />
-                <span asp-validation-for="NumRooms" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="NumWC" class="control-label"></label>

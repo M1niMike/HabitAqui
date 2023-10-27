@@ -9,6 +9,14 @@
 <p>
     <a asp-action="Create">Adicionar Habitação</a>
     <br />
+
+    <form asp-controller="Homes" asp-action="Index" method="post">
+        <label for="pesquisa"></label>
+        <input type="text" id="pesquisa" name="pesquisa" placeholder="Tipo a pesquisar...">
+        <input type="submit" value="Pesquisar">
+    </form>
+    <br />
+
     <a asp-action="Index">Todos</a>
     <a asp-action="Index" asp-route-toRent="true">Arrendar</a>
     <a asp-action="Index" asp-route-toPurchase="true">Comprar</a>
@@ -22,13 +30,13 @@
                 Tipo
             </th>
             <th>
+                Categoria
+            </th>
+            <th>
                 Preço de Arrendamento
             </th>
             <th>
                 Preço de Compra
-            </th>
-            <th>
-                Quartos
             </th>
             <th>
                 Wc
@@ -64,13 +72,13 @@
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.PriceToRent)€
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PriceToPurchase)€
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumRooms)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NumWC)
