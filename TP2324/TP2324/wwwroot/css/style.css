@@ -959,6 +959,10 @@ a:hover {
 /*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/
+.carousel-new{
+    width: 100vw;
+}
+
 .intro {
   height: 100vh;
   position: relative;
@@ -2124,10 +2128,12 @@ a:hover {
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
-.section-footer {
-  padding-top: 60px;
-  margin-top: 60px;
-  background: #f3f3f3;
+
+
+/*.section-footer {
+    padding-top: 60px;
+    margin-top: 60px;
+    background: #f3f3f3;
 }
 
 .section-footer ul {
@@ -2144,10 +2150,15 @@ a:hover {
   margin-bottom: 1rem;
 }
 
+footer-test{
+    flex: 1;
+}
+
 footer {
   background: #f3f3f3;
   text-align: center;
   padding: 30px 0;
+  margin: 0px;
 }
 
 footer .copyright-footer {
@@ -2157,4 +2168,5 @@ footer .copyright-footer {
 
 footer .credits {
   font-size: 14px;
-}
+}*/
+/**/

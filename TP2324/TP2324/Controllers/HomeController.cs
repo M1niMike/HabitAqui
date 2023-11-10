@@ -1,22 +1,33 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TP2324.Data;
 using TP2324.Models;
 
 namespace TP2324.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    //private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    //public HomeController(ILogger<HomeController> logger)
+    //{
+    //    _logger = logger;
+    //}
+
+    private readonly ApplicationDbContext _context;
+
+    public HomeController(ApplicationDbContext context)
     {
-        _logger = logger;
+        _context = context;
     }
 
     public IActionResult Index()
     {
-        return View();
+        IQueryable<Home> homes = _context.Homes;
+        return View(homes.ToList());
     }
+
 
     public IActionResult Privacy()
     {

@@ -17,6 +17,7 @@
         public int NumParks { get; set; }
         public bool Wifi { get; set; }
         public string Description { get; set; }
+        public string ImgUrl { get; set; }
 
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
