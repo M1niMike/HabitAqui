@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TP2324.Data;
 using TP2324.Models;
+using TP2324.ViewModels;
 
 namespace TP2324.Controllers
 {
@@ -76,7 +77,7 @@ namespace TP2324.Controllers
         }
 
 
-
+        // Old_SearchBar
         [HttpPost]
         public async Task<IActionResult> Index(string? pesquisa)
         {
@@ -85,6 +86,75 @@ namespace TP2324.Controllers
                 .Include(m => m.Category)
                 .ToListAsync());
         }
+
+        //New_SearchBar (GET: Homes/Search)
+
+        // GET: Cursos/Search
+        public async Task<IActionResult> Search(string? TextoAPesquisar)
+        {
+
+            PesquisaHabitacaoViewModel pesquisaVM = new PesquisaHabitacaoViewModel();
+            ViewData["Title"] = "Pesquisa cursos";
+
+            if (string.IsNullOrWhiteSpace(TextoAPesquisar))
+                pesquisaVM.Homeslist = await _context.Homes.Include(m => m.Category).OrderBy(c => c.Category.Name).ToListAsync();
+            else
+            {
+                pesquisaVM.Homeslist =
+                    await _context.Homes.Include(m => m.Category).Where(c => c.Type.Contains(TextoAPesquisar)
+                                                                         || c.Description.Contains(TextoAPesquisar)
+                                                                         || c.PriceToPurchase.ToString().Contains(TextoAPesquisar)
+                                                                         || c.PriceToRent.ToString().Contains(TextoAPesquisar)
+                                                                         || c.Category.Name.Contains(TextoAPesquisar)
+                                                                         ).ToListAsync();
+                pesquisaVM.TextoAPesquisar = TextoAPesquisar;
+                foreach (Home c in pesquisaVM.Homeslist)
+                {
+                    c.Type = AltCorSubSTR(c.Type, pesquisaVM.TextoAPesquisar);
+                    c.Description = AltCorSubSTR(c.Description, pesquisaVM.TextoAPesquisar);
+                    c.Category.Name = AltCorSubSTR(c.Category.Name, pesquisaVM.TextoAPesquisar);
+                }
+            }
+            pesquisaVM.NumResultados = pesquisaVM.Homeslist.Count();
+
+
+
+            return View(pesquisaVM);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Search([Bind("TextoAPesquisar")] PesquisaHabitacaoViewModel pesquisaHabitacao)
+        {
+            if (string.IsNullOrEmpty(pesquisaHabitacao.TextoAPesquisar))
+            {
+                pesquisaHabitacao.Homeslist = await _context.Homes.OrderBy(c => c.Category.Name).ToListAsync();
+                pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
+            }
+            else
+            {
+                pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category)
+                .Where(e => e.Type.Contains(pesquisaHabitacao.TextoAPesquisar) ||
+                            e.Description.Contains(pesquisaHabitacao.TextoAPesquisar) ||
+                            e.PriceToPurchase.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
+                            e.PriceToRent.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
+                            e.Category.Name.Contains(pesquisaHabitacao.TextoAPesquisar)
+                            ).OrderBy(c => c.Type).ToListAsync();
+                pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
+
+                foreach (Home c in pesquisaHabitacao.Homeslist)
+                {
+                    c.Type = AltCorSubSTR(c.Type, pesquisaHabitacao.TextoAPesquisar);
+                    c.Description = AltCorSubSTR(c.Description, pesquisaHabitacao.TextoAPesquisar);
+                    c.Category.Name = AltCorSubSTR(c.Category.Name, pesquisaHabitacao.TextoAPesquisar);
+                }
+
+            }
+
+            return View(pesquisaHabitacao);
+        }
+
 
         // POST: Homes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -200,6 +270,48 @@ namespace TP2324.Controllers
         private bool HomeExists(int id)
         {
           return (_context.Homes?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        // Retirado da solução da ficha 4
+        // Método para alterar a cor do BG relativo à string de pesquisa
+        public string AltCorSubSTR(string txtOriginal, string txtPesquisa)
+        {
+            string txtAlterado = string.Empty;
+
+            if (!string.IsNullOrEmpty(txtOriginal))
+            {
+                string[] split = txtOriginal.Split(" ");
+
+                foreach (string str in split)
+                {
+                    if (str.ToLower().Contains(txtPesquisa.ToLower()))
+                    {
+                        string a = string.Empty;
+                        int b = 0;
+
+                        for (int i = 0; i < str.Length; i++)
+                        {
+                            if (str.ToLower().Substring(i, txtPesquisa.Length) == txtPesquisa.ToLower())
+                            {
+                                a = str.Substring(i, txtPesquisa.Length);
+                                b = i;
+                                break;
+                            }
+                        }
+
+                        txtAlterado += str + " ";
+
+                        txtAlterado = txtAlterado.Replace(str.Substring(b, txtPesquisa.Length),
+                            "<span class=\"bg-warning\">" + a + "</span>");
+                    }
+                    else
+                        txtAlterado += str + " ";
+                }
+            }
+            else
+                txtAlterado = txtOriginal;
+
+            return txtAlterado;
         }
     }
 }

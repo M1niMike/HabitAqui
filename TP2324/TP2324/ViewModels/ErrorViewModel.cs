@@ -1,4 +1,4 @@
-﻿namespace TP2324.Models;
+﻿namespace TP2324.ViewModels;
 
 public class ErrorViewModel
 {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TP2324.Data;
 using TP2324.Models;
+using TP2324.ViewModels;
 
 namespace TP2324.Controllers;
 

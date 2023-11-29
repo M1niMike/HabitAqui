@@ -63,6 +63,18 @@
             <th>
                 Comprar
             </th>
+            <th>
+                Data de início de contrato
+            </th>
+            <th>
+                Data de final de contrato
+            </th>
+            <th>
+                Périodo mínimo de contrato
+            </th>
+            <th>
+                Disponibilidade da habitação
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -106,9 +118,21 @@
                 @Html.DisplayFor(modelItem => item.toPurchase)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.BeginDate)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MinimumPeriod)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Available)
+                </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
             </td>
         </tr>
 }

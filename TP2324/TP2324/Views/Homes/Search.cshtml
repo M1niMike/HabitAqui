@@ -1,0 +1,83 @@
+﻿@model TP2324.ViewModels.PesquisaHabitacaoViewModel;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>As nossas habitações</h1>
+
+<p>Resultado da pesquisa por "@Model.TextoAPesquisar":</p>
+
+@if (Model.NumResultados > 0)
+{
+    <p>Existe(m) @Model.NumResultados resultado(s) disponíveis</p>
+
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+        @foreach (Home c in Model.Homeslist)
+        {
+            <div class="col">
+                <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                        @if (string.IsNullOrEmpty(Model.TextoAPesquisar))
+                        {
+                            <h4 class="my-0 fw-normal">
+                                @Html.DisplayFor(model=>c.Type)
+                                (@Html.DisplayFor(model=>c.Category.Name))
+                            </h4>
+                        }
+                        else
+                        {
+                            <h4 class="my-0 fw-normal">
+                                @Html.Raw(c.Type)
+                                (@Html.DisplayFor(model=>c.Category.Name))
+                            </h4>
+                        }
+                    </div>
+                    <div class="card-body">
+
+                        @if (c.toRent && !c.toPurchase)
+                        {
+                            <h1 class="card-title pricing-card-title">
+                               Arrendar: € @c.PriceToRent<small class="text-muted fw-light"></small>
+                            </h1>
+                       
+                        }
+                        else if (c.toRent && c.toPurchase)
+                        {
+                            <h1 class="card-title pricing-card-title">
+                               Arrendar: € @c.PriceToRent<small class="text-muted fw-light"></small>
+                               <br />
+                               Comprar:  € @c.PriceToPurchase<small class="text-muted fw-light"></small>
+                            </h1>
+                        }
+                        else
+                        {
+
+                            <h1 class="card-title pricing-card-title">
+                                Comprar:  € @c.PriceToPurchase<small class="text-muted fw-light"></small>
+                            </h1>
+                        }
+                        @if (string.IsNullOrEmpty(Model.TextoAPesquisar))
+                        {
+                            <p>@Html.DisplayFor(model=>c.Description)</p>
+                        }
+                        else
+                        {
+                            <p>@Html.Raw(c.Description)</p>
+                        }
+                        <a class="w-100 btn btn-lg btn-outline-primary" asp-controller="Cursos" asp-action="Details" asp-route-id="@c.Id">Saber mais</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+}
+else
+{
+    <p class="alert alert-warning">
+        Não foi possível
+        encontrar habitações com os dados introduzidos.
+        <br />
+        Por favor, reveja a sua pesquisa!
+    </p>
+}
