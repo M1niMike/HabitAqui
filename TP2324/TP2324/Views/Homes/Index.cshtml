@@ -5,136 +5,136 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@* <h1>Habitações</h1>
- *@
-<p>
-    <a asp-action="Create">Adicionar Habitação</a>
-    <br />
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Nossas habitações</h1>
+                    @* <span class="color-text-a">Grid Properties</span> *@
+                </div>
+            </div>
+            @* <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Home</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Properties Grid
+                        </li>
+                    </ol>
+                </nav>
+            </div> *@
+        </div>
+    </div>
+</section><!-- End Intro Single-->
 
-    <form asp-controller="Homes" asp-action="Index" method="post">
-        <label for="pesquisa"></label>
-        <input type="text" id="pesquisa" name="pesquisa" placeholder="Tipo a pesquisar...">
-        <input type="submit" value="Pesquisar">
-    </form>
-    <br />
-
-    <a asp-action="Index">Todos</a>
-    <a asp-action="Index" asp-route-toRent="true">Arrendar</a>
-    <a asp-action="Index" asp-route-toPurchase="true">Comprar</a>
-    @*<a asp-action="Index" asp-route-emdestaque="true">Disponível</a>*@
-</p>
-
-<table class="table table-bordered table-striped table-hover">
-    <thead>
-        <tr>
-            <th>
-                Tipo
-            </th>
-            <th>
-                Categoria
-            </th>
-            <th>
-                Preço de Arrendamento
-            </th>
-            <th>
-                Preço de Compra
-            </th>
-            <th>
-                Wc
-            </th>
-            <th>
-                Morada
-            </th>
-            <th>
-                Área Útil
-            </th>
-            <th>
-                Estacionamento
-            </th>
-            <th>
-                WiFi
-            </th>
-            <th>
-                Descrição
-            </th>
-            <th>
-                Arrendar
-            </th>
-            <th>
-                Comprar
-            </th>
-            <th>
-                Data de início de contrato
-            </th>
-            <th>
-                Data de final de contrato
-            </th>
-            <th>
-                Périodo mínimo de contrato
-            </th>
-            <th>
-                Disponibilidade da habitação
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PriceToRent)€
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PriceToPurchase)€
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumWC)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SquareFootage)m²
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumParks)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Wifi)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.toRent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.toPurchase)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BeginDate)
-            </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MinimumPeriod)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Available)
-                </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<!-- ======= Property Grid ======= -->
+<section class="property-grid grid">
+    <div class="container">
+        <a class="create-btn" asp-action="Create">Adicionar Habitação</a>
+        <br />
+        <div class="btn-area">
+            <a class="apartamento-btn" asp-action="Index" asp-route-tipo="apartamento">Apartamentos</a>
+            <a class="casa-btn" asp-action="Index" asp-route-tipo="casa">Casas</a>
+            <a class="comprar-btn" asp-action="Index" asp-route-toPurchase="true">Comprar</a>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="grid-option">
+                    @* <form>
+                        <select class="custom-select">
+                            <option selected>All</option>
+                            <option value="1">New to Old</option>
+                            <option value="2">For Rent</option>
+                            <option value="3">For Sale</option>
+                        </select>
+                    </form> *@
+                </div>
+            </div>
+            @foreach (var home in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card-box-a card-shadow">
+                        <div class="img-box-a">
+                            <img src="~/img/@home.ImgUrl" alt="" class="img-a img-fluid">
+                        </div>
+                        <div class="card-overlay">
+                            <div class="card-overlay-a-content">
+                                <div class="card-header-a">
+                                    <h2 class="card-title-a">
+                                        <span class="color-b"> @home.Type </span>
+                                        <br> @home.Address
+                                    </h2>
+                                </div>
+                                <div class="card-body-a">
+                                    <div class="price-box d-flex">
+                                        <span class="price-a">€ @home.PriceToRent</span>
+                                    </div>
+                                    <a href="property-single.html" class="link-a">
+                                        Saber mais
+                                        <span class="bi bi-chevron-right"></span>
+                                    </a>
+                                </div>
+                                <div class="card-footer-a">
+                                    <ul class="card-info d-flex justify-content-around">
+                                        <li>
+                                            <h4 class="card-info-title">Área</h4>
+                                            <span>
+                                                @home.SquareFootage m²
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <h4 class="card-info-title">Categoria</h4>
+                                            <span>@home.Category.Name</span>
+                                        </li>
+                                        <li>
+                                            <h4 class="card-info-title">Casa(s) de banho</h4>
+                                            <span>@home.NumWC</span>
+                                        </li>
+                                        <li>
+                                            <h4 class="card-info-title">Estacionamentos</h4>
+                                            <span>@home.NumParks</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            }   
+        </div>
+        @* Page Number *@
+        @* <div class="row">
+            <div class="col-sm-12">
+                <nav class="pagination-a">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">
+                                <span class="bi bi-chevron-left"></span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">3</a>
+                        </li>
+                        <li class="page-item next">
+                            <a class="page-link" href="#">
+                                <span class="bi bi-chevron-right"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div> *@
+    </div>
+</section>
+<!-- End Property Grid Single-->

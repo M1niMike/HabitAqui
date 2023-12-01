@@ -6,25 +6,25 @@ namespace TP2324.Models
     {
         public int Id { get; set; }
 
-        [Display(Name = "Tipo de habitação", Prompt ="Selecione o tipo da habitação, ex: Apartamento, Moradia...")]
+        [Display(Name = "Tipo de habitação", Prompt = "Selecione o tipo da habitação, ex: Apartamento, Moradia...")]
         [Required(ErrorMessage = "Indique o tipo da habitação!")]
         public string Type { get; set; }
 
-        [Display(Name = "toRent", Prompt = "Selecione se a habitação é para arrendar.")]
-        [Required(ErrorMessage = "Indique se a habitação é para arrendar!")]
-        public bool toRent { get; set; }
+        //[Display(Name = "toRent", Prompt = "Selecione se a habitação é para arrendar.")]
+        //[Required(ErrorMessage = "Indique se a habitação é para arrendar!")]
+        //public bool toRent { get; set; }
 
-        [Display(Name = "toPurchase", Prompt = "Selecione se a habitação é para vender.")]
-        [Required(ErrorMessage = "Indique se a habitação é para vender!")]
-        public bool toPurchase { get; set; }
+        //[Display(Name = "toPurchase", Prompt = "Selecione se a habitação é para vender.")]
+        //[Required(ErrorMessage = "Indique se a habitação é para vender!")]
+        //public bool toPurchase { get; set; }
 
         [Display(Name = "PriceToRent", Prompt = "Introduza o valor caso for arrendar.")]
         [Required(ErrorMessage = "Indique o valor para arrendamento!")]
         public int PriceToRent { get; set; }
 
-        [Display(Name = "PriceToPurchase", Prompt = "Introduza o valor caso for vender.")]
-        [Required(ErrorMessage = "Indique o valor para venda!")]
-        public int PriceToPurchase { get; set; }
+        //[Display(Name = "PriceToPurchase", Prompt = "Introduza o valor caso for vender.")]
+        //[Required(ErrorMessage = "Indique o valor para venda!")]
+        //public int PriceToPurchase { get; set; }
 
         // public int NumRooms { get; set; }
 
@@ -71,6 +71,10 @@ namespace TP2324.Models
         [Display(Name = "Categoria")]
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
+
+        //[Display(Name = "Tipo")]
+        //public int? TypeResidenceId { get; set; }
+        //public TypeResidence typeResidence { get; set; }
 
     }
 }

@@ -17,6 +17,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Manager> Managers { get; set; }
     public DbSet<Home> Homes { get; set; }
     public DbSet<Category> Category { get; set; }
+    //public DbSet<TypeResidence> TypeResidences { get; set; }
 
 }
 

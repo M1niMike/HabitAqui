@@ -33,29 +33,9 @@
                         }
                     </div>
                     <div class="card-body">
-
-                        @if (c.toRent && !c.toPurchase)
-                        {
-                            <h1 class="card-title pricing-card-title">
-                               Arrendar: € @c.PriceToRent<small class="text-muted fw-light"></small>
-                            </h1>
-                       
-                        }
-                        else if (c.toRent && c.toPurchase)
-                        {
-                            <h1 class="card-title pricing-card-title">
-                               Arrendar: € @c.PriceToRent<small class="text-muted fw-light"></small>
-                               <br />
-                               Comprar:  € @c.PriceToPurchase<small class="text-muted fw-light"></small>
-                            </h1>
-                        }
-                        else
-                        {
-
-                            <h1 class="card-title pricing-card-title">
-                                Comprar:  € @c.PriceToPurchase<small class="text-muted fw-light"></small>
-                            </h1>
-                        }
+                        <h1 class="card-title pricing-card-title">
+                            Arrendar: € @c.PriceToRent<small class="text-muted fw-light"></small>
+                        </h1>
                         @if (string.IsNullOrEmpty(Model.TextoAPesquisar))
                         {
                             <p>@Html.DisplayFor(model=>c.Description)</p>

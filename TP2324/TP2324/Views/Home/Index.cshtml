@@ -9,7 +9,7 @@
         <div class="swiper-wrapper">
                 @foreach (var home in Model)
                 {
-                    <div class="swiper-slide carousel-item-a intro-item bg-image" style="background-image: url('@home.ImgUrl')">
+                    <div class="swiper-slide carousel-item-a intro-item bg-image" style="background-image: url('/img/@home.ImgUrl')">
                         <div class="overlay overlay-a"></div>
                         <div class="intro-content display-table">
                             <div class="table-cell">
@@ -22,15 +22,8 @@
                                                     <br> @home.Address
                                                 </h1>
                                                 <p class="intro-subtitle intro-price">
-                                                @if (home.toRent && !home.toPurchase){
-                                                    <a href="#"><span class="price-a">Arrendar | € @home.PriceToRent</span></a>
-                                                }else if(home.toRent && home.toPurchase){
-                                                    <a href="#"><span class="price-a">Arrendar | € @home.PriceToRent</span></a>
-                                                    <a href="#"><span class="price-a">Comprar | € @home.PriceToPurchase</span></a>
-                                                }else{
-                                                    <a href="#"><span class="price-a">Comprar | € @home.PriceToPurchase</span></a>
-                                                }                                         
-                                                </p>
+                                                <a href="#"><span class="price-a">€ @home.PriceToRent</span></a>
+                                            </p>
                                             </div>
                                         </div>
                                     </div>

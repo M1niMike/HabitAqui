@@ -28,11 +28,6 @@
                 <span asp-validation-for="PriceToRent" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PriceToPurchase" class="control-label"></label>
-                <input asp-for="PriceToPurchase" class="form-control" />
-                <span asp-validation-for="PriceToPurchase" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="NumWC" class="control-label"></label>
                 <input asp-for="NumWC" class="form-control" />
                 <span asp-validation-for="NumWC" class="text-danger"></span>
@@ -76,16 +71,6 @@
                 <label asp-for="MinimumPeriod" class="control-label"></label>
                 <input asp-for="MinimumPeriod" class="form-control" />
                 <span asp-validation-for="MinimumPeriod" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="toRent" /> @Html.DisplayNameFor(model => model.toRent)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="toPurchase" /> @Html.DisplayNameFor(model => model.toPurchase)
-                </label>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">

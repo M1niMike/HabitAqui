@@ -21,30 +21,23 @@ namespace TP2324.Controllers
         }
 
         // GET: Homes
-        public async Task<IActionResult> Index(bool? toRent, bool? toPurchase)
+        public async Task<IActionResult> Index(/*string? tipo*/)
         {
             IQueryable<Home> homesQuery = _context.Homes.Include(m => m.Category);
 
-            if (toRent == true && toPurchase == true)
-            {
-                homesQuery = homesQuery.Where(c => c.toRent && c.toPurchase);
-            }
-            else if (toRent == true)
-            {
-                homesQuery = homesQuery.Where(c => c.toRent);
-            }
-            else if (toPurchase == true)
-            {
-                homesQuery = homesQuery.Where(c => c.toPurchase);
-            }
-            else if (toRent == null && toPurchase == null)
-            {
-                homesQuery = homesQuery.Where(c => c.toRent == false || c.toRent == true);
-                return _context.Homes != null ?
-                          View(await _context.Homes.Include(m => m.Category).ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Cursos'  is null.");
-            }
-
+            //if (tipo.CompareTo("apartamento") == 1)
+            //{
+            //    homesQuery.Where(c => c.Type.Equals(tipo));
+            //}
+            //else if (tipo.CompareTo("casa") == 1)
+            //{
+            //    homesQuery.Where(c => c.Type.Equals(tipo));
+            //}
+            //else if (tipo == null)
+            //{
+            //    var homesAll = await homesQuery.ToListAsync();
+            //    return View(homesAll);
+            //}
 
             var homes = await homesQuery.ToListAsync();
             return View(homes);
@@ -77,15 +70,15 @@ namespace TP2324.Controllers
         }
 
 
-        // Old_SearchBar
-        [HttpPost]
-        public async Task<IActionResult> Index(string? pesquisa)
-        {
-            return View(await _context.Homes
-                .Where(e => e.Address.Contains(pesquisa) || e.Category.Name.Contains(pesquisa))
-                .Include(m => m.Category)
-                .ToListAsync());
-        }
+        //// Old_SearchBar
+        //[HttpPost]
+        //public async Task<IActionResult> Index(string? pesquisa)
+        //{
+        //    return View(await _context.Homes
+        //        .Where(e => e.Address.Contains(pesquisa) || e.Category.Name.Contains(pesquisa))
+        //        .Include(m => m.Category)
+        //        .ToListAsync());
+        //}
 
         //New_SearchBar (GET: Homes/Search)
 
@@ -101,9 +94,8 @@ namespace TP2324.Controllers
             else
             {
                 pesquisaVM.Homeslist =
-                    await _context.Homes.Include(m => m.Category).Where(c => c.Type.Contains(TextoAPesquisar)
-                                                                         || c.Description.Contains(TextoAPesquisar)
-                                                                         || c.PriceToPurchase.ToString().Contains(TextoAPesquisar)
+                    await _context.Homes.Include(m => m.Category).Where(c => c.Type.Contains(TextoAPesquisar) ||
+                                                                          c.Description.Contains(TextoAPesquisar)
                                                                          || c.PriceToRent.ToString().Contains(TextoAPesquisar)
                                                                          || c.Category.Name.Contains(TextoAPesquisar)
                                                                          ).ToListAsync();
@@ -135,12 +127,11 @@ namespace TP2324.Controllers
             else
             {
                 pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category)
-                .Where(e => e.Type.Contains(pesquisaHabitacao.TextoAPesquisar) ||
+                .Where(e => e.Type.Contains(pesquisaHabitacao.TextoAPesquisar)||
                             e.Description.Contains(pesquisaHabitacao.TextoAPesquisar) ||
-                            e.PriceToPurchase.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
                             e.PriceToRent.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
                             e.Category.Name.Contains(pesquisaHabitacao.TextoAPesquisar)
-                            ).OrderBy(c => c.Type).ToListAsync();
+                            )/*.OrderBy(c => c.Type)*/.ToListAsync();
                 pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
 
                 foreach (Home c in pesquisaHabitacao.Homeslist)

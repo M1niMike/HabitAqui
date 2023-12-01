@@ -582,7 +582,7 @@ a:hover {
 .btn.btn-b-n {
   background-color: #2eca6a;
   color: #ffffff;
-  border-radius: 0;
+  border-radius: 50px;
 }
 
 .btn.btn-b-n:hover {
@@ -1111,7 +1111,7 @@ a:hover {
 
 /*------/ Intro Single /------*/
 .intro-single {
-  padding: 12rem 0 3rem;
+  padding: 5rem 0 5rem;
 }
 
 @media (max-width: 767px) {
@@ -1203,12 +1203,14 @@ a:hover {
 
 @media (min-width: 768px) {
 
-  .card-box-a:hover .img-a,
-  .card-box-a:hover .img-b,
-  .card-box-b:hover .img-a,
-  .card-box-b:hover .img-b {
-    transform: scale(1.2);
-  }
+    .card-box-a:hover .img-a,
+    .card-box-a:hover .img-b,
+    .card-box-b:hover .img-a,
+    .card-box-b:hover .img-b {
+        transform: scale(1.2);
+        filter: blur(8px);
+        -webkit-filter: blur(8px);
+    }
 }
 
 @media (min-width: 768px) {

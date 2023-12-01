@@ -375,9 +375,6 @@ namespace TP2324.Migrations
                     b.Property<int>("NumWC")
                         .HasColumnType("int");
 
-                    b.Property<int>("PriceToPurchase")
-                        .HasColumnType("int");
-
                     b.Property<int>("PriceToRent")
                         .HasColumnType("int");
 
@@ -389,12 +386,6 @@ namespace TP2324.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Wifi")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("toPurchase")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("toRent")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
