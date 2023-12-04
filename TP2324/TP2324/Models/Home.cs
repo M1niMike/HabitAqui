@@ -6,9 +6,9 @@ namespace TP2324.Models
     {
         public int Id { get; set; }
 
-        [Display(Name = "Tipo de habitação", Prompt = "Selecione o tipo da habitação, ex: Apartamento, Moradia...")]
-        [Required(ErrorMessage = "Indique o tipo da habitação!")]
-        public string Type { get; set; }
+        //[Display(Name = "Tipo de habitação", Prompt = "Selecione o tipo da habitação, ex: Apartamento, Moradia...")]
+        //[Required(ErrorMessage = "Indique o tipo da habitação!")]
+        //public string Type { get; set; }
 
         //[Display(Name = "toRent", Prompt = "Selecione se a habitação é para arrendar.")]
         //[Required(ErrorMessage = "Indique se a habitação é para arrendar!")]
@@ -53,6 +53,7 @@ namespace TP2324.Models
         public string Description { get; set; }
 
         [Display(Name = "Data de Início", Prompt = "Introduza a Data do início do contrato.")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime BeginDate { get; set; }
 
         [Display(Name = "Data de Fim", Prompt = "Introduza a Data do final do contrato.")]
@@ -66,15 +67,15 @@ namespace TP2324.Models
         //Se a habitação está disponivel
         public bool Available { get; set; }
 
-        public string ImgUrl { get; set; }
+        public string? ImgUrl { get; set; }
 
         [Display(Name = "Categoria")]
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
 
-        //[Display(Name = "Tipo")]
-        //public int? TypeResidenceId { get; set; }
-        //public TypeResidence typeResidence { get; set; }
+        [Display(Name = "Tipo")]
+        public int? TypeResidenceId { get; set; }
+        public TypeResidence typeResidence { get; set; }
 
     }
 }

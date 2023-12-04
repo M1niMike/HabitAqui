@@ -23,7 +23,7 @@ namespace TP2324.Controllers
         // GET: Homes
         public async Task<IActionResult> Index(/*string? tipo*/)
         {
-            IQueryable<Home> homesQuery = _context.Homes.Include(m => m.Category);
+            IQueryable<Home> homesQuery = _context.Homes.Include(m => m.Category).Include(m => m.typeResidence);
 
             //if (tipo.CompareTo("apartamento") == 1)
             //{
@@ -52,7 +52,7 @@ namespace TP2324.Controllers
                 return NotFound();
             }
 
-            var home = await _context.Homes.Include(m => m.Category)
+            var home = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (home == null)
             {
@@ -66,6 +66,7 @@ namespace TP2324.Controllers
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
+            ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name");
             return View();
         }
 
@@ -90,11 +91,11 @@ namespace TP2324.Controllers
             ViewData["Title"] = "Pesquisa cursos";
 
             if (string.IsNullOrWhiteSpace(TextoAPesquisar))
-                pesquisaVM.Homeslist = await _context.Homes.Include(m => m.Category).OrderBy(c => c.Category.Name).ToListAsync();
+                pesquisaVM.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).OrderBy(c => c.Category.Name).ToListAsync();
             else
             {
                 pesquisaVM.Homeslist =
-                    await _context.Homes.Include(m => m.Category).Where(c => c.Type.Contains(TextoAPesquisar) ||
+                    await _context.Homes.Include(m => m.Category).Where(c => c.typeResidence.Name.Contains(TextoAPesquisar) ||
                                                                           c.Description.Contains(TextoAPesquisar)
                                                                          || c.PriceToRent.ToString().Contains(TextoAPesquisar)
                                                                          || c.Category.Name.Contains(TextoAPesquisar)
@@ -121,12 +122,12 @@ namespace TP2324.Controllers
             }
             else
             {
-                pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category)
-                .Where(e => e.Type.Contains(pesquisaHabitacao.TextoAPesquisar)||
+                pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence)
+                .Where(e => e.typeResidence.Name.Contains(pesquisaHabitacao.TextoAPesquisar)||
                             e.Description.Contains(pesquisaHabitacao.TextoAPesquisar) ||
                             e.PriceToRent.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
                             e.Category.Name.Contains(pesquisaHabitacao.TextoAPesquisar)
-                            )/*.OrderBy(c => c.Type)*/.ToListAsync();
+                            ).OrderBy(c => c.typeResidence.Name).ToListAsync();
                 pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
 
             }
@@ -140,9 +141,10 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Type,CategoryId,PriceToRent,PriceToPurchase,NumWC,Address,SquareFootage,NumParks,Wifi,Description,toRent,toPurchase")] Home home)
+        public async Task<IActionResult> Create([Bind("Id,TypeResidenceId,CategoryId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,BeginDate,EndDate,MinimumPeriod,Available,ImgUrl")] Home home)
         {
             ModelState.Remove(nameof(home.Category));
+            ModelState.Remove(nameof(home.typeResidence));
             if (ModelState.IsValid)
             {
                 _context.Add(home);
@@ -150,8 +152,11 @@ namespace TP2324.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", home.CategoryId);
+            ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name", home.TypeResidenceId);
             return View(home);
         }
+
+
 
         // GET: Homes/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -168,6 +173,7 @@ namespace TP2324.Controllers
             }
 
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", home.CategoryId);
+            ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name", home.typeResidence);
 
             return View(home);
         }
@@ -177,7 +183,7 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,CategoryId,PriceToRent,PriceToPurchase,NumWC,Address,SquareFootage,NumParks,Wifi,Description,toRent,toPurchase")] Home home)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TypeResidenceId,CategoryId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,BeginDate,EndDate,MinimumPeriod,Available,ImgUrl")] Home home)
         {
             if (id != home.Id)
             {
@@ -185,6 +191,7 @@ namespace TP2324.Controllers
             }
 
             ModelState.Remove(nameof(home.Category));
+            ModelState.Remove(nameof(home.typeResidence));
 
             if (ModelState.IsValid)
             {

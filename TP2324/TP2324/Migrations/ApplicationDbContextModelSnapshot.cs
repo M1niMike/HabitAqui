@@ -363,7 +363,6 @@ namespace TP2324.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ImgUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MinimumPeriod")
@@ -381,9 +380,8 @@ namespace TP2324.Migrations
                     b.Property<float>("SquareFootage")
                         .HasColumnType("real");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("TypeResidenceId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Wifi")
                         .HasColumnType("bit");
@@ -391,6 +389,8 @@ namespace TP2324.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("TypeResidenceId");
 
                     b.ToTable("Homes");
                 });
@@ -418,6 +418,23 @@ namespace TP2324.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Managers");
+                });
+
+            modelBuilder.Entity("TP2324.Models.TypeResidence", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TypeResidences");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -477,10 +494,21 @@ namespace TP2324.Migrations
                         .WithMany("Homes")
                         .HasForeignKey("CategoryId");
 
+                    b.HasOne("TP2324.Models.TypeResidence", "typeResidence")
+                        .WithMany("Homes")
+                        .HasForeignKey("TypeResidenceId");
+
                     b.Navigation("Category");
+
+                    b.Navigation("typeResidence");
                 });
 
             modelBuilder.Entity("TP2324.Models.Category", b =>
+                {
+                    b.Navigation("Homes");
+                });
+
+            modelBuilder.Entity("TP2324.Models.TypeResidence", b =>
                 {
                     b.Navigation("Homes");
                 });
