@@ -100,12 +100,7 @@ namespace TP2324.Controllers
                                                                          || c.Category.Name.Contains(TextoAPesquisar)
                                                                          ).ToListAsync();
                 pesquisaVM.TextoAPesquisar = TextoAPesquisar;
-                foreach (Home c in pesquisaVM.Homeslist)
-                {
-                    c.Type = AltCorSubSTR(c.Type, pesquisaVM.TextoAPesquisar);
-                    c.Description = AltCorSubSTR(c.Description, pesquisaVM.TextoAPesquisar);
-                    c.Category.Name = AltCorSubSTR(c.Category.Name, pesquisaVM.TextoAPesquisar);
-                }
+
             }
             pesquisaVM.NumResultados = pesquisaVM.Homeslist.Count();
 
@@ -133,13 +128,6 @@ namespace TP2324.Controllers
                             e.Category.Name.Contains(pesquisaHabitacao.TextoAPesquisar)
                             )/*.OrderBy(c => c.Type)*/.ToListAsync();
                 pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
-
-                foreach (Home c in pesquisaHabitacao.Homeslist)
-                {
-                    c.Type = AltCorSubSTR(c.Type, pesquisaHabitacao.TextoAPesquisar);
-                    c.Description = AltCorSubSTR(c.Description, pesquisaHabitacao.TextoAPesquisar);
-                    c.Category.Name = AltCorSubSTR(c.Category.Name, pesquisaHabitacao.TextoAPesquisar);
-                }
 
             }
 
@@ -261,48 +249,6 @@ namespace TP2324.Controllers
         private bool HomeExists(int id)
         {
           return (_context.Homes?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-
-        // Retirado da solução da ficha 4
-        // Método para alterar a cor do BG relativo à string de pesquisa
-        public string AltCorSubSTR(string txtOriginal, string txtPesquisa)
-        {
-            string txtAlterado = string.Empty;
-
-            if (!string.IsNullOrEmpty(txtOriginal))
-            {
-                string[] split = txtOriginal.Split(" ");
-
-                foreach (string str in split)
-                {
-                    if (str.ToLower().Contains(txtPesquisa.ToLower()))
-                    {
-                        string a = string.Empty;
-                        int b = 0;
-
-                        for (int i = 0; i < str.Length; i++)
-                        {
-                            if (str.ToLower().Substring(i, txtPesquisa.Length) == txtPesquisa.ToLower())
-                            {
-                                a = str.Substring(i, txtPesquisa.Length);
-                                b = i;
-                                break;
-                            }
-                        }
-
-                        txtAlterado += str + " ";
-
-                        txtAlterado = txtAlterado.Replace(str.Substring(b, txtPesquisa.Length),
-                            "<span class=\"bg-warning\">" + a + "</span>");
-                    }
-                    else
-                        txtAlterado += str + " ";
-                }
-            }
-            else
-                txtAlterado = txtOriginal;
-
-            return txtAlterado;
         }
     }
 }

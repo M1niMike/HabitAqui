@@ -3,61 +3,120 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1>As nossas habitações</h1>
-
-<p>Resultado da pesquisa por "@Model.TextoAPesquisar":</p>
-
-@if (Model.NumResultados > 0)
-{
-    <p>Existe(m) @Model.NumResultados resultado(s) disponíveis</p>
-
-    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-        @foreach (Home c in Model.Homeslist)
-        {
-            <div class="col">
-                <div class="card mb-4 rounded-3 shadow-sm">
-                    <div class="card-header py-3">
-                        @if (string.IsNullOrEmpty(Model.TextoAPesquisar))
-                        {
-                            <h4 class="my-0 fw-normal">
-                                @Html.DisplayFor(model=>c.Type)
-                                (@Html.DisplayFor(model=>c.Category.Name))
-                            </h4>
-                        }
-                        else
-                        {
-                            <h4 class="my-0 fw-normal">
-                                @Html.Raw(c.Type)
-                                (@Html.DisplayFor(model=>c.Category.Name))
-                            </h4>
-                        }
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title pricing-card-title">
-                            Arrendar: € @c.PriceToRent<small class="text-muted fw-light"></small>
-                        </h1>
-                        @if (string.IsNullOrEmpty(Model.TextoAPesquisar))
-                        {
-                            <p>@Html.DisplayFor(model=>c.Description)</p>
-                        }
-                        else
-                        {
-                            <p>@Html.Raw(c.Description)</p>
-                        }
-                        <a class="w-100 btn btn-lg btn-outline-primary" asp-controller="Cursos" asp-action="Details" asp-route-id="@c.Id">Saber mais</a>
-                    </div>
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Sua pesquisa:</h1>
+                    <span class="color-text-a">@Model.TextoAPesquisar</span>
                 </div>
             </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Nossas habitações
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section><!-- End Intro Single-->
+
+<!-- ======= Property Grid ======= -->
+<section class="property-grid grid">
+    <div class="container">
+        <a class="create-btn" asp-action="Create">Adicionar Habitação</a>
+        <br />
+        <div class="btn-area">
+            <a class="apartamento-btn" asp-action="Index" asp-route-tipo="apartamento">Apartamentos</a>
+            <a class="casa-btn" asp-action="Index" asp-route-tipo="casa">Casas</a>
+            <a class="comprar-btn" asp-action="Index" asp-route-toPurchase="true">Comprar</a>
+        </div>
+        @if(Model.NumResultados > 0)
+        {
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="grid-option">
+                        @* <form>
+                    <select class="custom-select">
+                    <option selected>All</option>
+                    <option value="1">New to Old</option>
+                    <option value="2">For Rent</option>
+                    <option value="3">For Sale</option>
+                    </select>
+                    </form> *@
+                    </div>
+                </div>
+                @foreach (Home c in Model.Homeslist)
+                {
+                    <div class="col-md-4">
+                        <div class="card-box-a card-shadow">
+                            <div class="img-box-a">
+                                <img src="~/img/@c.ImgUrl" alt="" class="img-a img-fluid">
+                            </div>
+                            <div class="card-overlay">
+                                <div class="card-overlay-a-content">
+                                    <div class="card-header-a">
+                                        <h2 class="card-title-a">
+                                            <span class="color-b"> @c.Type </span>
+                                            <br> @c.Address
+                                        </h2>
+                                    </div>
+                                    <div class="card-body-a">
+                                        <div class="price-box d-flex">
+                                            <span class="price-a">€ @c.PriceToRent</span>
+                                        </div>
+                                        <a href="property-single.html" class="link-a">
+                                            Saber mais
+                                            <span class="bi bi-chevron-right"></span>
+                                        </a>
+                                    </div>
+                                    <div class="card-footer-a">
+                                        <ul class="card-info d-flex justify-content-around">
+                                            <li>
+                                                <h4 class="card-info-title">Área</h4>
+                                                <span>
+                                                    @c.SquareFootage m²
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <h4 class="card-info-title">Categoria</h4>
+                                                <span>@c.Category.Name</span>
+                                            </li>
+                                            <li>
+                                                <h4 class="card-info-title">Casa(s) de banho</h4>
+                                                <span>@c.NumWC</span>
+                                            </li>
+                                            <li>
+                                                <h4 class="card-info-title">Estacionamentos</h4>
+                                                <span>@c.NumParks</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </div>
+        }
+        else
+        {
+            <p class="alert alert-warning">
+                Não foi possível
+                encontrar habitações com os dados introduzidos.
+                <br />
+                Por favor, reveja a sua pesquisa!
+            </p>
         }
     </div>
-
-}
-else
-{
-    <p class="alert alert-warning">
-        Não foi possível
-        encontrar habitações com os dados introduzidos.
-        <br />
-        Por favor, reveja a sua pesquisa!
-    </p>
-}
+</section>
+<!-- End Property Grid Single-->
