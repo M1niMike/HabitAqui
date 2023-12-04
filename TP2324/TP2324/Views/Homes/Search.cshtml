@@ -32,26 +32,20 @@
 <!-- ======= Property Grid ======= -->
 <section class="property-grid grid">
     <div class="container">
-        <a class="create-btn" asp-action="Create">Adicionar Habitação</a>
-        <br />
-        <div class="btn-area">
-            <a class="apartamento-btn" asp-action="Index" asp-route-tipo="apartamento">Apartamentos</a>
-            <a class="casa-btn" asp-action="Index" asp-route-tipo="casa">Casas</a>
-            <a class="comprar-btn" asp-action="Index" asp-route-toPurchase="true">Comprar</a>
-        </div>
         @if(Model.NumResultados > 0)
         {
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="grid-option">
-                        @* <form>
-                    <select class="custom-select">
-                    <option selected>All</option>
-                    <option value="1">New to Old</option>
-                    <option value="2">For Rent</option>
-                    <option value="3">For Sale</option>
-                    </select>
-                    </form> *@
+                    <div class="grid-option" style="display: flex; justify-content: space-between;">
+                        <a class="create-btn" asp-action="Create">Adicionar Habitação</a>
+                        <div class="dropdown">
+                            <form asp-controller="Homes" asp-action="Index" method="get">
+                                <label class="dropdown-label" for="homeTypeDropdown">Selecione o Tipo:</label>
+                                <select class="dropdown-box" id="homeTypeDropdown" asp-for="TextoAPesquisar" asp-items="ViewBag.HomeTypes" onchange="this.form.submit()">
+                                    <option value="">Todos</option>
+                                </select>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 @foreach (Home c in Model.Homeslist)
@@ -65,7 +59,7 @@
                                 <div class="card-overlay-a-content">
                                     <div class="card-header-a">
                                         <h2 class="card-title-a">
-                                            <span class="color-b"> @* @c.Type *@ </span>
+                                            <span class="color-b"> @c.typeResidence.Name </span>
                                             <br> @c.Address
                                         </h2>
                                     </div>
@@ -117,6 +111,7 @@
                 Por favor, reveja a sua pesquisa!
             </p>
         }
+        
     </div>
 </section>
 <!-- End Property Grid Single-->

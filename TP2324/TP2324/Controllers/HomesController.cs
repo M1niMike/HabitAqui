@@ -29,17 +29,29 @@ namespace TP2324.Controllers
                 homesQuery = homesQuery.Where(c => c.typeResidence.Name == viewModel.TextoAPesquisar);
             }
 
+            if (!string.IsNullOrEmpty(viewModel.Ordenacao))
+            {
+                if (viewModel.Ordenacao == "MenorPreco")
+                {
+                    homesQuery = homesQuery.OrderBy(c => c.PriceToRent);
+                }
+                else if (viewModel.Ordenacao == "MaiorPreco")
+                {
+                    homesQuery = homesQuery.OrderByDescending(c => c.PriceToRent);
+                }
+            }
+
+
             var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
             ViewBag.HomeTypes = new SelectList(typeResidences);
-
-            //var category = _context.Category.Select(c => c.Name).Distinct().ToList();
-            //ViewBag.HomeCategory = new SelectList(category);
 
             viewModel.Homeslist = homesQuery.ToList();
             viewModel.NumResultados = viewModel.Homeslist.Count;
 
             return View(viewModel);
         }
+
+
 
 
 
@@ -84,38 +96,51 @@ namespace TP2324.Controllers
 
         //New_SearchBar (GET: Homes/Search)
 
-        // GET: Cursos/Search
+        [HttpGet]
         public async Task<IActionResult> Search(string? TextoAPesquisar)
         {
-
             PesquisaHabitacaoViewModel pesquisaVM = new PesquisaHabitacaoViewModel();
-            ViewData["Title"] = "Pesquisa cursos";
+            ViewData["Title"] = "Pesquisa habitações";
+
+            var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
+            ViewBag.HomeTypes = new SelectList(typeResidences);
 
             if (string.IsNullOrWhiteSpace(TextoAPesquisar))
-                pesquisaVM.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).OrderBy(c => c.Category.Name).ToListAsync();
+            {
+                pesquisaVM.Homeslist = await _context.Homes
+                    .Include(m => m.Category)
+                    .Include(m => m.typeResidence)
+                    .OrderBy(c => c.Category.Name)
+                    .ToListAsync();
+            }
             else
             {
-                pesquisaVM.Homeslist =
-                    await _context.Homes.Include(m => m.Category).Where(c => c.typeResidence.Name.Contains(TextoAPesquisar) ||
-                                                                          c.Description.Contains(TextoAPesquisar)
-                                                                         || c.PriceToRent.ToString().Contains(TextoAPesquisar)
-                                                                         || c.Category.Name.Contains(TextoAPesquisar)
-                                                                         ).ToListAsync();
-                pesquisaVM.TextoAPesquisar = TextoAPesquisar;
+                pesquisaVM.Homeslist = await _context.Homes
+                    .Include(m => m.Category)
+                    .Include(m => m.typeResidence)
+                    .Where(c =>
+                        (c.typeResidence != null && c.typeResidence.Name.Contains(TextoAPesquisar)) ||
+                        c.Description.Contains(TextoAPesquisar) ||
+                        c.PriceToRent.ToString().Contains(TextoAPesquisar) ||
+                        c.Category.Name.Contains(TextoAPesquisar)
+                    )
+                    .ToListAsync();
 
+                pesquisaVM.TextoAPesquisar = TextoAPesquisar;
             }
+
             pesquisaVM.NumResultados = pesquisaVM.Homeslist.Count();
 
-
-
             return View(pesquisaVM);
-
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Search([Bind("TextoAPesquisar")] PesquisaHabitacaoViewModel pesquisaHabitacao)
         {
+            var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
+            ViewBag.HomeTypes = new SelectList(typeResidences);
+
             if (string.IsNullOrEmpty(pesquisaHabitacao.TextoAPesquisar))
             {
                 pesquisaHabitacao.Homeslist = await _context.Homes.OrderBy(c => c.Category.Name).ToListAsync();
@@ -124,17 +149,17 @@ namespace TP2324.Controllers
             else
             {
                 pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence)
-                .Where(e => e.typeResidence.Name.Contains(pesquisaHabitacao.TextoAPesquisar)||
-                            e.Description.Contains(pesquisaHabitacao.TextoAPesquisar) ||
-                            e.PriceToRent.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
-                            e.Category.Name.Contains(pesquisaHabitacao.TextoAPesquisar)
-                            ).OrderBy(c => c.typeResidence.Name).ToListAsync();
+                    .Where(e => e.typeResidence.Name.Contains(pesquisaHabitacao.TextoAPesquisar) ||
+                                e.Description.Contains(pesquisaHabitacao.TextoAPesquisar) ||
+                                e.PriceToRent.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
+                                e.Category.Name.Contains(pesquisaHabitacao.TextoAPesquisar)
+                    ).OrderBy(c => c.typeResidence.Name).ToListAsync();
                 pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
-
             }
 
             return View(pesquisaHabitacao);
         }
+
 
 
         // POST: Homes/Create

@@ -39,7 +39,7 @@
             <div class="col-sm-12">
                 <div class="grid-option" style="display: flex; justify-content: space-between;">
                     <a class="create-btn" asp-action="Create">Adicionar Habitação</a>
-                    <div class="dropdown">
+                    <div class="dropdown-typeResidence">
                         <form asp-controller="Homes" asp-action="Index" method="get">
                             <label class="dropdown-label" for="homeTypeDropdown">Selecione o Tipo:</label>
                             <select class="dropdown-box" id="homeTypeDropdown" asp-for="TextoAPesquisar" asp-items="ViewBag.HomeTypes" onchange="this.form.submit()">
@@ -48,6 +48,22 @@
                         </form>
                     </div>
                 </div>
+                <form asp-controller="Homes" asp-action="Index" method="get">
+                    <!-- Seus controles existentes... -->
+
+                    <div class="form-group">
+                        <label for="ordenacao">Ordenar por:</label>
+                        <select class="form-control" id="ordenacao" name="Ordenacao">
+                            <option value="MenorPreco">Menor Preço</option>
+                            <option value="MaiorPreco">Maior Preço</option>
+                        </select>
+                    </div>
+
+                    <!-- Seus controles existentes... -->
+
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </form>
+
             </div>
             @foreach (Home c in Model.Homeslist)
             {
@@ -102,34 +118,6 @@
                
             }   
         </div>
-        @* Page Number *@
-        @* <div class="row">
-            <div class="col-sm-12">
-                <nav class="pagination-a">
-                    <ul class="pagination justify-content-end">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">
-                                <span class="bi bi-chevron-left"></span>
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item active">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                        </li>
-                        <li class="page-item next">
-                            <a class="page-link" href="#">
-                                <span class="bi bi-chevron-right"></span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div> *@
     </div>
 </section>
 <!-- End Property Grid Single-->
