@@ -21,27 +21,32 @@ namespace TP2324.Controllers
         }
 
         // GET: Homes
-        public async Task<IActionResult> Index(/*string? tipo*/)
+        public async Task<IActionResult> Index(string type)
         {
             IQueryable<Home> homesQuery = _context.Homes.Include(m => m.Category).Include(m => m.typeResidence);
 
-            //if (tipo.CompareTo("apartamento") == 1)
-            //{
-            //    homesQuery.Where(c => c.Type.Equals(tipo));
-            //}
-            //else if (tipo.CompareTo("casa") == 1)
-            //{
-            //    homesQuery.Where(c => c.Type.Equals(tipo));
-            //}
-            //else if (tipo == null)
-            //{
-            //    var homesAll = await homesQuery.ToListAsync();
-            //    return View(homesAll);
-            //}
+            if (type == "Apartamento")
+            {
+                homesQuery = homesQuery.Where(c => c.typeResidence.Name == "Apartamento");
+            }
+            else if (type == "Casa")
+            {
+                homesQuery = homesQuery.Where(c => c.typeResidence.Name == "Casa");
+            }
+            else if (type == "Quarto")
+            {
+                homesQuery = homesQuery.Where(c => c.typeResidence.Name == "Quarto");
+            }
+            else if (type == null)
+            {
+                var homesAll = await homesQuery.ToListAsync();
+                return View(homesAll);
+            }
 
             var homes = await homesQuery.ToListAsync();
             return View(homes);
         }
+
 
 
         // GET: Homes/Details/5
