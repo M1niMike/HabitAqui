@@ -75,6 +75,15 @@ footer {
         text-decoration: none;
     }
 
+/* Adicionando estilos responsivos para telas menores */
+@media screen and (max-width: 768px) {
+    .create-btn, .apartamento-btn, .todos-btn, .casa-btn {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.5rem;
+    }
+}
+
+
 .btn-area{
     margin-top: 1em;
 }
