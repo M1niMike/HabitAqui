@@ -1,9 +1,10 @@
-@model IEnumerable<TP2324.Models.Home>
+@model TP2324.ViewModels.PesquisaHabitacaoViewModel;
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 
 <!-- ======= Intro Single ======= -->
 <section class="intro-single">
@@ -35,43 +36,51 @@
 <section class="property-grid grid">
     <div class="container">
         <a class="create-btn" asp-action="Create">Adicionar Habitação</a>
-        <br />
+       @*  <br />
         <div class="btn-area">
             <a class="apartamento-btn" asp-action="Index" asp-route-type="Apartamento">Apartamentos</a>
             <a class="casa-btn" asp-action="Index" asp-route-type="Casa">Casas</a>
             <a class="comprar-btn" asp-action="Index" asp-route-type="Quarto">Quarto</a>
-        </div>
+        </div> *@
         <div class="row">
             <div class="col-sm-12">
                 <div class="grid-option">
-                    @* <form>
-                        <select class="custom-select">
-                            <option selected>All</option>
-                            <option value="1">New to Old</option>
-                            <option value="2">For Rent</option>
-                            <option value="3">For Sale</option>
-                        </select>
-                    </form> *@
+                    <div class="dropdown">
+                        <form asp-controller="Homes" asp-action="Index" method="get">
+                            <label for="homeTypeDropdown">Selecione o Tipo:</label>
+                            <select id="homeTypeDropdown" asp-for="TextoAPesquisar" asp-items="ViewBag.HomeTypes" onchange="this.form.submit()">
+                                <option value="">Todos</option>
+                            </select>
+                        </form>
+                    </div>
+                    @* <div class="dropdown">
+                        <form asp-controller="Homes" asp-action="Index" method="get">
+                            <label for="homeCategoryDropdown">Selecione a Categoria:</label>
+                            <select id="homeCategoryDropdown" asp-for="TextoAPesquisar" asp-items="ViewBag.HomeCategory" onchange="this.form.submit()">
+                                <option value="">Todos</option>
+                            </select>
+                        </form>
+                    </div> *@
                 </div>
             </div>
-            @foreach (var home in Model)
+            @foreach (Home c in Model.Homeslist)
             {
                 <div class="col-md-4">
                     <div class="card-box-a card-shadow">
                         <div class="img-box-a">
-                            <img src="~/img/@home.ImgUrl" alt="" class="img-a img-fluid">
+                            <img src="~/img/@c.ImgUrl" alt="" class="img-a img-fluid">
                         </div>
                         <div class="card-overlay">
                             <div class="card-overlay-a-content">
                                 <div class="card-header-a">
                                     <h2 class="card-title-a">
-                                        <span class="color-b"> @home.typeResidence.Name </span>
-                                        <br> @home.Address
+                                        <span class="color-b"> @c.typeResidence.Name </span>
+                                        <br> @c.Address
                                     </h2>
                                 </div>
                                 <div class="card-body-a">
                                     <div class="price-box d-flex">
-                                        <span class="price-a">€ @home.PriceToRent</span>
+                                        <span class="price-a">€ @c.PriceToRent</span>
                                     </div>
                                     <a href="property-single.html" class="link-a">
                                         Saber mais
@@ -83,20 +92,20 @@
                                         <li>
                                             <h4 class="card-info-title">Área</h4>
                                             <span>
-                                                @home.SquareFootage m²
+                                                @c.SquareFootage m²
                                             </span>
                                         </li>
                                         <li>
                                             <h4 class="card-info-title">Categoria</h4>
-                                            <span>@home.Category.Name</span>
+                                            <span>@c.Category.Name</span>
                                         </li>
                                         <li>
                                             <h4 class="card-info-title">Casa(s) de banho</h4>
-                                            <span>@home.NumWC</span>
+                                            <span>@c.NumWC</span>
                                         </li>
                                         <li>
                                             <h4 class="card-info-title">Estacionamentos</h4>
-                                            <span>@home.NumParks</span>
+                                            <span>@c.NumParks</span>
                                         </li>
                                     </ul>
                                 </div>

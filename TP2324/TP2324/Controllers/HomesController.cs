@@ -20,32 +20,28 @@ namespace TP2324.Controllers
             _context = context;
         }
 
-        // GET: Homes
-        public async Task<IActionResult> Index(string type)
+        public IActionResult Index(PesquisaHabitacaoViewModel viewModel)
         {
             IQueryable<Home> homesQuery = _context.Homes.Include(m => m.Category).Include(m => m.typeResidence);
 
-            if (type == "Apartamento")
+            if (!string.IsNullOrEmpty(viewModel.TextoAPesquisar))
             {
-                homesQuery = homesQuery.Where(c => c.typeResidence.Name == "Apartamento");
-            }
-            else if (type == "Casa")
-            {
-                homesQuery = homesQuery.Where(c => c.typeResidence.Name == "Casa");
-            }
-            else if (type == "Quarto")
-            {
-                homesQuery = homesQuery.Where(c => c.typeResidence.Name == "Quarto");
-            }
-            else if (type == null)
-            {
-                var homesAll = await homesQuery.ToListAsync();
-                return View(homesAll);
+                homesQuery = homesQuery.Where(c => c.typeResidence.Name == viewModel.TextoAPesquisar);
             }
 
-            var homes = await homesQuery.ToListAsync();
-            return View(homes);
+            var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
+            ViewBag.HomeTypes = new SelectList(typeResidences);
+
+            //var category = _context.Category.Select(c => c.Name).Distinct().ToList();
+            //ViewBag.HomeCategory = new SelectList(category);
+
+            viewModel.Homeslist = homesQuery.ToList();
+            viewModel.NumResultados = viewModel.Homeslist.Count;
+
+            return View(viewModel);
         }
+
+
 
 
 
