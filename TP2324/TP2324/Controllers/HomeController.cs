@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TP2324.Data;
 using TP2324.Models;
@@ -25,8 +27,10 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        IQueryable<Home> homes = _context.Homes;
+     
+        IQueryable<Home> homes = _context.Homes.Include(m => m.Category).Include(m => m.typeResidence);
         return View(homes.ToList());
+
     }
 
 
