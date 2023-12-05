@@ -309,6 +309,29 @@ namespace TP2324.Migrations
                     b.ToTable("Clients");
                 });
 
+            modelBuilder.Entity("TP2324.Models.Contract", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("BeginDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Contracts");
+                });
+
             modelBuilder.Entity("TP2324.Models.Employee", b =>
                 {
                     b.Property<int>("Id")
@@ -418,6 +441,28 @@ namespace TP2324.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Managers");
+                });
+
+            modelBuilder.Entity("TP2324.Models.Renting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("MaximumPeriod")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinimumPeriod")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Rentings");
                 });
 
             modelBuilder.Entity("TP2324.Models.TypeResidence", b =>

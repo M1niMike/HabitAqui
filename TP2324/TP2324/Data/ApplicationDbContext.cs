@@ -18,6 +18,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Home> Homes { get; set; }
     public DbSet<Category> Category { get; set; }
     public DbSet<TypeResidence> TypeResidences { get; set; }
-
+    public DbSet<Contract> Contracts { get; set; }
+    public DbSet<Renting> Rentings { get; set; }
 }
 
