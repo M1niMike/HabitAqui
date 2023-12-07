@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     @* Original *@
@@ -54,18 +59,31 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Homes" asp-action="Index">Nossas Habitações</a>
                             </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Acesso</a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item " asp-area="Identity" asp-page="/Account/Register">Registar</a>
-                                    <a class="dropdown-item " asp-area="Identity" asp-page="/Account/Login">Login</a>
-                                </div>
-                            </li>
-                        </ul>
-
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Perfil</a>
+                                    <div class="dropdown-menu">
+                                        <a class="nav-link dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+                                        <a>
+                                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                                <button class="dropdown-item " type="submit" class="nav-link btn btn-link dropdown-item">Logout</button>
+                                            </form>
+                                        </a>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Acesso</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item " asp-area="Identity" asp-page="/Account/Register">Registar</a>
+                                        <a class="dropdown-item " asp-area="Identity" asp-page="/Account/Login">Login</a>
+                                    </div>
+                                </li>
+                            }
                     </div>
-
                     <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
                         <i class="bi bi-search"></i>
                     </button>

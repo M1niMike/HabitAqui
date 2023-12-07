@@ -98,6 +98,31 @@ namespace TP2324.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+
+            [Display(Name = "PrimeiroNome", Prompt = "Primeiro nome!")]
+            [Required(ErrorMessage = "Indique o seu primeiro nome!")]
+            public string FirstName { get; set; }
+
+            /// <summary>
+            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+            ///     directly from your code. This API may change or be removed in future releases.
+            /// </summary>
+            [Display(Name = "UltimoNome", Prompt = "Ultimo nome!")]
+            [Required(ErrorMessage = "Indique o seu Ultimo nome!")]
+            public string LastName { get; set; }
+
+
+            [Display(Name = "Data de Nascimento", Prompt = "Data de Nascimento", Description = "Data de Nascimento do utilizador")]
+            [DataType(DataType.Date)]
+            [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+            [Required(ErrorMessage = "Indique a sua Data de Nascimento!")]
+            public DateTime BirthDate { get; set; }
+
+            [Display(Name = "NIF", Prompt = "NIF", Description = "NIF do utilizador")]
+            [Required(ErrorMessage = "Indique o seu NIF!")]
+            [Range(100000000, 999999999, ErrorMessage = "O NIF deve ter 9 dígitos")]
+            public int NIF { get; set; }
         }
 
 
@@ -117,6 +142,11 @@ namespace TP2324.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.BirthDate = Input.BirthDate;
+                user.NIF = Input.NIF;
+                await _userManager.UpdateAsync(user);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
