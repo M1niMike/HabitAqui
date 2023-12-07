@@ -1,26 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/Users/pedromnh/Library/CloudStorage/Dropbox/1. ISEC/PWEB/Aulas/CR/PWEB_TP_23_24/TP2324/TP2324/TP2324.csproj": {}
+    "C:\\Users\\mikae\\ISEC\\PWEB\\PWEB_TP_23_24\\TP2324\\TP2324\\TP2324.csproj": {}
   },
   "projects": {
-    "/Users/pedromnh/Library/CloudStorage/Dropbox/1. ISEC/PWEB/Aulas/CR/PWEB_TP_23_24/TP2324/TP2324/TP2324.csproj": {
+    "C:\\Users\\mikae\\ISEC\\PWEB\\PWEB_TP_23_24\\TP2324\\TP2324\\TP2324.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/pedromnh/Library/CloudStorage/Dropbox/1. ISEC/PWEB/Aulas/CR/PWEB_TP_23_24/TP2324/TP2324/TP2324.csproj",
+        "projectUniqueName": "C:\\Users\\mikae\\ISEC\\PWEB\\PWEB_TP_23_24\\TP2324\\TP2324\\TP2324.csproj",
         "projectName": "TP2324",
-        "projectPath": "/Users/pedromnh/Library/CloudStorage/Dropbox/1. ISEC/PWEB/Aulas/CR/PWEB_TP_23_24/TP2324/TP2324/TP2324.csproj",
-        "packagesPath": "/Users/pedromnh/.nuget/packages/",
-        "outputPath": "/Users/pedromnh/Library/CloudStorage/Dropbox/1. ISEC/PWEB/Aulas/CR/PWEB_TP_23_24/TP2324/TP2324/obj/",
+        "projectPath": "C:\\Users\\mikae\\ISEC\\PWEB\\PWEB_TP_23_24\\TP2324\\TP2324\\TP2324.csproj",
+        "packagesPath": "C:\\Users\\mikae\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mikae\\ISEC\\PWEB\\PWEB_TP_23_24\\TP2324\\TP2324\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/pedromnh/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\mikae\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/sdk/7.0.308/Sdks/Microsoft.NET.Sdk.Web/library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -84,8 +85,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -97,7 +97,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.308/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\6.0.320\\RuntimeIdentifierGraph.json"
         }
       }
     }
