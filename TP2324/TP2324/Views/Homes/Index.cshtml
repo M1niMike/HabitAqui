@@ -46,24 +46,17 @@
                                 <option value="">Todos</option>
                             </select>
                         </form>
+                    </div> 
+                    <div class="dropdown-priceFilter">
+                        <form asp-controller="Homes" asp-action="Index" method="get">
+                            <label class="dropdown-label" for="ordenacao">Ordenar por:</label>
+                            <select class="dropdown-box" id="ordenacao" asp-for="Ordenacao" onchange="this.form.submit()">
+                                <option value="MaiorPreco">Maior preço</option>
+                                <option value="MenorPreco">Menor preço</option>
+                            </select>
+                        </form>
                     </div>
                 </div>
-                <form asp-controller="Homes" asp-action="Index" method="get">
-                    <!-- Seus controles existentes... -->
-
-                    <div class="form-group">
-                        <label for="ordenacao">Ordenar por:</label>
-                        <select class="form-control" id="ordenacao" name="Ordenacao">
-                            <option value="MenorPreco">Menor Preço</option>
-                            <option value="MaiorPreco">Maior Preço</option>
-                        </select>
-                    </div>
-
-                    <!-- Seus controles existentes... -->
-
-                    <button type="submit" class="btn btn-primary">Filtrar</button>
-                </form>
-
             </div>
             @foreach (Home c in Model.Homeslist)
             {
