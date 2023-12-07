@@ -1,39 +1,37 @@
 ﻿<Properties StartupConfiguration="{3F9B2841-739E-440F-9EE1-486DC4FD9CDC}|Default">
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="TP2324/appsettings.json">
+  <MonoDevelop.Ide.ItemProperties.TP2324 PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workbench ActiveDocument="TP2324/Migrations/ApplicationDbContextModelSnapshot.cs">
     <Files>
-      <File FileName="TP2324/appsettings.json" Line="3" Column="68" />
-      <File FileName="TP2324/Properties/launchSettings.json" />
-      <File FileName="TP2324/Program.cs" />
-      <File FileName="TP2324/Data/ApplicationDbContext.cs" />
-      <File FileName="TP2324/Migrations/ApplicationDbContextModelSnapshot.cs" />
-      <File FileName="TP2324/Views/_ViewImports.cshtml" />
-      <File FileName="TP2324/Models/Client.cs" Line="1" Column="1" />
       <File FileName="TP2324/Controllers/HomesController.cs" Line="1" Column="1" />
+      <File FileName="TP2324/Program.cs" Line="1" Column="1" />
+      <File FileName="TP2324/appsettings.json" Line="3" Column="94" />
+      <File FileName="TP2324/Migrations/20231025124853_PriceToRentPurchase.cs" Line="1" Column="1" />
+      <File FileName="TP2324/Migrations/ApplicationDbContextModelSnapshot.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="TP2324" expanded="True">
-            <Node name="TP2324">
+          <Node name="TP2324">
+            <Node name="TP2324" expanded="True">
               <Node name="Controllers" expanded="True" />
-              <Node name="Data" expanded="True" />
+              <Node name="Migrations" expanded="True">
+                <Node name="ApplicationDbContextModelSnapshot.cs" selected="True" />
+              </Node>
               <Node name="Models" expanded="True" />
-              <Node name="Properties" expanded="True" />
               <Node name="Views" expanded="True">
                 <Node name="Homes" expanded="True" />
+                <Node name="Shared" expanded="True" />
               </Node>
-              <Node name="appsettings.json" selected="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.TP2324 PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>
