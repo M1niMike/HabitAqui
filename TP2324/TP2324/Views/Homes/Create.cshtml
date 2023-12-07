@@ -6,104 +6,91 @@
 }
 <html>
 <body>
-    <h1>Create</h1>
+    <div class="container">
+        <h1>Adicionar</h1>
 
-    <h4>Home</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Type" class="control-label"></label>
-                    <input asp-for="Type" class="form-control" />
-                    <span asp-validation-for="Type" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Category" class="control-label"></label>
-                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                </div>
-                <div class="form-group">
-                    <label asp-for="PriceToRent" class="control-label"></label>
-                    <input asp-for="PriceToRent" class="form-control" />
-                    <span asp-validation-for="PriceToRent" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="PriceToPurchase" class="control-label"></label>
-                    <input asp-for="PriceToPurchase" class="form-control" />
-                    <span asp-validation-for="PriceToPurchase" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="NumWC" class="control-label"></label>
-                    <input asp-for="NumWC" class="form-control" />
-                    <span asp-validation-for="NumWC" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Address" class="control-label"></label>
-                    <input asp-for="Address" class="form-control" />
-                    <span asp-validation-for="Address" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="SquareFootage" class="control-label"></label>
-                    <input asp-for="SquareFootage" class="form-control" />
-                    <span asp-validation-for="SquareFootage" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="NumParks" class="control-label"></label>
-                    <input asp-for="NumParks" class="form-control" />
-                    <span asp-validation-for="NumParks" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="BeginDate" class="control-label"></label>
-                    <input asp-for="BeginDate" class="form-control" />
-                    <span asp-validation-for="BeginDate" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="EndDate" class="control-label"></label>
-                    <input asp-for="EndDate" class="form-control" />
-                    <span asp-validation-for="EndDate" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="MinimumPeriod" class="control-label"></label>
-                    <input asp-for="MinimumPeriod" class="form-control" />
-                    <span asp-validation-for="MinimumPeriod" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Description" class="control-label"></label>
-                    <textarea rows="5" cols="5" asp-for="Description" class="form-control"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="Wifi" /> @Html.DisplayNameFor(model => model.Wifi)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="toRent" /> @Html.DisplayNameFor(model => model.toRent)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="toPurchase" /> @Html.DisplayNameFor(model => model.toPurchase)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="Available" /> @Html.DisplayNameFor(model => model.Available)
-                    </label>
-                </div>
-                <br />
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-            </form>
+        <h4>Home</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="typeResidence" class="control-label"></label>
+                        <select asp-for="TypeResidenceId" class="form-control" asp-items="ViewBag.TypeResidenceId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Category" class="control-label"></label>
+                        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PriceToRent" class="control-label"></label>
+                        <input asp-for="PriceToRent" class="form-control" />
+                        <span asp-validation-for="PriceToRent" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NumWC" class="control-label"></label>
+                        <input asp-for="NumWC" class="form-control" />
+                        <span asp-validation-for="NumWC" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address" class="control-label"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SquareFootage" class="control-label"></label>
+                        <input asp-for="SquareFootage" class="form-control" />
+                        <span asp-validation-for="SquareFootage" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NumParks" class="control-label"></label>
+                        <input asp-for="NumParks" class="form-control" />
+                        <span asp-validation-for="NumParks" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BeginDate" class="control-label"></label>
+                        <input asp-for="BeginDate" class="form-control" type="date" />
+                        <span asp-validation-for="BeginDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EndDate" class="control-label"></label>
+                        <input asp-for="EndDate" class="form-control" type="date" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MinimumPeriod" class="control-label"></label>
+                        <input asp-for="MinimumPeriod" class="form-control" />
+                        <span asp-validation-for="MinimumPeriod" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <textarea rows="5" cols="5" asp-for="Description" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Wifi" /> @Html.DisplayNameFor(model => model.Wifi)
+                        </label>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Available" /> @Html.DisplayNameFor(model => model.Available)
+                        </label>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="Index">Back to List</a>
         </div>
     </div>
-
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
+   
 
 </body>
 </html>

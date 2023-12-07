@@ -309,6 +309,29 @@ namespace TP2324.Migrations
                     b.ToTable("Clients");
                 });
 
+            modelBuilder.Entity("TP2324.Models.Contract", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("BeginDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Contracts");
+                });
+
             modelBuilder.Entity("TP2324.Models.Employee", b =>
                 {
                     b.Property<int>("Id")
@@ -363,7 +386,6 @@ namespace TP2324.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ImgUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MinimumPeriod")
@@ -375,31 +397,23 @@ namespace TP2324.Migrations
                     b.Property<int>("NumWC")
                         .HasColumnType("int");
 
-                    b.Property<int>("PriceToPurchase")
-                        .HasColumnType("int");
-
                     b.Property<int>("PriceToRent")
                         .HasColumnType("int");
 
                     b.Property<float>("SquareFootage")
                         .HasColumnType("real");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("TypeResidenceId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Wifi")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("toPurchase")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("toRent")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("TypeResidenceId");
 
                     b.ToTable("Homes");
                 });
@@ -427,6 +441,45 @@ namespace TP2324.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Managers");
+                });
+
+            modelBuilder.Entity("TP2324.Models.Renting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("MaximumPeriod")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinimumPeriod")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Rentings");
+                });
+
+            modelBuilder.Entity("TP2324.Models.TypeResidence", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TypeResidences");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -486,10 +539,21 @@ namespace TP2324.Migrations
                         .WithMany("Homes")
                         .HasForeignKey("CategoryId");
 
+                    b.HasOne("TP2324.Models.TypeResidence", "typeResidence")
+                        .WithMany("Homes")
+                        .HasForeignKey("TypeResidenceId");
+
                     b.Navigation("Category");
+
+                    b.Navigation("typeResidence");
                 });
 
             modelBuilder.Entity("TP2324.Models.Category", b =>
+                {
+                    b.Navigation("Homes");
+                });
+
+            modelBuilder.Entity("TP2324.Models.TypeResidence", b =>
                 {
                     b.Navigation("Homes");
                 });

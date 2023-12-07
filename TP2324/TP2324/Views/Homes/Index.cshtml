@@ -1,140 +1,116 @@
-@model IEnumerable<TP2324.Models.Home>
+@model TP2324.ViewModels.PesquisaHabitacaoViewModel;
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@* <h1>Habitações</h1>
- *@
-<p>
-    <a asp-action="Create">Adicionar Habitação</a>
-    <br />
 
-    <form asp-controller="Homes" asp-action="Index" method="post">
-        <label for="pesquisa"></label>
-        <input type="text" id="pesquisa" name="pesquisa" placeholder="Tipo a pesquisar...">
-        <input type="submit" value="Pesquisar">
-    </form>
-    <br />
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Nossas habitações</h1>
+                    <span class="color-text-a">Subtitulo</span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Nossas habitações
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section><!-- End Intro Single-->
 
-    <a asp-action="Index">Todos</a>
-    <a asp-action="Index" asp-route-toRent="true">Arrendar</a>
-    <a asp-action="Index" asp-route-toPurchase="true">Comprar</a>
-    @*<a asp-action="Index" asp-route-emdestaque="true">Disponível</a>*@
-</p>
-
-<table class="table table-bordered table-striped table-hover">
-    <thead>
-        <tr>
-            <th>
-                Tipo
-            </th>
-            <th>
-                Categoria
-            </th>
-            <th>
-                Preço de Arrendamento
-            </th>
-            <th>
-                Preço de Compra
-            </th>
-            <th>
-                Wc
-            </th>
-            <th>
-                Morada
-            </th>
-            <th>
-                Área Útil
-            </th>
-            <th>
-                Estacionamento
-            </th>
-            <th>
-                WiFi
-            </th>
-            <th>
-                Descrição
-            </th>
-            <th>
-                Arrendar
-            </th>
-            <th>
-                Comprar
-            </th>
-            <th>
-                Data de início de contrato
-            </th>
-            <th>
-                Data de final de contrato
-            </th>
-            <th>
-                Périodo mínimo de contrato
-            </th>
-            <th>
-                Disponibilidade da habitação
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PriceToRent)€
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PriceToPurchase)€
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumWC)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SquareFootage)m²
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumParks)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Wifi)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.toRent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.toPurchase)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BeginDate)
-            </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MinimumPeriod)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Available)
-                </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<!-- ======= Property Grid ======= -->
+<section class="property-grid grid">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="grid-option" style="display: flex; justify-content: space-between;">
+                    <a class="create-btn" asp-action="Create">Adicionar Habitação</a>
+                    <div class="dropdown-typeResidence">
+                        <form asp-controller="Homes" asp-action="Index" method="get">
+                            <label class="dropdown-label" for="homeTypeDropdown">Selecione o Tipo:</label>
+                            <select class="dropdown-box" id="homeTypeDropdown" asp-for="TextoAPesquisar" asp-items="ViewBag.HomeTypes" onchange="this.form.submit()">
+                                <option value="">Todos</option>
+                            </select>
+                        </form>
+                    </div> 
+                    <div class="dropdown-priceFilter">
+                        <form asp-controller="Homes" asp-action="Index" method="get">
+                            <label class="dropdown-label" for="ordenacao">Ordenar por:</label>
+                            <select class="dropdown-box" id="ordenacao" asp-for="Ordenacao" onchange="this.form.submit()">
+                                <option value="MaiorPreco">Maior preço</option>
+                                <option value="MenorPreco">Menor preço</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            @foreach (Home c in Model.Homeslist)
+            {
+                <div class="col-md-4">
+                    <div class="card-box-a card-shadow">
+                        <div class="img-box-a">
+                            <img src="~/img/@c.ImgUrl" alt="" class="img-a img-fluid">
+                        </div>
+                        <div class="card-overlay">
+                            <div class="card-overlay-a-content">
+                                <div class="card-header-a">
+                                    <h2 class="card-title-a">
+                                        <span class="color-b"> @c.typeResidence.Name </span>
+                                        <br> @c.Address
+                                    </h2>
+                                </div>
+                                <div class="card-body-a">
+                                    <div class="price-box d-flex">
+                                        <span class="price-a">€ @c.PriceToRent</span>
+                                    </div>
+                                    <a href="property-single.html" class="link-a">
+                                        Saber mais
+                                        <span class="bi bi-chevron-right"></span>
+                                    </a>
+                                </div>
+                                <div class="card-footer-a">
+                                    <ul class="card-info d-flex justify-content-around">
+                                        <li>
+                                            <h4 class="card-info-title">Área</h4>
+                                            <span>
+                                                @c.SquareFootage m²
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <h4 class="card-info-title">Categoria</h4>
+                                            <span>@c.Category.Name</span>
+                                        </li>
+                                        <li>
+                                            <h4 class="card-info-title">Casa(s) de banho</h4>
+                                            <span>@c.NumWC</span>
+                                        </li>
+                                        <li>
+                                            <h4 class="card-info-title">Estacionamentos</h4>
+                                            <span>@c.NumParks</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+            }   
+        </div>
+    </div>
+</section>
+<!-- End Property Grid Single-->

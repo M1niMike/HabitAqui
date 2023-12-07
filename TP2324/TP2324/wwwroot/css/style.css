@@ -30,8 +30,8 @@ a {
 }
 
 a:hover {
-  color: #2eca6a;
-  text-decoration: none;
+    color: #3ABEFF;
+    text-decoration: none;
 }
 
 .link-two {
@@ -124,7 +124,7 @@ a:hover {
 }
 
 .color-b {
-  color: #2eca6a;
+    color: #3ABEFF;
 }
 
 .color-d {
@@ -356,15 +356,15 @@ a:hover {
   font-size: 2rem;
 }
 
-.title-box-d .title-d:after {
-  content: "";
-  position: absolute;
-  width: 70px;
-  height: 4px;
-  background-color: #2eca6a;
-  bottom: 20px;
-  left: 0;
-}
+    .title-box-d .title-d:after {
+        content: "";
+        position: absolute;
+        width: 70px;
+        height: 4px;
+        background-color: #3ABEFF;
+        bottom: 20px;
+        left: 0;
+    }
 
 /*------/ Display Table & Table Cell /------*/
 .display-table {
@@ -553,41 +553,41 @@ a:hover {
 
 .btn.btn-a,
 .btn.btn-b {
-  border-radius: 0;
+  border-radius: 2;
   padding: 1rem 3rem;
   letter-spacing: 0.05rem;
 }
 
 .btn.btn-a {
-  text-decoration: none;
-  background-color: #000000;
-  color: #ffffff;
+    text-decoration: none;
+    background-color: #3ABEFF;
+    color: #ffffff;
 }
 
 .btn.btn-a:hover {
-  background-color: #2eca6a;
-  color: #000000;
+    background-color: #2884B0;
+    color: #ffffff;
 }
 
 .btn.btn-b {
-  background-color: #2eca6a;
-  color: #000000;
+    background-color: #3ABEFF;
+    color: #ffffff;
 }
 
 .btn.btn-b:hover {
-  background-color: #000000;
-  color: #ffffff;
+    background-color: #2884B0;
+    color: #ffffff;
 }
 
 .btn.btn-b-n {
-  background-color: #2eca6a;
-  color: #ffffff;
-  border-radius: 0;
+    background-color: #3ABEFF;
+    color: #ffffff;
+    border-radius: 50px;
 }
 
 .btn.btn-b-n:hover {
-  background-color: #26a356;
-  color: #ffffff;
+    background-color: #2884B0;
+    color: #ffffff;
 }
 
 .navbar-toggle-box {
@@ -660,17 +660,17 @@ a:hover {
 
 .navbar-default.navbar-trans .nav-link:before,
 .navbar-default.navbar-reduce .nav-link:before {
-  content: "";
-  position: absolute;
-  bottom: 5px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  z-index: 0;
-  background-color: #2eca6a;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.2s ease-out, opacity 0.2s ease-out 0.3s;
+    content: "";
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    z-index: 0;
+    background-color: #3ABEFF;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out 0.3s;
 }
 
 .navbar-default.navbar-trans .nav-link:hover,
@@ -696,7 +696,7 @@ a:hover {
 }
 
 .navbar-default.navbar-trans .nav-link:before {
-  background-color: #2eca6a;
+    background-color: #3ABEFF;
 }
 
 .navbar-default.navbar-trans .nav-link:hover {
@@ -740,28 +740,28 @@ a:hover {
 }
 
 .navbar-default .dropdown .dropdown-menu {
-  border-top: 0;
-  border-left: 4px solid #2eca6a;
-  border-right: 0;
-  border-bottom: 0;
-  transform: translate3d(0px, 40px, 0px);
-  opacity: 0;
-  filter: alpha(opacity=0);
-  visibility: hidden;
-  transition: all 0.5s cubic-bezier(0.3, 0.65, 0.355, 1) 0s, opacity 0.31s ease 0s, height 0s linear 0.36s;
-  margin: 0;
-  border-radius: 0;
-  padding: 12px 0;
+    border-top: 0;
+    border-left: 4px solid #3ABEFF;
+    border-right: 0;
+    border-bottom: 0;
+    transform: translate3d(0px, 40px, 0px);
+    opacity: 0;
+    filter: alpha(opacity=0);
+    visibility: hidden;
+    transition: all 0.5s cubic-bezier(0.3, 0.65, 0.355, 1) 0s, opacity 0.31s ease 0s, height 0s linear 0.36s;
+    margin: 0;
+    border-radius: 0;
+    padding: 12px 0;
 }
 
 @media (min-width: 768px) {
-  .navbar-default .dropdown .dropdown-menu {
-    border-top: 4px solid #2eca6a;
-    border-left: 0;
-    display: block;
-    position: absolute;
-    box-shadow: 0 2px rgba(17, 16, 15, 0.1), 0 2px 10px rgba(20, 19, 18, 0.1);
-  }
+    .navbar-default .dropdown .dropdown-menu {
+        border-top: 4px solid #3ABEFF;
+        border-left: 0;
+        display: block;
+        position: absolute;
+        box-shadow: 0 2px rgba(17, 16, 15, 0.1), 0 2px 10px rgba(20, 19, 18, 0.1);
+    }
 }
 
 .navbar-default .dropdown .dropdown-menu .dropdown-item {
@@ -983,8 +983,8 @@ a:hover {
 }
 
 .intro .swiper-pagination .swiper-pagination-bullet-active {
-  background-color: #2eca6a;
-  width: 36px;
+    background-color: #3ABEFF;
+    width: 36px;
 }
 
 .intro .intro-item {
@@ -1015,12 +1015,12 @@ a:hover {
 }
 
 .intro .intro-body .price-a {
-  color: #ffffff;
-  padding: 1rem 1.5rem;
-  border: 2px solid #2eca6a;
-  border-radius: 50px;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+    color: #ffffff;
+    padding: 1rem 1.5rem;
+    border: 2px solid #3ABEFF;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
 }
 
 .intro .spacial {
@@ -1111,7 +1111,7 @@ a:hover {
 
 /*------/ Intro Single /------*/
 .intro-single {
-  padding: 12rem 0 3rem;
+  padding: 5rem 0 5rem;
 }
 
 @media (max-width: 767px) {
@@ -1125,7 +1125,7 @@ a:hover {
 }
 
 .intro-single .title-single-box {
-  border-left: 3px solid #2eca6a;
+   border-left: 3px solid #3ABEFF;
 }
 
 .intro-single .title-single-box .title-single {
@@ -1155,105 +1155,124 @@ a:hover {
   padding-left: 0;
 }
 
+
+
 /*--------------------------------------------------------------
 # Card General
 --------------------------------------------------------------*/
 @media (max-width: 767px) {
-
-  .card-box-a,
-  .card-box-b,
-  .card-box-c,
-  .card-box-d {
-    margin-bottom: 2.5rem;
-  }
+    .card-box-a,
+    .card-box-b,
+    .card-box-c,
+    .card-box-d {
+        margin-bottom: 2.5rem;
+    }
 }
 
 .card-box-a span,
 .card-box-b span,
 .card-box-c span,
 .card-box-d span {
-  line-height: 0;
+    line-height: 0;
 }
 
 @media (min-width: 768px) {
-
-  .grid .card-box-a,
-  .grid .card-box-b,
-  .grid .card-box-c,
-  .grid .card-box-d {
-    margin-bottom: 2.5rem;
-  }
+    .grid .card-box-a,
+    .grid .card-box-b,
+    .grid .card-box-c,
+    .grid .card-box-d {
+        margin-bottom: 2.5rem;
+    }
 }
 
 .card-box-a,
 .card-box-b,
 .card-box-d {
-  position: relative;
-  overflow: hidden;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
 }
 
-.card-box-a .img-a,
-.card-box-a .img-b,
-.card-box-b .img-a,
-.card-box-b .img-b {
-  transition: 0.8s all ease-in-out;
-}
+    .card-box-a .img-a,
+    .card-box-a .img-b,
+    .card-box-b .img-a,
+    .card-box-b .img-b {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        position: relative;
+        transition: 0.8s all ease-in-out;
+    }
+
+        .card-box-a .img-a::before,
+        .card-box-a .img-b::before,
+        .card-box-b .img-a::before,
+        .card-box-b .img-b::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Ajuste a opacidade conforme necessário */
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
 
 @media (min-width: 768px) {
+    .card-box-a:hover .img-a,
+    .card-box-a:hover .img-b,
+    .card-box-b:hover .img-a,
+    .card-box-b:hover .img-b {
+        transform: scale(1.2);
+        filter: blur(8px);
+        -webkit-filter: blur(8px);
+    }
 
-  .card-box-a:hover .img-a,
-  .card-box-a:hover .img-b,
-  .card-box-b:hover .img-a,
-  .card-box-b:hover .img-b {
-    transform: scale(1.2);
-  }
-}
-
-@media (min-width: 768px) {
-
-  .card-box-a .price-a,
-  .card-box-b .price-a {
-    font-size: 0.9rem;
-  }
+    .card-box-a .price-a,
+    .card-box-b .price-a {
+        font-size: 0.9rem;
+    }
 }
 
 @media (min-width: 992px) {
-
-  .card-box-a .price-a,
-  .card-box-b .price-a {
-    font-size: 1rem;
-  }
+    .card-box-a .price-a,
+    .card-box-b .price-a {
+        font-size: 1rem;
+    }
 }
 
 .card-overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
 }
 
 .card-shadow {
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
-.card-shadow:before {
-  content: " ";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 27%, rgba(0, 0, 0, 0.65) 90%);
-}
+    .card-shadow:before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 27%, rgba(0, 0, 0, 0.65) 90%);
+    }
+
 
 /*======================================
 //--//-->   PROPERTY - CARD-A
 ======================================*/
+
+
 @media (min-width: 768px) {
   .card-box-a:hover .card-overlay-a-content {
     bottom: 60px;
@@ -1346,19 +1365,19 @@ a:hover {
 }
 
 .price-a {
-  color: #ffffff;
-  padding: 0.6rem 0.8rem;
-  border: 2px solid #2eca6a;
-  border-radius: 50px;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+    color: #ffffff;
+    padding: 0.6rem 0.8rem;
+    border: 2px solid #3ABEFF;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
 }
 
 .card-footer-a {
-  width: 100%;
-  position: absolute;
-  z-index: 2;
-  background-color: #2eca6a;
+    width: 100%;
+    position: absolute;
+    z-index: 2;
+    background-color: #3ABEFF;
 }
 
 .card-info {
@@ -1400,6 +1419,7 @@ a:hover {
     font-size: 1rem;
   }
 }
+
 
 /*------/ Property Grid /-----*/
 .property-grid .grid-option {
@@ -2170,3 +2190,43 @@ footer .credits {
   font-size: 14px;
 }*/
 /**/
+
+/*--------------------------------------------------------------
+# Extras
+--------------------------------------------------------------*/
+
+.col-md-4{
+    width: 50%;
+}
+
+.dropdown-box {
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+/* Adicionando estilos responsivos para telas menores */
+@media screen and (max-width: 768px) {
+    .dropdown-box {
+        font-size: 0.8rem;
+    }
+}
+
+
+/* Estilos padrão para o label do dropdown */
+.dropdown-label {
+    font-size: 1rem;
+}
+
+/* Adicionando estilos responsivos para telas menores */
+@media screen and (max-width: 768px) {
+    .dropdown-label {
+        font-size: 0.8rem;
+    }
+}

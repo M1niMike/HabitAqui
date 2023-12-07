@@ -20,35 +20,41 @@ namespace TP2324.Controllers
             _context = context;
         }
 
-        // GET: Homes
-        public async Task<IActionResult> Index(bool? toRent, bool? toPurchase)
+        public IActionResult Index(PesquisaHabitacaoViewModel viewModel)
         {
-            IQueryable<Home> homesQuery = _context.Homes.Include(m => m.Category);
+            IQueryable<Home> homesQuery = _context.Homes.Include(m => m.Category).Include(m => m.typeResidence);
 
-            if (toRent == true && toPurchase == true)
+            if (!string.IsNullOrEmpty(viewModel.TextoAPesquisar))
             {
-                homesQuery = homesQuery.Where(c => c.toRent && c.toPurchase);
+                homesQuery = homesQuery.Where(c => c.typeResidence.Name == viewModel.TextoAPesquisar);
             }
-            else if (toRent == true)
+
+            if (!string.IsNullOrEmpty(viewModel.Ordenacao))
             {
-                homesQuery = homesQuery.Where(c => c.toRent);
-            }
-            else if (toPurchase == true)
-            {
-                homesQuery = homesQuery.Where(c => c.toPurchase);
-            }
-            else if (toRent == null && toPurchase == null)
-            {
-                homesQuery = homesQuery.Where(c => c.toRent == false || c.toRent == true);
-                return _context.Homes != null ?
-                          View(await _context.Homes.Include(m => m.Category).ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Cursos'  is null.");
+                if (viewModel.Ordenacao == "MenorPreco")
+                {
+                    homesQuery = homesQuery.OrderBy(c => c.PriceToRent);
+                }
+                else if (viewModel.Ordenacao == "MaiorPreco")
+                {
+                    homesQuery = homesQuery.OrderByDescending(c => c.PriceToRent);
+                }
             }
 
 
-            var homes = await homesQuery.ToListAsync();
-            return View(homes);
+            var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
+            ViewBag.HomeTypes = new SelectList(typeResidences);
+
+            viewModel.Homeslist = homesQuery.ToList();
+            viewModel.NumResultados = viewModel.Homeslist.Count;
+
+            return View(viewModel);
         }
+
+
+
+
+
 
 
         // GET: Homes/Details/5
@@ -59,7 +65,7 @@ namespace TP2324.Controllers
                 return NotFound();
             }
 
-            var home = await _context.Homes.Include(m => m.Category)
+            var home = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (home == null)
             {
@@ -73,60 +79,68 @@ namespace TP2324.Controllers
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
+            ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name");
             return View();
         }
 
 
-        // Old_SearchBar
-        [HttpPost]
-        public async Task<IActionResult> Index(string? pesquisa)
-        {
-            return View(await _context.Homes
-                .Where(e => e.Address.Contains(pesquisa) || e.Category.Name.Contains(pesquisa))
-                .Include(m => m.Category)
-                .ToListAsync());
-        }
+        //// Old_SearchBar
+        //[HttpPost]
+        //public async Task<IActionResult> Index(string? pesquisa)
+        //{
+        //    return View(await _context.Homes
+        //        .Where(e => e.Address.Contains(pesquisa) || e.Category.Name.Contains(pesquisa))
+        //        .Include(m => m.Category)
+        //        .ToListAsync());
+        //}
 
         //New_SearchBar (GET: Homes/Search)
 
-        // GET: Cursos/Search
+        [HttpGet]
         public async Task<IActionResult> Search(string? TextoAPesquisar)
         {
-
             PesquisaHabitacaoViewModel pesquisaVM = new PesquisaHabitacaoViewModel();
-            ViewData["Title"] = "Pesquisa cursos";
+            ViewData["Title"] = "Pesquisa habitações";
+
+            var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
+            ViewBag.HomeTypes = new SelectList(typeResidences);
 
             if (string.IsNullOrWhiteSpace(TextoAPesquisar))
-                pesquisaVM.Homeslist = await _context.Homes.Include(m => m.Category).OrderBy(c => c.Category.Name).ToListAsync();
+            {
+                pesquisaVM.Homeslist = await _context.Homes
+                    .Include(m => m.Category)
+                    .Include(m => m.typeResidence)
+                    .OrderBy(c => c.Category.Name)
+                    .ToListAsync();
+            }
             else
             {
-                pesquisaVM.Homeslist =
-                    await _context.Homes.Include(m => m.Category).Where(c => c.Type.Contains(TextoAPesquisar)
-                                                                         || c.Description.Contains(TextoAPesquisar)
-                                                                         || c.PriceToPurchase.ToString().Contains(TextoAPesquisar)
-                                                                         || c.PriceToRent.ToString().Contains(TextoAPesquisar)
-                                                                         || c.Category.Name.Contains(TextoAPesquisar)
-                                                                         ).ToListAsync();
+                pesquisaVM.Homeslist = await _context.Homes
+                    .Include(m => m.Category)
+                    .Include(m => m.typeResidence)
+                    .Where(c =>
+                        (c.typeResidence != null && c.typeResidence.Name.Contains(TextoAPesquisar)) ||
+                        c.Description.Contains(TextoAPesquisar) ||
+                        c.PriceToRent.ToString().Contains(TextoAPesquisar) ||
+                        c.Category.Name.Contains(TextoAPesquisar)
+                    )
+                    .ToListAsync();
+
                 pesquisaVM.TextoAPesquisar = TextoAPesquisar;
-                foreach (Home c in pesquisaVM.Homeslist)
-                {
-                    c.Type = AltCorSubSTR(c.Type, pesquisaVM.TextoAPesquisar);
-                    c.Description = AltCorSubSTR(c.Description, pesquisaVM.TextoAPesquisar);
-                    c.Category.Name = AltCorSubSTR(c.Category.Name, pesquisaVM.TextoAPesquisar);
-                }
             }
+
             pesquisaVM.NumResultados = pesquisaVM.Homeslist.Count();
 
-
-
             return View(pesquisaVM);
-
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Search([Bind("TextoAPesquisar")] PesquisaHabitacaoViewModel pesquisaHabitacao)
         {
+            var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
+            ViewBag.HomeTypes = new SelectList(typeResidences);
+
             if (string.IsNullOrEmpty(pesquisaHabitacao.TextoAPesquisar))
             {
                 pesquisaHabitacao.Homeslist = await _context.Homes.OrderBy(c => c.Category.Name).ToListAsync();
@@ -134,26 +148,18 @@ namespace TP2324.Controllers
             }
             else
             {
-                pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category)
-                .Where(e => e.Type.Contains(pesquisaHabitacao.TextoAPesquisar) ||
-                            e.Description.Contains(pesquisaHabitacao.TextoAPesquisar) ||
-                            e.PriceToPurchase.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
-                            e.PriceToRent.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
-                            e.Category.Name.Contains(pesquisaHabitacao.TextoAPesquisar)
-                            ).OrderBy(c => c.Type).ToListAsync();
+                pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence)
+                    .Where(e => e.typeResidence.Name.Contains(pesquisaHabitacao.TextoAPesquisar) ||
+                                e.Description.Contains(pesquisaHabitacao.TextoAPesquisar) ||
+                                e.PriceToRent.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
+                                e.Category.Name.Contains(pesquisaHabitacao.TextoAPesquisar)
+                    ).OrderBy(c => c.typeResidence.Name).ToListAsync();
                 pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
-
-                foreach (Home c in pesquisaHabitacao.Homeslist)
-                {
-                    c.Type = AltCorSubSTR(c.Type, pesquisaHabitacao.TextoAPesquisar);
-                    c.Description = AltCorSubSTR(c.Description, pesquisaHabitacao.TextoAPesquisar);
-                    c.Category.Name = AltCorSubSTR(c.Category.Name, pesquisaHabitacao.TextoAPesquisar);
-                }
-
             }
 
             return View(pesquisaHabitacao);
         }
+
 
 
         // POST: Homes/Create
@@ -161,9 +167,10 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Type,CategoryId,PriceToRent,PriceToPurchase,NumWC,Address,SquareFootage,NumParks,Wifi,Description,toRent,toPurchase")] Home home)
+        public async Task<IActionResult> Create([Bind("Id,TypeResidenceId,CategoryId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,BeginDate,EndDate,MinimumPeriod,Available,ImgUrl")] Home home)
         {
             ModelState.Remove(nameof(home.Category));
+            ModelState.Remove(nameof(home.typeResidence));
             if (ModelState.IsValid)
             {
                 _context.Add(home);
@@ -171,8 +178,11 @@ namespace TP2324.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", home.CategoryId);
+            ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name", home.TypeResidenceId);
             return View(home);
         }
+
+
 
         // GET: Homes/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -189,6 +199,7 @@ namespace TP2324.Controllers
             }
 
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", home.CategoryId);
+            ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name", home.typeResidence);
 
             return View(home);
         }
@@ -198,7 +209,7 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,CategoryId,PriceToRent,PriceToPurchase,NumWC,Address,SquareFootage,NumParks,Wifi,Description,toRent,toPurchase")] Home home)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TypeResidenceId,CategoryId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,BeginDate,EndDate,MinimumPeriod,Available,ImgUrl")] Home home)
         {
             if (id != home.Id)
             {
@@ -206,6 +217,7 @@ namespace TP2324.Controllers
             }
 
             ModelState.Remove(nameof(home.Category));
+            ModelState.Remove(nameof(home.typeResidence));
 
             if (ModelState.IsValid)
             {
@@ -270,48 +282,6 @@ namespace TP2324.Controllers
         private bool HomeExists(int id)
         {
           return (_context.Homes?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-
-        // Retirado da solução da ficha 4
-        // Método para alterar a cor do BG relativo à string de pesquisa
-        public string AltCorSubSTR(string txtOriginal, string txtPesquisa)
-        {
-            string txtAlterado = string.Empty;
-
-            if (!string.IsNullOrEmpty(txtOriginal))
-            {
-                string[] split = txtOriginal.Split(" ");
-
-                foreach (string str in split)
-                {
-                    if (str.ToLower().Contains(txtPesquisa.ToLower()))
-                    {
-                        string a = string.Empty;
-                        int b = 0;
-
-                        for (int i = 0; i < str.Length; i++)
-                        {
-                            if (str.ToLower().Substring(i, txtPesquisa.Length) == txtPesquisa.ToLower())
-                            {
-                                a = str.Substring(i, txtPesquisa.Length);
-                                b = i;
-                                break;
-                            }
-                        }
-
-                        txtAlterado += str + " ";
-
-                        txtAlterado = txtAlterado.Replace(str.Substring(b, txtPesquisa.Length),
-                            "<span class=\"bg-warning\">" + a + "</span>");
-                    }
-                    else
-                        txtAlterado += str + " ";
-                }
-            }
-            else
-                txtAlterado = txtOriginal;
-
-            return txtAlterado;
         }
     }
 }

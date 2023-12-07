@@ -12,5 +12,10 @@ namespace TP2324.ViewModels
         [Display(Name = "Pesquisa", Prompt ="Pesquise uma habitação")]
         public string TextoAPesquisar { get; set; }
 
+        public decimal? PrecoMinimo { get; set; }
+        public decimal? PrecoMaximo { get; set; }
+
+        public string Ordenacao { get; set; }
+
     }
 }
