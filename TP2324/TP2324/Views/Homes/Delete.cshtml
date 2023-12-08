@@ -11,12 +11,12 @@
     <h4>Home</h4>
     <hr />
     <dl class="row">
-        @* <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.typeResidence.Name)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Type)
-        </dd> *@
+            @Html.DisplayFor(model => model.typeResidence.Name)
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Category)
         </dt>
@@ -64,24 +64,6 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.BeginDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.BeginDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MinimumPeriod)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MinimumPeriod)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Available)

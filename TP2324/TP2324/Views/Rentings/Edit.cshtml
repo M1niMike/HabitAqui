@@ -1,0 +1,57 @@
+﻿@model TP2324.Models.Renting
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Renting</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BeginDate" class="control-label"></label>
+                <input asp-for="BeginDate" class="form-control" />
+                <span asp-validation-for="BeginDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinimumPeriod" class="control-label"></label>
+                <input asp-for="MinimumPeriod" class="form-control" />
+                <span asp-validation-for="MinimumPeriod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaximumPeriod" class="control-label"></label>
+                <input asp-for="MaximumPeriod" class="form-control" />
+                <span asp-validation-for="MaximumPeriod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HomeId" class="control-label"></label>
+                <select asp-for="HomeId" class="form-control" asp-items="ViewBag.HomeId"></select>
+                <span asp-validation-for="HomeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

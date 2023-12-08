@@ -53,14 +53,19 @@
                         <ul class="navbar-nav">
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Homes" asp-action="Index">Arrendar</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Rentings" asp-action="Create">Arrendar</a>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Homes" asp-action="Index">Nossas Habitações</a>
                             </li>
-                            @if (SignInManager.IsSignedIn(User))
+                            
+                            @if (User.Identity.IsAuthenticated)
                             {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Rentings" asp-action="MyRentings">Meus Arrendamentos</a>
+                                </li>
+
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Perfil</a>
                                     <div class="dropdown-menu">

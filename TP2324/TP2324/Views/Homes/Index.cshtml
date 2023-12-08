@@ -102,6 +102,20 @@
                                             <h4 class="card-info-title">Estacionamentos</h4>
                                             <span>@c.NumParks</span>
                                         </li>
+                                        @if(c.Ratings == null){
+                                            <li>
+                                                <h4 class="card-info-title">Avaliação</h4>
+                                                <span>Por avaliar</span>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <h4 class="card-info-title">Avaliação</h4>
+                                                <span>@c.Ratings</span>
+                                            </li>
+                                        }
+                                        
                                     </ul>
                                 </div>
                             </div>

@@ -372,9 +372,6 @@ namespace TP2324.Migrations
                     b.Property<bool>("Available")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("BeginDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
@@ -382,14 +379,8 @@ namespace TP2324.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("ImgUrl")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MinimumPeriod")
-                        .HasColumnType("int");
 
                     b.Property<int>("NumParks")
                         .HasColumnType("int");
@@ -397,7 +388,11 @@ namespace TP2324.Migrations
                     b.Property<int>("NumWC")
                         .HasColumnType("int");
 
-                    b.Property<int>("PriceToRent")
+                    b.Property<decimal?>("PriceToRent")
+                        .IsRequired()
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Ratings")
                         .HasColumnType("int");
 
                     b.Property<float>("SquareFootage")
@@ -451,6 +446,15 @@ namespace TP2324.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime?>("BeginDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("HomeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("MaximumPeriod")
                         .HasColumnType("int");
 
@@ -460,7 +464,14 @@ namespace TP2324.Migrations
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("HomeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Rentings");
                 });
@@ -548,9 +559,34 @@ namespace TP2324.Migrations
                     b.Navigation("typeResidence");
                 });
 
+            modelBuilder.Entity("TP2324.Models.Renting", b =>
+                {
+                    b.HasOne("TP2324.Models.Home", "Homes")
+                        .WithMany("Rentings")
+                        .HasForeignKey("HomeId");
+
+                    b.HasOne("TP2324.Models.ApplicationUser", "User")
+                        .WithMany("Rentings")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Homes");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TP2324.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Rentings");
+                });
+
             modelBuilder.Entity("TP2324.Models.Category", b =>
                 {
                     b.Navigation("Homes");
+                });
+
+            modelBuilder.Entity("TP2324.Models.Home", b =>
+                {
+                    b.Navigation("Rentings");
                 });
 
             modelBuilder.Entity("TP2324.Models.TypeResidence", b =>

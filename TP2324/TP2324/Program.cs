@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TP2324.Data;
 using TP2324.Models;
-using TP2324.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

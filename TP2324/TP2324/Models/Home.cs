@@ -6,10 +6,9 @@ namespace TP2324.Models
     {
         public int Id { get; set; }
 
-        //Apagar
         [Display(Name = "PriceToRent", Prompt = "Introduza o valor caso for arrendar.")]
         [Required(ErrorMessage = "Indique o valor para arrendamento!")]
-        public int PriceToRent { get; set; }
+        public decimal? PriceToRent { get; set; }
 
         [Display(Name = "Casa(s) de banho", Prompt = "Indique a quantidade de casa(s) de banho.")]
         [Required(ErrorMessage = "Indique a quantidade!")]
@@ -35,22 +34,10 @@ namespace TP2324.Models
         [Required(ErrorMessage = "Insira a descrição!")]
         public string Description { get; set; }
 
-        //Apagar
-        [Display(Name = "Data de Início", Prompt = "Introduza a Data do início do contrato.")]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime BeginDate { get; set; }
+        [Display(Name = "Avaliação", Prompt = "Avalie essa habitação")]
+        //[Required(ErrorMessage = "")]
+        public int? Ratings { get; set; }
 
-        //Apagar
-        [Display(Name = "Data de Fim", Prompt = "Introduza a Data do final do contrato.")]
-        [Required(ErrorMessage = "Indique a data de Início!")]
-        public DateTime EndDate { get; set; }
-
-        //Apagar
-        [Display(Name = "Périodo minímo de contrato", Prompt = "Introduza o périodo minímo de contrato.")]
-        [Required(ErrorMessage = "Indique o périodo minímo de contrato!")]
-        public int MinimumPeriod { get; set; }
-
-        //Se a habitação está disponivel -> possivelmente apagar e adicionar ou no renting ou contract
         public bool Available { get; set; }
 
         public string? ImgUrl { get; set; }
@@ -62,6 +49,9 @@ namespace TP2324.Models
         [Display(Name = "Tipo")]
         public int? TypeResidenceId { get; set; }
         public TypeResidence typeResidence { get; set; }
+
+
+        public List<Renting> Rentings { get; set; }
 
     }
 }
