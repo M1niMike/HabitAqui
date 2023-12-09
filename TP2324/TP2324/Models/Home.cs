@@ -42,15 +42,24 @@ namespace TP2324.Models
 
         public string? ImgUrl { get; set; }
 
+
+
+
+        //RELACIONAMENTOS
+
+
+        //Relacionamento de 1:n entre Categoria(Category) e Habitação(Home) 
         [Display(Name = "Categoria")]
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
 
+
+        //Relacionamento de 1:n entre Type(Category) e Habitação(Home) 
         [Display(Name = "Tipo")]
         public int? TypeResidenceId { get; set; }
         public TypeResidence typeResidence { get; set; }
 
-
+        //Relacionamento de 1:n entre Habitação(Home) e Arrendamentos(Rentings)
         public List<Renting> Rentings { get; set; }
 
     }

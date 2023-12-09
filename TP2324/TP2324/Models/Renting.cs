@@ -12,13 +12,17 @@ namespace TP2324.Models
         public int MaximumPeriod { get; set; }
 
 
+        //RELACIONAMENTOS
+
         //Relacionamento de 1:n entre habitação(home) e arrendamento(rentings)
         [Display(Name = "Habitação")]
         public int? HomeId { get; set; }
         public Home Homes { get; set; }
 
-        public string? UserId { get; set; }
-        public ApplicationUser User { get; set; }
+
+        //Relacionamento de 1:n entre Cliente(ApplicationUser) e Arrendamento(Rentings)
+        public string? ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
 
 
     }

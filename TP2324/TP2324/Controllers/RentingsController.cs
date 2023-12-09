@@ -24,7 +24,7 @@ namespace TP2324.Controllers
         // GET: Rentings
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Rentings.Include(r => r.Homes).Include(r => r.User);
+            var applicationDbContext = _context.Rentings.Include(r => r.Homes).Include(r => r.ApplicationUser);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -71,12 +71,12 @@ namespace TP2324.Controllers
         {
 
             ModelState.Remove(nameof(renting.Homes));
-            ModelState.Remove(nameof(renting.User));
+            ModelState.Remove(nameof(renting.ApplicationUser));
 
 
             if (ModelState.IsValid)
             {
-                renting.UserId = _context.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault().Id;
+                renting.ApplicationUserId = _context.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault().Id;
 
                 // Verifica se BeginDate e EndDate têm valores antes de calcular a diferença TimeSpan
                 if (renting.BeginDate.HasValue && renting.EndDate.HasValue)
@@ -223,7 +223,7 @@ namespace TP2324.Controllers
 
             // Obtém os arrendamentos do cliente com base no UserId
             var myRentings = _context.Rentings
-                .Where(a => a.UserId == userId)
+                .Where(a => a.ApplicationUserId == userId)
                 .ToList();
 
             return View(myRentings);

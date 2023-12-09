@@ -1,12 +1,21 @@
 ﻿using System;
 namespace TP2324.Models
 {
-	public class Employee
+    public class Employee
     {
         public int Id { get; set; } // Primary key
-        public string Nome { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public string Name { get; set; }
+
+
+
+
+        //RELACIONAMENTOS
+
+        public string? companyId { get; set; }
+        public Company company { get; set; }
+
+        public string? ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }
 

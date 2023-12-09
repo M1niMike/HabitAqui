@@ -159,31 +159,6 @@ namespace TP2324.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("TP2324.Models.Admin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Admins");
-                });
-
             modelBuilder.Entity("TP2324.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -278,7 +253,7 @@ namespace TP2324.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("TP2324.Models.Client", b =>
+            modelBuilder.Entity("TP2324.Models.Company", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -286,50 +261,23 @@ namespace TP2324.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CitizenCard")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Nif")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Clients");
-                });
-
-            modelBuilder.Entity("TP2324.Models.Contract", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("BeginDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("State")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Contracts");
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("TP2324.Models.Employee", b =>
@@ -340,19 +288,24 @@ namespace TP2324.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Email")
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Nome")
-                        .IsRequired()
+                    b.Property<string>("companyId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("companyId1")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("companyId1");
 
                     b.ToTable("Employees");
                 });
@@ -373,6 +326,9 @@ namespace TP2324.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -408,6 +364,8 @@ namespace TP2324.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("CompanyId");
+
                     b.HasIndex("TypeResidenceId");
 
                     b.ToTable("Homes");
@@ -421,19 +379,24 @@ namespace TP2324.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Email")
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Nome")
-                        .IsRequired()
+                    b.Property<string>("companyId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("companyId1")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("companyId1");
 
                     b.ToTable("Managers");
                 });
@@ -445,6 +408,9 @@ namespace TP2324.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("BeginDate")
                         .HasColumnType("datetime2");
@@ -464,14 +430,11 @@ namespace TP2324.Migrations
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("HomeId");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("HomeId");
 
                     b.ToTable("Rentings");
                 });
@@ -544,11 +507,32 @@ namespace TP2324.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TP2324.Models.Employee", b =>
+                {
+                    b.HasOne("TP2324.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("TP2324.Models.Company", "company")
+                        .WithMany("Employees")
+                        .HasForeignKey("companyId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("company");
+                });
+
             modelBuilder.Entity("TP2324.Models.Home", b =>
                 {
                     b.HasOne("TP2324.Models.Category", "Category")
                         .WithMany("Homes")
                         .HasForeignKey("CategoryId");
+
+                    b.HasOne("TP2324.Models.Company", null)
+                        .WithMany("Homes")
+                        .HasForeignKey("CompanyId");
 
                     b.HasOne("TP2324.Models.TypeResidence", "typeResidence")
                         .WithMany("Homes")
@@ -559,19 +543,36 @@ namespace TP2324.Migrations
                     b.Navigation("typeResidence");
                 });
 
+            modelBuilder.Entity("TP2324.Models.Manager", b =>
+                {
+                    b.HasOne("TP2324.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("TP2324.Models.Company", "company")
+                        .WithMany("Managers")
+                        .HasForeignKey("companyId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("company");
+                });
+
             modelBuilder.Entity("TP2324.Models.Renting", b =>
                 {
+                    b.HasOne("TP2324.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Rentings")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("TP2324.Models.Home", "Homes")
                         .WithMany("Rentings")
                         .HasForeignKey("HomeId");
 
-                    b.HasOne("TP2324.Models.ApplicationUser", "User")
-                        .WithMany("Rentings")
-                        .HasForeignKey("UserId");
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Homes");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TP2324.Models.ApplicationUser", b =>
@@ -582,6 +583,15 @@ namespace TP2324.Migrations
             modelBuilder.Entity("TP2324.Models.Category", b =>
                 {
                     b.Navigation("Homes");
+                });
+
+            modelBuilder.Entity("TP2324.Models.Company", b =>
+                {
+                    b.Navigation("Employees");
+
+                    b.Navigation("Homes");
+
+                    b.Navigation("Managers");
                 });
 
             modelBuilder.Entity("TP2324.Models.Home", b =>
