@@ -48,6 +48,7 @@ namespace TP2324.Controllers
         }
 
         // GET: Rentings/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             if (!User.Identity.IsAuthenticated)
@@ -63,6 +64,7 @@ namespace TP2324.Controllers
         // POST: Rentings/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Price,BeginDate,EndDate,MinimumPeriod,MaximumPeriod,HomeId,UserId")] Renting renting)
@@ -115,6 +117,7 @@ namespace TP2324.Controllers
         }
 
         // GET: Rentings/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Rentings == null)
@@ -134,6 +137,7 @@ namespace TP2324.Controllers
         // POST: Rentings/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Price,BeginDate,EndDate,MinimumPeriod,MaximumPeriod,HomeId")] Renting renting)
@@ -168,6 +172,7 @@ namespace TP2324.Controllers
         }
 
         // GET: Rentings/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Rentings == null)
@@ -187,6 +192,7 @@ namespace TP2324.Controllers
         }
 
         // POST: Rentings/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -210,7 +216,7 @@ namespace TP2324.Controllers
           return (_context.Rentings?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        [Authorize]
+        [Authorize(Roles ="Admin,Client")]
         public IActionResult MyRentings()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

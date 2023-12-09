@@ -1,0 +1,14 @@
+﻿
+*Simples – o utilizador tem de pertencer à role indicada
+	[Authorize(Roles = "Admin")]
+	public class SomethingController : Controller
+
+*Múltipla ( ou ) – o utilizador tem de pertencer a uma das roles indicadas 
+	[Authorize(Roles = "Admin,Client, ...")]
+	public class SomethingController : Controller
+
+* Múltipla ( e ) – o utilizador tem de pertencer a todas as roles indicadas 
+	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Client")]
+	[Authorize(Roles = "...")]
+	public class SomethingController : Controller

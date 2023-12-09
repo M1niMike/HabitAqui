@@ -192,7 +192,7 @@ namespace TP2324.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -218,7 +218,7 @@ namespace TP2324.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("NIF")
+                    b.Property<int?>("NIF")
                         .HasColumnType("int");
 
                     b.Property<string>("NormalizedEmail")

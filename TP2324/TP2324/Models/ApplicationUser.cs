@@ -6,8 +6,8 @@ namespace TP2324.Models
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public DateTime BirthDate { get; set; }
-        public int NIF { get; set; }
+        public DateTime? BirthDate { get; set; }
+        public int? NIF { get; set; }
 
         public ICollection<Renting> Rentings { get; set; }
     }
