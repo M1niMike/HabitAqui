@@ -338,6 +338,9 @@ namespace TP2324.Migrations
                     b.Property<string>("ImgUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("MinimumPeriod")
+                        .HasColumnType("int");
+
                     b.Property<int>("NumParks")
                         .HasColumnType("int");
 
@@ -419,12 +422,6 @@ namespace TP2324.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("HomeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaximumPeriod")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MinimumPeriod")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("Price")

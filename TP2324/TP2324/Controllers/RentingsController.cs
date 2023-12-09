@@ -85,6 +85,8 @@ namespace TP2324.Controllers
 
                     int durationInDays = (int)duration.TotalDays;
 
+                   // if(durationInDays < .m)
+
                     decimal pricePerDay = (decimal)_context.Homes.Where(h => h.Id == renting.HomeId)
                                                          .Select(h => h.PriceToRent)
                                                          .FirstOrDefault();
