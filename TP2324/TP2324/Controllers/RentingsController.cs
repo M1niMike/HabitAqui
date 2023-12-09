@@ -48,7 +48,7 @@ namespace TP2324.Controllers
         }
 
         // GET: Rentings/Create
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Client")]
         public IActionResult Create()
         {
             if (!User.Identity.IsAuthenticated)
@@ -64,7 +64,7 @@ namespace TP2324.Controllers
         // POST: Rentings/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Client")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Price,BeginDate,EndDate,MinimumPeriod,MaximumPeriod,HomeId,UserId")] Renting renting)
@@ -85,7 +85,20 @@ namespace TP2324.Controllers
 
                     int durationInDays = (int)duration.TotalDays;
 
-                   // if(durationInDays < .m)
+                    int minimumPeriod = _context.Homes.Where(h => h.Id == renting.HomeId)
+                                                         .Select(h => h.MinimumPeriod)
+                                                         .FirstOrDefault();
+
+                     if(durationInDays < minimumPeriod)
+                    {
+
+                        // Adiciona uma mensagem de erro informando que as datas são obrigatórias
+                        ModelState.AddModelError(string.Empty, "As datas selecionadas não respeitam o período minímo de arrendamento da habitação selecionada");
+
+                        // Retorna a view com as mensagens de erro
+                        ViewData["HomeId"] = new SelectList(_context.Homes, "Id", "Address", renting.HomeId);
+                        return View(renting);
+                    }
 
                     decimal pricePerDay = (decimal)_context.Homes.Where(h => h.Id == renting.HomeId)
                                                          .Select(h => h.PriceToRent)
@@ -101,10 +114,7 @@ namespace TP2324.Controllers
                     // Adiciona uma mensagem de erro informando que as datas são obrigatórias
                     ModelState.AddModelError(string.Empty, "As datas de início e término são obrigatórias.");
 
-                    // Você pode adicionar mais mensagens de erro para campos específicos, se necessário
-                    // ModelState.AddModelError("BeginDate", "A data de início é obrigatória.");
-                    // ModelState.AddModelError("EndDate", "A data de término é obrigatória.");
-
+                   
                     // Retorna a view com as mensagens de erro
                     ViewData["HomeId"] = new SelectList(_context.Homes, "Id", "Address", renting.HomeId);
                     return View(renting);

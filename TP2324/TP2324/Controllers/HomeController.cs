@@ -27,7 +27,9 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-     
+        var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
+        ViewBag.HomeTypes = new SelectList(typeResidences);
+
         IQueryable<Home> homes = _context.Homes.Include(m => m.Category).Include(m => m.typeResidence);
         return View(homes.ToList());
 

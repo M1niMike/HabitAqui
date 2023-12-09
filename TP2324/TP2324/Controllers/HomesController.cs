@@ -97,13 +97,17 @@ namespace TP2324.Controllers
         //New_SearchBar (GET: Homes/Search)
 
         [HttpGet]
-        public async Task<IActionResult> Search(string? TextoAPesquisar)
+        public async Task<IActionResult> Search(string? TextoAPesquisar, string? TipoResidenciaSelecionado, string? CategoriaSelecinada, string? PeridoMinimoSelecionado)
         {
             PesquisaHabitacaoViewModel pesquisaVM = new PesquisaHabitacaoViewModel();
             ViewData["Title"] = "Pesquisa habitações";
 
             var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
             ViewBag.HomeTypes = new SelectList(typeResidences);
+
+            Console.WriteLine("Recebi:");
+            Console.WriteLine(TextoAPesquisar);
+
 
             if (string.IsNullOrWhiteSpace(TextoAPesquisar))
             {
@@ -122,6 +126,7 @@ namespace TP2324.Controllers
                         (c.typeResidence != null && c.typeResidence.Name.Contains(TextoAPesquisar)) ||
                         c.Description.Contains(TextoAPesquisar) ||
                         c.PriceToRent.ToString().Contains(TextoAPesquisar) ||
+                        c.MinimumPeriod.ToString().Contains(TextoAPesquisar) ||
                         c.Category.Name.Contains(TextoAPesquisar)
                     )
                     .ToListAsync();
@@ -136,15 +141,26 @@ namespace TP2324.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Search([Bind("TextoAPesquisar")] PesquisaHabitacaoViewModel pesquisaHabitacao)
+        public async Task<IActionResult> Search([Bind("TextoAPesquisar,TipoResidenciaSelecionado,CategoriaSelecinada,PeridoMinimoSelecionado")] PesquisaHabitacaoViewModel pesquisaHabitacao)
         {
             var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
             ViewBag.HomeTypes = new SelectList(typeResidences);
 
             if (string.IsNullOrEmpty(pesquisaHabitacao.TextoAPesquisar))
             {
-                pesquisaHabitacao.Homeslist = await _context.Homes.OrderBy(c => c.Category.Name).ToListAsync();
-                pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
+                if (string.IsNullOrEmpty(pesquisaHabitacao.TipoResidenciaSelecionado) && string.IsNullOrEmpty(pesquisaHabitacao.CategoriaSelecinada) && string.IsNullOrEmpty(pesquisaHabitacao.PeridoMinimoSelecionado))
+                {
+                    pesquisaHabitacao.Homeslist = await _context.Homes.OrderBy(c => c.Category.Name).ToListAsync();
+                    pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
+                }
+                else if(!string.IsNullOrEmpty(pesquisaHabitacao.TipoResidenciaSelecionado))
+                {
+                    pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence)
+                    .Where(e => e.typeResidence.Name.Contains(pesquisaHabitacao.TipoResidenciaSelecionado)).OrderBy(c => c.typeResidence.Name).ToListAsync();
+                    pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
+                }
+
+                
             }
             else
             {
@@ -160,24 +176,69 @@ namespace TP2324.Controllers
             return View(pesquisaHabitacao);
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> getTypes()
+        //{
+
+        //}
 
 
-        // POST: Homes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+       //[HttpPost]
+       //[ValidateAntiForgeryToken]
+       //public async Task<IActionResult> Search([Bind("TextoAPesquisar")] PesquisaHabitacaoViewModel pesquisaHabitacao)
+       //{
+       //    var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
+       //    ViewBag.HomeTypes = new SelectList(typeResidences);
+
+
+       //    IQueryable<Home> HomesList = _context.Homes.Include("Category").Include("typeResidence");
+
+       //    if (string.IsNullOrEmpty(pesquisaHabitacao.TextoAPesquisar))
+       //    {
+       //        Console.WriteLine(pesquisaHabitacao.TextoAPesquisar);
+       //        HomesList = _context.Homes.Include("Category").Include("typeResidence");
+       //        pesquisaHabitacao.Homeslist = await HomesList.ToListAsync();
+
+       //    }
+       //    else
+       //    {
+
+       //        HomesList =
+       //            _context.Homes.Include("Category").Include("typeResidence")
+       //            .Where(e => e.typeResidence.Name.Contains(pesquisaHabitacao.TextoAPesquisar) ||
+       //                        e.Description.Contains(pesquisaHabitacao.TextoAPesquisar) ||
+       //                        e.PriceToRent.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
+       //                        e.MinimumPeriod.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) |
+       //                        e.Category.Name.Contains(pesquisaHabitacao.TextoAPesquisar)
+       //            ).OrderBy(c => c.typeResidence.Name)
+       //        pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
+
+       //        ;
+       //        pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence)
+       //            .Where(e => e.typeResidence.Name.Contains(pesquisaHabitacao.TextoAPesquisar) ||
+       //                        e.Description.Contains(pesquisaHabitacao.TextoAPesquisar) ||
+       //                        e.PriceToRent.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
+       //                        e.MinimumPeriod.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) |
+       //                        e.Category.Name.Contains(pesquisaHabitacao.TextoAPesquisar)
+       //            ).OrderBy(c => c.typeResidence.Name).ToListAsync();
+       //        pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
+       //    }
+
+       //    return View(pesquisaHabitacao);
+       //}
+
+
+
+       // POST: Homes/Create
+       // To protect from overposting attacks, enable the specific properties you want to bind to.
+       // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,TypeResidenceId,CategoryId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,MinimumPeriod,Available,ImgUrl,Ratings")] Home home)
         {
             ModelState.Remove(nameof(home.Category));
             ModelState.Remove(nameof(home.typeResidence));
             ModelState.Remove(nameof(home.Rentings));
-
-
-
-
-
-
 
 
             if (ModelState.IsValid)

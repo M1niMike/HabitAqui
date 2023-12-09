@@ -1,5 +1,6 @@
-﻿@using (Html.BeginForm("Search", "Homes", FormMethod.Get))
+﻿@using (Html.BeginForm("Search", "Homes", FormMethod.Post))
 {
+
     <div class="row">
         <div class="col-md-12 mb-2">
             <div class="form-group">
@@ -8,7 +9,32 @@
                        id="textoAPesquisar" placeholder="ex: Apartamento, T2..."
                        class="form-control form-control-sm" />
             </div>
+            @* <div class="form-group">
+                <label class="pb-2" for="pesquisa">Tipo de habitação</label>
+                <Select name="TipoResidenciaSelecionado" id="TipoResidenciaSelecionado" class="form-control form-control-sm" >
+                    <option>Casa</option>
+                    <option>Apartamento</option>
+                    <option>Quarto</option>
+                </select>
+            </div> *@
+            @* <form asp-controller="Homes" asp-action="Search" method="get"> *@
+                            <label class="dropdown-label" for="homeTypeDropdown">Selecione o Tipo:</label>
+                            <select class="dropdown-box"  name="TipoResidenciaSelecionado" id="TipoResidenciaSelecionado" asp-items="ViewBag.HomeTypes">
+                                <option value="">Todos</option>
+                            </select>
+                        @* </form> *@
+            @* <div class="form-group">
+                <label class="pb-2" for="TipoResidenciaSelecionado">Tipo de habitação</label>
+                <select name="TipoResidenciaSelecionado" id="TipoResidenciaSelecionado" class="form-control form-control-sm">
+                    @foreach (var tipo in ViewBag.TipoResidencias)
+                    {
+                        <option>@tipo</option>
+                    }
+                </select>
+            </div> *@
         </div>
+
+
         @* <div class="col-md-6 mb-2">
             <div class="form-group mt-3">
                 <label class="pb-2" for="pesquisa">Tipo</label>

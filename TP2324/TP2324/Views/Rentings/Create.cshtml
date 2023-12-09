@@ -13,12 +13,10 @@
     <div class="row">
         <div class="col-md-4">
             <form asp-action="Create">
-                @* <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Price" class="control-label"></label>
-                    <input asp-for="Price" class="form-control" />
-                    <span asp-validation-for="Price" class="text-danger"></span>
-                </div> *@
+
+                <!-- Adicione o ValidationSummary para exibir mensagens de erro -->
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
                 <div class="form-group">
                     <label asp-for="BeginDate" class="control-label"></label>
                     <input asp-for="BeginDate" class="form-control" />
@@ -29,19 +27,9 @@
                     <input asp-for="EndDate" class="form-control" />
                     <span asp-validation-for="EndDate" class="text-danger"></span>
                 </div>
-                @* <div class="form-group">
-                <label asp-for="MinimumPeriod" class="control-label"></label>
-                <input asp-for="MinimumPeriod" class="form-control" />
-                <span asp-validation-for="MinimumPeriod" class="text-danger"></span>
-                </div>
                 <div class="form-group">
-                <label asp-for="MaximumPeriod" class="control-label"></label>
-                <input asp-for="MaximumPeriod" class="form-control" />
-                <span asp-validation-for="MaximumPeriod" class="text-danger"></span>
-                </div> *@
-                 <div class="form-group">
-                <label asp-for="HomeId" class="control-label"></label>
-                <select asp-for="HomeId" class ="form-control" asp-items="ViewBag.HomeId"></select>
+                    <label asp-for="HomeId" class="control-label"></label>
+                    <select asp-for="HomeId" class="form-control" asp-items="ViewBag.HomeId"></select>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
@@ -53,6 +41,6 @@
     <div>
         <a asp-action="Index">Back to List</a>
     </div>
-
 </div>
+
 
