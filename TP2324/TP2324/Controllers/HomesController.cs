@@ -167,10 +167,19 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TypeResidenceId,CategoryId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,BeginDate,EndDate,MinimumPeriod,Available,ImgUrl")] Home home)
+        public async Task<IActionResult> Create([Bind("Id,TypeResidenceId,CategoryId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,MinimumPeriod,Available,ImgUrl,Ratings")] Home home)
         {
             ModelState.Remove(nameof(home.Category));
             ModelState.Remove(nameof(home.typeResidence));
+            ModelState.Remove(nameof(home.Rentings));
+
+
+
+
+
+
+
+
             if (ModelState.IsValid)
             {
                 _context.Add(home);
