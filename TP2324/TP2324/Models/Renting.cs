@@ -8,8 +8,8 @@ namespace TP2324.Models
         public decimal? Price { get; set; }
         public DateTime? BeginDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public int MinimumPeriod { get; set; }
-        public int MaximumPeriod { get; set; }
+        
+       
 
 
         //RELACIONAMENTOS

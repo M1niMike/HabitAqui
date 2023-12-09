@@ -34,6 +34,10 @@ namespace TP2324.Models
         [Required(ErrorMessage = "Insira a descrição!")]
         public string Description { get; set; }
 
+        [Display(Name = "Período Minimo", Prompt = "Insira o período mínimo para arrendar.")]
+        [Required(ErrorMessage = "Insira o período")]
+        public int MinimumPeriod { get; set; }
+
         [Display(Name = "Avaliação", Prompt = "Avalie essa habitação")]
         //[Required(ErrorMessage = "")]
         public int? Ratings { get; set; }
