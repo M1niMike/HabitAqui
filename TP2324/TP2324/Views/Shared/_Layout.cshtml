@@ -51,27 +51,53 @@
                     <a class="navbar-brand text-brand" asp-controller="Home" asp-action="Index">Habit<span class="color-b">Aqui</span></a>
                     <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
                         <ul class="navbar-nav">
-
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Rentings" asp-action="Create">Arrendar</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Homes" asp-action="Index">Nossas Habitações</a>
-                            </li>
+                           
                             
-                            @if (User.Identity.IsAuthenticated)
+                            @if (User.IsInRole("Client"))
                             {
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Habitações</a>
+                                    <div class="dropdown-menu">
+                                        <a class="nav-link dropdown-item" asp-area="" asp-controller="Homes" asp-action="Index">Nossas habitações</a>
+                                        <a class="nav-link dropdown-item" asp-area="" asp-controller="Rentings" asp-action="Create">Arrendar</a>
+                                    </div>
+                                </li>
+
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Rentings" asp-action="MyRentings">Meus Arrendamentos</a>
                                 </li>
 
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Perfil</a>
+                                    <div class="dropdown-menu">
+                                        <a class="nav-link dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+                                        <a>
+                                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                                <button class="dropdown-item " type="submit" class="nav-link btn btn-link dropdown-item">Logout</button>
+                                            </form>
+                                        </a>
+                                    </div>
+                                </li>                                
+                               
+                            }
+                            else if (User.IsInRole("Admin"))
+                            {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="UserRolesManager" asp-action="Index">User Roles</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="UserRolesManager" asp-action="Index">Utilizadores</a>
                                 </li>
 
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="RolesManager" asp-action="Index">RolesManager</a>
+                                @* Retirar *@
+                                @* <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="RolesManager" asp-action="Index">RolesManager</a>
+                            </li> *@
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Locadores</a>
+                                    <div class="dropdown-menu">
+                                        <a class="nav-link dropdown-item" asp-area="" asp-controller="CompanyManager" asp-action="Index">Empresas/locadores</a>
+                                        <a class="nav-link dropdown-item" asp-area="" asp-controller="CompanyManager" asp-action="Create">Adicionar</a>
+                                    </div>
                                 </li>
 
                                 <li class="nav-item dropdown">
@@ -88,6 +114,11 @@
                             }
                             else
                             {
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Homes" asp-action="Index">Nossas Habitações</a>
+                                </li>
+
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Acesso</a>
                                     <div class="dropdown-menu">

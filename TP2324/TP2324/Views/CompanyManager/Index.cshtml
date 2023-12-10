@@ -1,0 +1,31 @@
+﻿@model List<Company>
+
+
+<div class="container">
+    <h2>Locadores/Empresas</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Rating</th>
+                <th>State</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var company in Model)
+            {
+                <tr>
+                    <td>@company.Id</td>
+                    <td>@company.Name</td>
+                    <td>@company.Description</td>
+                    <td>@company.Rating</td>
+                    <td>@company.State</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

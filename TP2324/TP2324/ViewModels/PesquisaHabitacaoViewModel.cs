@@ -13,7 +13,7 @@ namespace TP2324.ViewModels
         public string TextoAPesquisar { get; set; }
         public string TipoResidenciaSelecionado { get; set; }
         public string CategoriaSelecinada { get; set; }
-        public string PeridoMinimoSelecionado { get; set; }
+        public string PeriodoMinimoSelecionado { get; set; }
 
         public decimal? PrecoMinimo { get; set; }
         public decimal? PrecoMaximo { get; set; }

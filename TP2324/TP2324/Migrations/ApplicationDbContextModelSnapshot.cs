@@ -269,7 +269,7 @@ namespace TP2324.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Rating")
+                    b.Property<int?>("Rating")
                         .HasColumnType("int");
 
                     b.Property<bool>("State")
@@ -385,21 +385,19 @@ namespace TP2324.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("CompanyId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("companyId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("companyId1")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("companyId1");
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("Managers");
                 });
@@ -548,7 +546,7 @@ namespace TP2324.Migrations
 
                     b.HasOne("TP2324.Models.Company", "company")
                         .WithMany("Managers")
-                        .HasForeignKey("companyId1")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
