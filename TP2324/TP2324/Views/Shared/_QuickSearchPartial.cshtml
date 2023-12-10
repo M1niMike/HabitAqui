@@ -9,20 +9,12 @@
                        id="textoAPesquisar" placeholder="ex: Apartamento, T2..."
                        class="form-control form-control-sm" />
             </div>
-            @* <div class="form-group">
-                <label class="pb-2" for="pesquisa">Tipo de habitação</label>
-                <Select name="TipoResidenciaSelecionado" id="TipoResidenciaSelecionado" class="form-control form-control-sm" >
-                    <option>Casa</option>
-                    <option>Apartamento</option>
-                    <option>Quarto</option>
+            <div class="form-group">
+                <label class="dropdown-label" for="homeTypeDropdown">Selecione o Tipo:</label>
+                <select class="dropdown-box" name="TipoResidenciaSelecionado" id="TipoResidenciaSelecionado" asp-items="ViewBag.HomeTypes">
+                    <option value="">Todos</option>
                 </select>
-            </div> *@
-            @* <form asp-controller="Homes" asp-action="Search" method="get"> *@
-                            <label class="dropdown-label" for="homeTypeDropdown">Selecione o Tipo:</label>
-                            <select class="dropdown-box"  name="TipoResidenciaSelecionado" id="TipoResidenciaSelecionado" asp-items="ViewBag.HomeTypes">
-                                <option value="">Todos</option>
-                            </select>
-                        @* </form> *@
+            </div>
             @* <div class="form-group">
                 <label class="pb-2" for="TipoResidenciaSelecionado">Tipo de habitação</label>
                 <select name="TipoResidenciaSelecionado" id="TipoResidenciaSelecionado" class="form-control form-control-sm">
