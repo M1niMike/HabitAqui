@@ -1,17 +1,47 @@
 ﻿@model List<TP2324.ViewModels.UserRolesViewModel>
 
 
-<div class="container">
-    <h2>User Roles Index</h2>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Utilizadores</h1>
+                    <span class="color-text-a">Gere os utilizadores da sua plataforma</span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Utilizadores
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Intro Single-->
+
+<div class="container">
     <table class="table">
         <thead>
             <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th>Primeiro nome</th>
+                <th>Último nome</th>
                 <th>Email</th>
                 <th>Roles</th>
-                <th>Manage Roles</th>
+                <th>Gerir Roles</th>
             </tr>
         </thead>
         <tbody>
@@ -24,7 +54,7 @@
                     <td>@string.Join(", ", user.Roles)</td>
                     <td>
                         <a asp-controller="UserRolesManager" asp-action="Details" asp-route-userId="@user.UserId">
-                            <button type="button" class="w-100 btn btn-lg btn-outline-primary">Manage Roles</button>
+                            <button type="submit" class="btn btn-c">Gerir roles</button>
                         </a>
                     </td>
                 </tr>

@@ -6,14 +6,38 @@
 }
 
 
-<div class="container">
-    <h1>Details</h1>
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Detalhes</h1>
+                    <span class="color-text-a">Gerir as roles</span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Utilizadores
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Intro Single-->
 
+<div class="container">
     <form method="post">
         <div class="card">
             <div class="card-header">
-                <h2>Manage User Roles</h2>
-                <span class="badge bg-dark text-white">@ViewBag.UserName</span> Add/remove roles
+                <span class="badge bg-dark text-white">@ViewBag.UserName</span> Adicionar/Remover roles
             </div>
             <div class="card-body">
                 @for (int i = 0; i < Model.Count; i++)
@@ -29,8 +53,9 @@
                 }
 
                 <div class="card-footer">
-                    <input type="submit" value="Update" class="btn btn-primary" style="width:auto" />
-                    <a asp-action="Index" class="btn btn-primary" style="width:auto">Cancel</a>
+                    <input type="submit" value="Atualizar" class="btn btn-c" style="width:auto" />
+                    <a asp-action="Index" class="btn btn-c" style="width:auto">Cancelar</a>
+                    
                 </div>
 
                 </input>

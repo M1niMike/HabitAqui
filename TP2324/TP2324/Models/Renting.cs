@@ -5,8 +5,12 @@ namespace TP2324.Models
     public class Renting
     {
         public int Id { get; set; }
+
         public decimal? Price { get; set; }
+
+        [Display(Name = "Data de início do arrendamento")]
         public DateTime? BeginDate { get; set; }
+        [Display(Name = "Data final do arrendamento")]
         public DateTime? EndDate { get; set; }
         
        

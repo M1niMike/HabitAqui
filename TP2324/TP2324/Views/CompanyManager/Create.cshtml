@@ -7,8 +7,36 @@
 
 <html>
 <body>
+
+    <!-- ======= Intro Single ======= -->
+    <section class="intro-single">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-8">
+                    <div class="title-single-box">
+                        <h1 class="title-single">Adicionar empresas/locadores</h1>
+                        <span class="color-text-a">Adicione as empresas ou locadores</span>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-4">
+                    <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="#">Pagina principal</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                Adicionar
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section><!-- End Intro Single-->
+
+
+
     <div class="container">
-        <h1>Adicionar Empresa</h1>
 
         <h4>Empresa</h4>
         <hr />
@@ -71,15 +99,22 @@
 
                     <br />
                     <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <input type="submit" value="Adicionar" class="btn btn-c" />
+
+                        <a asp-action="Index">
+                            <button type="submit" class="btn btn-c">Voltar</button>
+                        </a>
                     </div>
                 </form>
+                <br />
             </div>
         </div>
 
-        <div>
-            <a asp-action="Index">Back to List</a>
-        </div>
+       @*  <div>
+            <a asp-action="Index">
+                <button type="submit" class="btn btn-c">Voltar</button>
+            </a>
+        </div> *@
     </div>
 </body>
 </html>

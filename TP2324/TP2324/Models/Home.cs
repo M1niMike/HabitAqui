@@ -6,7 +6,7 @@ namespace TP2324.Models
     {
         public int Id { get; set; }
 
-        [Display(Name = "PriceToRent", Prompt = "Introduza o valor caso for arrendar.")]
+        [Display(Name = "Preço por dia", Prompt = "Introduza o valor para arrendar.")]
         [Required(ErrorMessage = "Indique o valor para arrendamento!")]
         public decimal? PriceToRent { get; set; }
 
@@ -26,7 +26,7 @@ namespace TP2324.Models
         [Required(ErrorMessage = "Indique a quantidade!")]
         public int NumParks { get; set; }
 
-        [Display(Name = "Wifi", Prompt = "Selecione se a habitação possui WiFi.")]
+        [Display(Name = "Possui Wifi?", Prompt = "Selecione se a habitação possui WiFi.")]
         [Required(ErrorMessage = "Indique se tem Wifi!")]
         public bool Wifi { get; set; }
 
@@ -42,6 +42,7 @@ namespace TP2324.Models
         //[Required(ErrorMessage = "")]
         public int? Ratings { get; set; }
 
+        [Display(Name = "Está Disponível?")]
         public bool Available { get; set; }
 
         public string? ImgUrl { get; set; }
@@ -55,12 +56,14 @@ namespace TP2324.Models
         //Relacionamento de 1:n entre Categoria(Category) e Habitação(Home) 
         [Display(Name = "Categoria")]
         public int? CategoryId { get; set; }
+        [Display(Name = "Categoria da habitação")]
         public Category Category { get; set; }
 
 
         //Relacionamento de 1:n entre Type(Category) e Habitação(Home) 
         [Display(Name = "Tipo")]
         public int? TypeResidenceId { get; set; }
+        [Display(Name = "Tipo da habitação")]
         public TypeResidence typeResidence { get; set; }
 
         //Relacionamento de 1:n entre Habitação(Home) e Arrendamentos(Rentings)

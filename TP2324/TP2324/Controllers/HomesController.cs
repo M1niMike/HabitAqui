@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -78,14 +79,7 @@ namespace TP2324.Controllers
             return View(home);
         }
 
-        // GET: Homes/Create
-        public IActionResult Create()
-        {
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
-            ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name");
-            return View();
-        }
-
+       
 
         //// Old_SearchBar
         //[HttpPost]
@@ -229,64 +223,23 @@ namespace TP2324.Controllers
             return View(pesquisaHabitacao);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> getTypes()
-        //{
 
-        //}
-
-
-       //[HttpPost]
-       //[ValidateAntiForgeryToken]
-       //public async Task<IActionResult> Search([Bind("TextoAPesquisar")] PesquisaHabitacaoViewModel pesquisaHabitacao)
-       //{
-       //    var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
-       //    ViewBag.HomeTypes = new SelectList(typeResidences);
+        // GET: Homes/Create
+        [Authorize(Roles = "Client")]
+        public IActionResult Create()
+        {
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
+            ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name");
+            return View();
+        }
 
 
-       //    IQueryable<Home> HomesList = _context.Homes.Include("Category").Include("typeResidence");
-
-       //    if (string.IsNullOrEmpty(pesquisaHabitacao.TextoAPesquisar))
-       //    {
-       //        Console.WriteLine(pesquisaHabitacao.TextoAPesquisar);
-       //        HomesList = _context.Homes.Include("Category").Include("typeResidence");
-       //        pesquisaHabitacao.Homeslist = await HomesList.ToListAsync();
-
-       //    }
-       //    else
-       //    {
-
-       //        HomesList =
-       //            _context.Homes.Include("Category").Include("typeResidence")
-       //            .Where(e => e.typeResidence.Name.Contains(pesquisaHabitacao.TextoAPesquisar) ||
-       //                        e.Description.Contains(pesquisaHabitacao.TextoAPesquisar) ||
-       //                        e.PriceToRent.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
-       //                        e.MinimumPeriod.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) |
-       //                        e.Category.Name.Contains(pesquisaHabitacao.TextoAPesquisar)
-       //            ).OrderBy(c => c.typeResidence.Name)
-       //        pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
-
-       //        ;
-       //        pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence)
-       //            .Where(e => e.typeResidence.Name.Contains(pesquisaHabitacao.TextoAPesquisar) ||
-       //                        e.Description.Contains(pesquisaHabitacao.TextoAPesquisar) ||
-       //                        e.PriceToRent.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
-       //                        e.MinimumPeriod.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) |
-       //                        e.Category.Name.Contains(pesquisaHabitacao.TextoAPesquisar)
-       //            ).OrderBy(c => c.typeResidence.Name).ToListAsync();
-       //        pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
-       //    }
-
-       //    return View(pesquisaHabitacao);
-       //}
-
-
-
-       // POST: Homes/Create
-       // To protect from overposting attacks, enable the specific properties you want to bind to.
-       // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-       [HttpPost]
+        // POST: Homes/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Client")]
         public async Task<IActionResult> Create([Bind("Id,TypeResidenceId,CategoryId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,MinimumPeriod,Available,ImgUrl,Ratings")] Home home)
         {
             ModelState.Remove(nameof(home.Category));

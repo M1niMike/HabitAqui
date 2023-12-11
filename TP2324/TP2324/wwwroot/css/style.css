@@ -558,6 +558,12 @@ a:hover {
   letter-spacing: 0.05rem;
 }
 
+.btn.btn-c {
+    border-radius: 2;
+    letter-spacing: 0.05rem;
+}
+
+
 .btn.btn-a {
     text-decoration: none;
     background-color: #3ABEFF;
@@ -569,12 +575,13 @@ a:hover {
     color: #ffffff;
 }
 
-.btn.btn-b {
+.btn.btn-b, .btn.btn-c
+{
     background-color: #3ABEFF;
     color: #ffffff;
 }
 
-.btn.btn-b:hover {
+.btn.btn-b:hover, .btn.btn-c:hover {
     background-color: #2884B0;
     color: #ffffff;
 }
@@ -771,11 +778,11 @@ a:hover {
   min-width: 220px;
 }
 
-.navbar-default .dropdown .dropdown-menu .dropdown-item:hover {
-  background-color: #ffffff;
-  color: #2eca6a;
-  transition: all 500ms ease;
-}
+    .navbar-default .dropdown .dropdown-menu .dropdown-item:hover {
+        background-color: #ffffff;
+        color: #2884B0;
+        transition: all 500ms ease;
+    }
 
 .navbar-default .dropdown .dropdown-menu .dropdown-item.active {
   background-color: #ffffff;

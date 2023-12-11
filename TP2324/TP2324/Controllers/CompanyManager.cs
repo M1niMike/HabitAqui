@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TP2324.Data;
 using TP2324.Models;
 using TP2324.ViewModels;
@@ -129,8 +130,7 @@ namespace TP2324.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Add(company);
-                await _context.SaveChangesAsync();
+                
 
                 // Verifica se o usuário já existe pelo e-mail
                 var user = await _userManager.FindByEmailAsync(model.UserName);
@@ -156,7 +156,10 @@ namespace TP2324.Controllers
 
                     if (identityResult.Succeeded)
                     {
-                  
+
+                        _context.Add(model.Company);
+                        await _context.SaveChangesAsync();
+
                         // Adiciona o usuário à role "Manager"
                         await _userManager.AddToRoleAsync(newManager, Roles.Manager.ToString());
 
@@ -167,13 +170,14 @@ namespace TP2324.Controllers
                             ApplicationUserId = newManager.Id  // Associa ao novo usuário
                         };
 
-
-                        company.Managers = new List<Manager> { manager };
+                        model.Company.Managers = new List<Manager>
+                        {
+                            manager
+                        };
 
                         _context.Managers.Add(manager);
                         await _context.SaveChangesAsync();
 
-                        Console.WriteLine("fIZ TUDO");
                         return RedirectToAction(nameof(Index));
                     }
                    

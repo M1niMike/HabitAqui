@@ -1,28 +1,69 @@
 ﻿@model List<Company>
 
 
-<div class="container">
-    <h2>Locadores/Empresas</h2>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-    <table>
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Empresas/Locadores</h1>
+                    <span class="color-text-a">Gere os locadores da sua plataforma</span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Empresas/Locadores
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section><!-- End Intro Single-->
+
+<div class="container">
+    <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Rating</th>
-                <th>State</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Avaliação</th>
+                <th>Estado da subscrição</th>
+                <th>Detalhes</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var company in Model)
             {
                 <tr>
-                    <td>@company.Id</td>
                     <td>@company.Name</td>
                     <td>@company.Description</td>
                     <td>@company.Rating</td>
-                    <td>@company.State</td>
+                    @if (company.State)
+                    {
+                        <td>Ativo</td>
+                    }
+                    else
+                    {
+                        <td>Inativo</td>
+                    }
+
+                    <td>
+                        <a asp-controller="CompanyManager" asp-action="Details" asp-route-userId="@company.Id">
+                            <button type="submit" class="btn btn-c">Editar</button>
+                        </a>
+                    </td>
                 </tr>
             }
         </tbody>

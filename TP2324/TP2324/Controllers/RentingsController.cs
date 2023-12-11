@@ -235,6 +235,8 @@ namespace TP2324.Controllers
 
             // Obtém os arrendamentos do cliente com base no UserId
             var myRentings = _context.Rentings
+                .Include(r => r.Homes)
+                .Include(r => r.ApplicationUser)
                 .Where(a => a.ApplicationUserId == userId)
                 .ToList();
 

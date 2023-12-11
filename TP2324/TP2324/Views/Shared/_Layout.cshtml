@@ -59,8 +59,8 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Habitações</a>
                                     <div class="dropdown-menu">
-                                        <a class="nav-link dropdown-item" asp-area="" asp-controller="Homes" asp-action="Index">Nossas habitações</a>
-                                        <a class="nav-link dropdown-item" asp-area="" asp-controller="Rentings" asp-action="Create">Arrendar</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Homes" asp-action="Index">Nossas habitações</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Rentings" asp-action="Create">Arrendar</a>
                                     </div>
                                 </li>
 
@@ -71,7 +71,7 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Perfil</a>
                                     <div class="dropdown-menu">
-                                        <a class="nav-link dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+                                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
                                         <a>
                                             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                                                 <button class="dropdown-item " type="submit" class="nav-link btn btn-link dropdown-item">Logout</button>
@@ -95,15 +95,15 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Locadores</a>
                                     <div class="dropdown-menu">
-                                        <a class="nav-link dropdown-item" asp-area="" asp-controller="CompanyManager" asp-action="Index">Empresas/locadores</a>
-                                        <a class="nav-link dropdown-item" asp-area="" asp-controller="CompanyManager" asp-action="Create">Adicionar</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="CompanyManager" asp-action="Index">Empresas/locadores</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="CompanyManager" asp-action="Create">Adicionar</a>
                                     </div>
                                 </li>
 
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Perfil</a>
                                     <div class="dropdown-menu">
-                                        <a class="nav-link dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+                                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
                                         <a>
                                             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                                                 <button class="dropdown-item " type="submit" class="nav-link btn btn-link dropdown-item">Logout</button>

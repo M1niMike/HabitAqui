@@ -1,40 +1,62 @@
 ﻿@model IEnumerable<TP2324.Models.Renting>
 
 @{
-    ViewData["Title"] = "MyRentings";
+    ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Meus arrendamentos</h1>
+                    <span class="color-text-a">Veja os seus arrendamentos</span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Meus Arrendamentos
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section><!-- End Intro Single-->
+
+
+
 <div class="container">
-    <h1>Meus Arrendamentos</h1>
-
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-
-    @if(Model.Count() == 0)
+    @if (Model.Count() == 0)
     {
         <p>Não existe(m) arrendamento(s).</p>
         return;
     }
 
     <table class="table">
-        <thead>
+        <thead class="thead-dark">
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
+                <th scope="col">
+                    Preço
                 </th>
-                <th>
+                <th scope="col">
                     @Html.DisplayNameFor(model => model.BeginDate)
                 </th>
-                <th>
+                <th scope="col">
                     @Html.DisplayNameFor(model => model.EndDate)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Homes)
-                </th>
-                <th></th>
+                @* <th scope="col">
+                    Endereço
+                </th> *@
+                <th scope="col">Opções</th>
             </tr>
         </thead>
         <tbody>
@@ -50,17 +72,20 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.EndDate)
                     </td>
-                    <td>
+                   @*  <td>
                         @Html.DisplayFor(modelItem => item.Homes.Address)
-                    </td>
+                    </td> *@
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <div class="btn-group" role="group">
+                            <a class="btn btn-c" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                            <a class="btn btn-c" asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
+                            <a class="btn btn-c" asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
+                        </div>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+</div>
 
-</dvi>
+
