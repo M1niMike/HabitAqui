@@ -79,19 +79,6 @@ namespace TP2324.Controllers
             return View(home);
         }
 
-       
-
-        //// Old_SearchBar
-        //[HttpPost]
-        //public async Task<IActionResult> Index(string? pesquisa)
-        //{
-        //    return View(await _context.Homes
-        //        .Where(e => e.Address.Contains(pesquisa) || e.Category.Name.Contains(pesquisa))
-        //        .Include(m => m.Category)
-        //        .ToListAsync());
-        //}
-
-        //New_SearchBar (GET: Homes/Search)
 
         [HttpGet]
         public async Task<IActionResult> Search(string? TextoAPesquisar, string? TipoResidenciaSelecionado, string? CategoriaSelecinada, string? PeriodoMinimoSelecionado)

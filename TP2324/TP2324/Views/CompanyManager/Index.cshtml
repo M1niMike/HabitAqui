@@ -40,11 +40,13 @@
                 <th>Descrição</th>
                 <th>Avaliação</th>
                 <th>Estado da subscrição</th>
+                <th>Gestores</th>
                 <th>Detalhes</th>
+                
             </tr>
         </thead>
         <tbody>
-            @foreach (var company in Model)
+            @foreach ( Company company in Model)
             {
                 <tr>
                     <td>@company.Name</td>
@@ -59,8 +61,14 @@
                         <td>Inativo</td>
                     }
 
+
+                    <td>@company.Managers.Count()</td>
+                    
                     <td>
-                        <a asp-controller="CompanyManager" asp-action="Details" asp-route-userId="@company.Id">
+                        <a asp-controller="CompanyManager" asp-action="Details" asp-route-Id="@company.Id">
+                            <button type="submit" class="btn btn-c">Detalhes</button>
+                        </a>
+                        <a asp-controller="CompanyManager" asp-action="Edit" asp-route-Id="@company.Id">
                             <button type="submit" class="btn btn-c">Editar</button>
                         </a>
                     </td>

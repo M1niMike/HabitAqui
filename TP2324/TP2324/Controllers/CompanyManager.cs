@@ -35,9 +35,10 @@ namespace TP2324.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var companies = await _context.Companies.ToListAsync();
+            var companies = await _context.Companies.Include(c => c.Managers).ToListAsync();
             return View(companies);
         }
+
 
 
         private async Task<List<string>> GetUserRoles(ApplicationUser user)
@@ -45,67 +46,6 @@ namespace TP2324.Controllers
             return new List<string>(await _userManager.GetRolesAsync(user));
         }
 
-
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Details(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            ViewBag.UserId = userId;
-            ViewBag.UserName = user.UserName;
-            var model = new List<ManageUserRolesViewModel>();
-
-            // Modifique o loop para incluir apenas as roles "Manager"
-            foreach (var role in _roleManager.Roles.Where(r => r.Name == "Manager"))
-            {
-                var userRolesManager = new ManageUserRolesViewModel()
-                {
-                    RoleId = role.Id,
-                    RoleName = role.Name
-                };
-
-                userRolesManager.Selected = await _userManager.IsInRoleAsync(user, role.Name);
-                model.Add(userRolesManager);
-            }
-            return View(model);
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public async Task<IActionResult> Details(List<ManageUserRolesViewModel> model, string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var roles = await _userManager.GetRolesAsync(user);
-
-            // Certifique-se de remover apenas as roles "Manager"
-            var managerRolesToRemove = roles.Where(r => r == "Manager").ToList();
-            var result = await _userManager.RemoveFromRolesAsync(user, managerRolesToRemove);
-
-            if (!result.Succeeded)
-            {
-                ModelState.AddModelError("", "Cannot remove");
-                return View(model);
-            }
-
-            // Adicione apenas as roles "Manager" selecionadas
-            result = await _userManager.AddToRolesAsync(user, model.Where(x => x.Selected && x.RoleName == "Manager").Select(x => x.RoleName));
-
-            if (!result.Succeeded)
-            {
-                ModelState.AddModelError("", "Cannot add");
-                return View(model);
-            }
-            return RedirectToAction("Index");
-        }
 
         private List<string> GetAllRoles()
         {
@@ -152,15 +92,10 @@ namespace TP2324.Controllers
                     await _userStore.SetUserNameAsync(newManager,newManager.UserName, CancellationToken.None);
                     var identityResult = await _userManager.CreateAsync(newManager, model.Password);
 
-                  
-
+                 
                     if (identityResult.Succeeded)
                     {
-
-                        _context.Add(model.Company);
-                        await _context.SaveChangesAsync();
-
-                        // Adiciona o usuário à role "Manager"
+                         // Adiciona o usuário à role "Manager"
                         await _userManager.AddToRoleAsync(newManager, Roles.Manager.ToString());
 
                         var manager = new Manager
@@ -170,13 +105,14 @@ namespace TP2324.Controllers
                             ApplicationUserId = newManager.Id  // Associa ao novo usuário
                         };
 
-                        model.Company.Managers = new List<Manager>
-                        {
-                            manager
-                        };
+                        model.Company.Managers = new List<Manager>{ manager };
+
+                        _context.Add(model.Company);
 
                         _context.Managers.Add(manager);
                         await _context.SaveChangesAsync();
+
+                        Console.Write("Contador:",model.Company.Managers.Count());
 
                         return RedirectToAction(nameof(Index));
                     }
@@ -191,6 +127,87 @@ namespace TP2324.Controllers
          
             return View(model);
         }
+
+        // GET: Homes/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.Companies == null)
+            {
+                return NotFound();
+            }
+
+            var company = await _context.Companies.FindAsync(id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            return View(company);
+        }
+
+
+        // POST: Homes/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Rating,State")] Company company)
+        {
+            if (id != company.Id)
+            {
+                return NotFound();
+            }
+
+            //ModelState.Remove(nameof(home.Category));
+            //ModelState.Remove(nameof(home.typeResidence));
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(company);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CompanyExists(company.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(company);
+        }
+
+        private bool CompanyExists(int id)
+        {
+            return (_context.Companies?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+
+        // GET: Homes/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _context.Companies == null)
+            {
+                return NotFound();
+            }
+
+            var companies = await _context.Companies
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (companies == null)
+            {
+                return NotFound();
+            }
+
+            return View(companies);
+        }
+
 
     }
 }
