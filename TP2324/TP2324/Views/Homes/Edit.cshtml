@@ -23,6 +23,14 @@
                 <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
             </div>
             <div class="form-group">
+                <label asp-for="typeResidence" class="control-label"></label>
+                <select asp-for="TypeResidenceId" class="form-control" asp-items="ViewBag.TypeResidenceId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="District" class="control-label"></label>
+                <select asp-for="DistrictId" class="form-control" asp-items="ViewBag.DistrictId"></select>
+            </div>
+            <div class="form-group">
                 <label asp-for="PriceToRent" class="control-label"></label>
                 <input asp-for="PriceToRent" class="form-control" />
                 <span asp-validation-for="PriceToRent" class="text-danger"></span>

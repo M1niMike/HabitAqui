@@ -66,6 +66,12 @@ namespace TP2324.Models
         [Display(Name = "Tipo da habitação")]
         public TypeResidence typeResidence { get; set; }
 
+
+        [Display(Name = "Distrito")]
+        public int? DistrictId { get; set; }
+        [Display(Name = "Distrito da habitação")]
+        public District District { get; set; }
+
         //Relacionamento de 1:n entre Habitação(Home) e Arrendamentos(Rentings)
         public List<Renting> Rentings { get; set; }
 

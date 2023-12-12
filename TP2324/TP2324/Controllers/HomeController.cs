@@ -33,7 +33,12 @@ public class HomeController : Controller
         var category = _context.Category.Select(c => c.Name).Distinct().ToList();
         ViewBag.HomeCategory = new SelectList(category);
 
-        IQueryable<Home> homes = _context.Homes.Include(m => m.Category).Include(m => m.typeResidence);
+        var districts = _context.Districts.Select(c => c.Name).Distinct().ToList();
+        ViewBag.HomeDistrict = new SelectList(districts);
+
+
+
+        IQueryable<Home> homes = _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District);
         return View(homes.ToList());
 
     }

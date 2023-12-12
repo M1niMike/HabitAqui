@@ -283,6 +283,26 @@ namespace TP2324.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("TP2324.Models.District", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool?>("Available")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Districts");
+                });
+
             modelBuilder.Entity("TP2324.Models.Employee", b =>
                 {
                     b.Property<int>("Id")
@@ -338,6 +358,9 @@ namespace TP2324.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("DistrictId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ImgUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -371,6 +394,8 @@ namespace TP2324.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("DistrictId");
 
                     b.HasIndex("TypeResidenceId");
 
@@ -535,11 +560,17 @@ namespace TP2324.Migrations
                         .WithMany("Homes")
                         .HasForeignKey("CompanyId");
 
+                    b.HasOne("TP2324.Models.District", "District")
+                        .WithMany("Homes")
+                        .HasForeignKey("DistrictId");
+
                     b.HasOne("TP2324.Models.TypeResidence", "typeResidence")
                         .WithMany("Homes")
                         .HasForeignKey("TypeResidenceId");
 
                     b.Navigation("Category");
+
+                    b.Navigation("District");
 
                     b.Navigation("typeResidence");
                 });
@@ -593,6 +624,11 @@ namespace TP2324.Migrations
                     b.Navigation("Homes");
 
                     b.Navigation("Managers");
+                });
+
+            modelBuilder.Entity("TP2324.Models.District", b =>
+                {
+                    b.Navigation("Homes");
                 });
 
             modelBuilder.Entity("TP2324.Models.Home", b =>

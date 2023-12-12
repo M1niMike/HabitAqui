@@ -77,6 +77,11 @@
                     </div>
 
                     <div class="mb-3">
+                        <label asp-for="DistrictId" class="form-label">Distrito:</label>
+                        <select asp-for="DistrictId" class="form-select" asp-items="ViewBag.DistrictId"></select>
+                    </div>
+
+                    <div class="mb-3">
                         <label asp-for="SquareFootage" class="form-label">Área em Metros Quadrados</label>
                         <input asp-for="SquareFootage" class="form-control" />
                         <span asp-validation-for="SquareFootage" class="text-danger"></span>

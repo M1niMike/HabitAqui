@@ -35,99 +35,122 @@
 <!-- ======= Property Grid ======= -->
 <section class="property-grid grid">
     <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="grid-option" style="display: flex; justify-content: space-between;">
-                    <a class="create-btn" asp-action="Create">Adicionar Habitação</a>
-                    <div class="dropdown-typeResidence">
-                        <form asp-controller="Homes" asp-action="Index" method="get">
-                            <label class="dropdown-label" for="homeTypeDropdown">Selecione o Tipo:</label>
-                            <select class="dropdown-box" id="homeTypeDropdown" asp-for="TextoAPesquisar" asp-items="ViewBag.HomeTypes" onchange="this.form.submit()">
-                                <option value="">Todos</option>
-                            </select>
-                        </form>
-                    </div> 
-                    <div class="dropdown-priceFilter">
-                        <form asp-controller="Homes" asp-action="Index" method="get">
-                            <label class="dropdown-label" for="ordenacao">Ordenar por:</label>
-                            <select class="dropdown-box" id="ordenacao" asp-for="Ordenacao" onchange="this.form.submit()">
-                                <option value="MaiorPreco">Maior preço</option>
-                                <option value="MenorPreco">Menor preço</option>
-                            </select>
-                        </form>
+        @if(Model.NumResultados > 0)
+        {
+            <div class="row">
+                <div class="col-sm-12">
+                    <a class="btn btn-c mb-3" asp-action="Create">Adicionar Habitação</a>
+                    <div class="grid-option" style="display: flex; justify-content: space-between;">
+                        <div class="dropdown-typeResidence">
+                            <form asp-controller="Homes" asp-action="Index" method="get">
+                                <label class="dropdown-label" for="homeTypeDropdown">Selecione o Distrito:</label>
+                                <select class="dropdown-box" id="homeTypeDropdown" asp-for="LocalizacaoSelecionada" asp-items="ViewBag.HomeDistrict" onchange="this.form.submit()">
+                                    <option value="">Todos</option>
+                                </select>
+                            </form>
+                        </div>
+                        <div class="dropdown-typeResidence">
+                            <form asp-controller="Homes" asp-action="Index" method="get">
+                                <label class="dropdown-label" for="homeTypeDropdown">Selecione o Tipo:</label>
+                                <select class="dropdown-box" id="homeTypeDropdown" asp-for="TextoAPesquisar" asp-items="ViewBag.HomeTypes" onchange="this.form.submit()">
+                                    <option value="">Todos</option>
+                                </select>
+                            </form>
+                        </div>
+                        <div class="dropdown-priceFilter">
+                            <form asp-controller="Homes" asp-action="Index" method="get">
+                                <label class="dropdown-label" for="ordenacao">Ordenar por:</label>
+                                <select class="dropdown-box" id="ordenacao" asp-for="Ordenacao" onchange="this.form.submit()">
+                                    <option value="MaiorPreco">Maior preço</option>
+                                    <option value="MenorPreco">Menor preço</option>
+                                </select>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-            @foreach (Home c in Model.Homeslist)
-            {
-                <div class="col-md-4">
-                    <div class="card-box-a card-shadow">
-                        <div class="img-box-a">
-                            <img src="~/img/@c.ImgUrl" alt="" class="img-a img-fluid">
-                        </div>
-                        <div class="card-overlay">
-                            <div class="card-overlay-a-content">
-                                <div class="card-header-a">
-                                    <h2 class="card-title-a">
-                                        <span class="color-b"> @c.typeResidence.Name </span>
-                                        <br> @c.Address
-                                    </h2>
-                                </div>
-                                <div class="card-body-a">
-                                    <div class="price-box d-flex">
-                                        <span class="price-a">€ @c.PriceToRent</span>
+                @foreach (Home c in Model.Homeslist)
+                {
+                    <div class="col-md-4">
+                        <div class="card-box-a card-shadow">
+                            <div class="img-box-a">
+                                <img src="~/img/@c.ImgUrl" alt="" class="img-a img-fluid">
+                            </div>
+                            <div class="card-overlay">
+                                <div class="card-overlay-a-content">
+                                    <div class="card-header-a">
+                                        <h2 class="card-title-a">
+                                            <span class="color-b"> @c.typeResidence.Name </span>
+                                            <br> @c.Address
+                                            <br> @c.District.Name
+                                        </h2>
                                     </div>
-                                    <div class="price-box d-flex">
-                                        <span class="price-a">@c.MinimumPeriod Dia(s).</span>
+                                    <div class="card-body-a">
+                                        <div class="price-box d-flex">
+                                            <span class="price-a">€ @c.PriceToRent</span>
+                                        </div>
+                                        <div class="price-box d-flex">
+                                            <span class="price-a">@c.MinimumPeriod Dia(s).</span>
+                                        </div>
+                                        <a href="property-single.html" class="link-a">
+                                            Saber mais
+                                            <span class="bi bi-chevron-right"></span>
+                                        </a>
                                     </div>
-                                    <a href="property-single.html" class="link-a">
-                                        Saber mais
-                                        <span class="bi bi-chevron-right"></span>
-                                    </a>
-                                </div>
-                                <div class="card-footer-a">
-                                    <ul class="card-info d-flex justify-content-around">
-                                        <li>
-                                            <h4 class="card-info-title">Área</h4>
-                                            <span>
-                                                @c.SquareFootage m²
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <h4 class="card-info-title">Categoria</h4>
-                                            <span>@c.Category.Name</span>
-                                        </li>
-                                        <li>
-                                            <h4 class="card-info-title">Casa(s) de banho</h4>
-                                            <span>@c.NumWC</span>
-                                        </li>
-                                        <li>
-                                            <h4 class="card-info-title">Estacionamentos</h4>
-                                            <span>@c.NumParks</span>
-                                        </li>
-                                        @if(c.Ratings == null){
+                                    <div class="card-footer-a">
+                                        <ul class="card-info d-flex justify-content-around">
                                             <li>
-                                                <h4 class="card-info-title">Avaliação</h4>
-                                                <span>Por avaliar</span>
+                                                <h4 class="card-info-title">Área</h4>
+                                                <span>
+                                                    @c.SquareFootage m²
+                                                </span>
                                             </li>
-                                        }
-                                        else
-                                        {
                                             <li>
-                                                <h4 class="card-info-title">Avaliação</h4>
-                                                <span>@c.Ratings</span>
+                                                <h4 class="card-info-title">Categoria</h4>
+                                                <span>@c.Category.Name</span>
                                             </li>
-                                        }
-                                        
-                                    </ul>
+                                            <li>
+                                                <h4 class="card-info-title">Casa(s) de banho</h4>
+                                                <span>@c.NumWC</span>
+                                            </li>
+                                            <li>
+                                                <h4 class="card-info-title">Estacionamentos</h4>
+                                                <span>@c.NumParks</span>
+                                            </li>
+                                            @if (c.Ratings == null)
+                                            {
+                                                <li>
+                                                    <h4 class="card-info-title">Avaliação</h4>
+                                                    <span>Por avaliar</span>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li>
+                                                    <h4 class="card-info-title">Avaliação</h4>
+                                                    <span>@c.Ratings</span>
+                                                </li>
+                                            }
+
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-               
-            }   
-        </div>
+
+                }
+            </div>
+        }
+        else
+        {
+            <p class="alert alert-warning">
+                Não foi possível
+                encontrar habitações com os dados introduzidos.
+                <br />
+                Por favor, reveja a sua pesquisa!
+            </p>
+        }
+
     </div>
 </section>
 <!-- End Property Grid Single-->

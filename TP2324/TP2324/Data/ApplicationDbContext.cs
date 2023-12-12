@@ -21,5 +21,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
   //  public DbSet<Contract> Contracts { get; set; }
     public DbSet<Renting> Rentings { get; set; }
     public DbSet<Company> Companies { get; set; }
+    public DbSet<District> Districts { get; set; }
 }
 
