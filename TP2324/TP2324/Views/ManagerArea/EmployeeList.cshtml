@@ -1,0 +1,69 @@
+﻿@model List<Employee>
+
+
+
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    @if (Model.Any())
+                    {
+                        <h1 class="title-single">Funcionários</h1>
+                        <span class="color-text-a">@Model.First().Company.Name</span>
+                    }
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Equipa/Lista dos Funcionários
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Intro Single-->
+
+
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Empresa/Locador</th>
+                <th>Email</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var person in Model)
+            {
+                <tr>
+                    <td>@person.Name</td>
+                    <td>@person.Company.Name</td>
+                    <td>@person.ApplicationUser.Email</td>
+                    @if ((bool)person.Available)
+                    {
+                        <td>Ativo</td>
+                    }
+                    else
+                    {
+                        <td> Inativo </td>
+                        
+                    }
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

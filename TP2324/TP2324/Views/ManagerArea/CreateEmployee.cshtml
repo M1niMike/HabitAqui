@@ -1,7 +1,7 @@
-@model TP2324.ViewModels.CreateCompanyViewModel
+﻿@model TP2324.ViewModels.ManagerAreaViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "CreateEmployee";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -14,8 +14,8 @@
             <div class="row">
                 <div class="col-md-12 col-lg-8">
                     <div class="title-single-box">
-                        <h1 class="title-single">Adicionar empresas/locadores</h1>
-                        <span class="color-text-a">Adicione as empresas ou locadores</span>
+                        <h1 class="title-single">Adicionar um funcionário</h1>
+                        <span class="color-text-a">Adicione funcionários ao locador</span>
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-4">
@@ -25,7 +25,7 @@
                                 <a href="#">Pagina principal</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Adicionar
+                                Adicionar/Funcionários
                             </li>
                         </ol>
                     </nav>
@@ -38,54 +38,18 @@
 
     <div class="container">
 
-        <h4>Empresa</h4>
+        <h4>Funcionário</h4>
         <hr />
         <div class="row">
             <div class="col-md-4">
-                <form asp-action="Create">
+                <form asp-action="CreateEmployee">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                    <!-- Campos da Empresa -->
-                    <div class="form-group">
-                        <label asp-for="Company.Name" class="control-label"></label>
-                        <input asp-for="Company.Name" class="form-control" />
-                        <span asp-validation-for="Company.Name" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Company.Description" class="control-label"></label>
-                        <textarea rows="5" cols="5" asp-for="Company.Description" class="form-control"></textarea>
-                        <span asp-validation-for="Company.Description" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Company.Rating" class="control-label"></label>
-                        <input asp-for="Company.Rating" class="form-control" />
-                        <span asp-validation-for="Company.Rating" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Company.EmailDomain" class="control-label"></label>
-                        <input asp-for="Company.EmailDomain" class="form-control" />
-                        <span asp-validation-for="Company.EmailDomain" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="form-check">
-                            <input asp-for="Company.State" class="form-check-input" />
-                            <label class="form-check-label" asp-for="Company.State">Ativo</label>
-                        </div>
-                        <span asp-validation-for="Company.State" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <h4>Gestor</h4>
-                    <hr />
                     <!-- Campos do Gerente -->
-                    <div class="form-group">
+                    @*< div class="form-group">
                         <label asp-for="UserName" class="control-label"></label>
                         <input asp-for="UserName" class="form-control" />
                         <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>
+                    </div> *@
 
                     <div class="form-group">
                         <label asp-for="FirstName" class="control-label"></label>
@@ -118,10 +82,10 @@
             </div>
         </div>
 
-       @*  <div>
-            <a asp-action="Index">
-                <button type="submit" class="btn btn-c">Voltar</button>
-            </a>
+        @*  <div>
+        <a asp-action="Index">
+        <button type="submit" class="btn btn-c">Voltar</button>
+        </a>
         </div> *@
     </div>
 </body>

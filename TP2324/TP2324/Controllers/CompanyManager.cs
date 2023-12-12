@@ -46,7 +46,7 @@ namespace TP2324.Controllers
 
             if (!string.IsNullOrEmpty(viewModel.TextoAPesquisar))
             {
-                if(viewModel.TextoAPesquisar == "Todos" || viewModel.TextoAPesquisar == "todos")
+                if (viewModel.TextoAPesquisar == "Todos" || viewModel.TextoAPesquisar == "todos")
                 {
                     CompaniesQuery = CompaniesQuery.OrderBy(c => c.Name);
                 }
@@ -54,7 +54,7 @@ namespace TP2324.Controllers
                 {
                     CompaniesQuery = CompaniesQuery.Where(c => c.Name.Contains(viewModel.TextoAPesquisar)).OrderBy(c => c.Name);
                 }
-                
+
             }
 
             if (!string.IsNullOrEmpty(viewModel.Ordenacao))
@@ -98,92 +98,111 @@ namespace TP2324.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Create([Bind("Company,FirstName,LastName,UserName,Password")] CreateCompanyViewModel model)
-{
-    var company = model.Company;
-
-    try
-    {
-        if (ModelState.IsValid)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Company,FirstName,LastName,UserName,Password")] CreateCompanyViewModel model)
         {
-            // Verifica se o usuário já existe pelo e-mail
-            var user = await _userManager.FindByEmailAsync(model.UserName);
+            var company = model.Company;
 
-            if (user == null)
+            try
             {
-                // Cria um novo usuário
-                var newManager = new ApplicationUser
+                if (ModelState.IsValid)
                 {
-                    UserName = model.UserName,
-                    Email = model.UserName,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    EmailConfirmed = true,
-                    PhoneNumberConfirmed = true
-                };
+                    // Verifica se o usuário já existe pelo e-mail
+                    var user = await _userManager.FindByEmailAsync(model.UserName);
 
-                await _userStore.SetUserNameAsync(newManager, newManager.UserName, CancellationToken.None);
-                var identityResult = await _userManager.CreateAsync(newManager, model.Password);
-
-                if (identityResult.Succeeded)
-                {
-                    // Adiciona o usuário à role "Manager"
-                    await _userManager.AddToRoleAsync(newManager, Roles.Manager.ToString());
-
-                    var manager = new Manager
+                    if (user == null)
                     {
-                        Name = $"{model.FirstName} {model.LastName}",
-                        CompanyId = model.Company.Id,  // Associa à nova empresa
-                        ApplicationUserId = newManager.Id  // Associa ao novo usuário
-                    };
+                        // Cria um novo usuário
+                        var newManager = new ApplicationUser
+                        {
+                            UserName = model.UserName + company.EmailDomain + ".com",
+                            Email = model.UserName + company.EmailDomain + ".com",
+                            FirstName = model.FirstName,
+                            LastName = model.LastName,
+                            EmailConfirmed = true,
+                            PhoneNumberConfirmed = true
+                        };
 
-                    model.Company.Managers = new List<Manager> { manager };
+                        await _userStore.SetUserNameAsync(newManager, newManager.UserName, CancellationToken.None);
+                        var identityResult = await _userManager.CreateAsync(newManager, model.Password);
 
-                    _context.Add(model.Company);
-                    _context.Managers.Add(manager);
-                    await _context.SaveChangesAsync();
+                        if (identityResult.Succeeded)
+                        {
+                            // Adiciona o usuário à role "Manager"
+                            await _userManager.AddToRoleAsync(newManager, Roles.Manager.ToString());
 
-                    Console.WriteLine("Contador: " + model.Company.Managers.Count());
+                            var manager = new Manager
+                            {
+                                Name = $"{model.FirstName} {model.LastName}",
+                                CompanyId = model.Company.Id,  // Associa à nova empresa
+                                ApplicationUserId = newManager.Id  // Associa ao novo usuário
+                            };
 
-                    return RedirectToAction(nameof(Index));
+                            model.Company.Managers = new List<Manager> { manager };
+
+                            _context.Add(model.Company);
+                            _context.Managers.Add(manager);
+                            await _context.SaveChangesAsync();
+
+                            Console.WriteLine("Contador: " + model.Company.Managers.Count());
+
+                            return RedirectToAction(nameof(Index));
+                        }
+                        else
+                        {
+                            // Exibir todos os erros do modelo
+                            foreach (var error in identityResult.Errors)
+                            {
+                                Console.WriteLine("Erro ao criar usuário: " + error.Description);
+                                ModelState.AddModelError(string.Empty, error.Description);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Trata o caso em que o usuário já existe
+                        Console.WriteLine("Um usuário com o mesmo e-mail já existe.");
+                        ModelState.AddModelError(string.Empty, "Um usuário com o mesmo e-mail já existe.");
+                    }
                 }
                 else
                 {
-                    // Exibir todos os erros do modelo
-                    foreach (var error in identityResult.Errors)
+                    // Model não é válido - exibir todos os erros
+                    foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
                     {
-                        Console.WriteLine("Erro ao criar usuário: " + error.Description);
-                        ModelState.AddModelError(string.Empty, error.Description);
+                        Console.WriteLine("Erro no modelo: " + modelError.ErrorMessage);
                     }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                // Trata o caso em que o usuário já existe
-                Console.WriteLine("Um usuário com o mesmo e-mail já existe.");
-                ModelState.AddModelError(string.Empty, "Um usuário com o mesmo e-mail já existe.");
+                // Imprime detalhes da exceção
+                Console.WriteLine("Exceção: " + ex.Message);
+                ModelState.AddModelError(string.Empty, "Exceção: " + ex.Message);
             }
+
+            return View(model);
         }
-        else
+
+        
+
+        // GET: Homes/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            // Model não é válido - exibir todos os erros
-            foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
+            if (id == null || _context.Companies == null)
             {
-                Console.WriteLine("Erro no modelo: " + modelError.ErrorMessage);
+                return NotFound();
             }
+
+            var company = await _context.Companies.FindAsync(id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(company);
         }
-    }
-    catch (Exception ex)
-    {
-        // Imprime detalhes da exceção
-        Console.WriteLine("Exceção: " + ex.Message);
-        ModelState.AddModelError(string.Empty, "Exceção: " + ex.Message);
-    }
-
-    return View(model);
-}
-
 
 
         // POST: Homes/Edit/5
@@ -191,7 +210,7 @@ public async Task<IActionResult> Create([Bind("Company,FirstName,LastName,UserNa
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Rating,State")] Company company)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Rating,State,EmailDomain")] Company company)
         {
             if (id != company.Id)
             {

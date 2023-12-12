@@ -123,23 +123,30 @@
                             else if (User.IsInRole("Manager"))
                             {
 
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gestores</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" asp-area="" asp-controller="ManagerArea" asp-action="ManagerList">Lista dos gestores</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="ManagerArea" asp-action="CreateManager">Adicionar gestor</a>
+                                    </div>
+                                </li>
+
 
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Funcionários</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-area="" asp-controller="ManagerArea" asp-action="Index">Lista dos Funcionários</a>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Adicionar funcionário</a>
-                                        <a class="dropdown-item" asp-area="" asp-controller="ManagerArea" asp-action="CreateManager">Adicionar gestor</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="ManagerArea" asp-action="EmployeeList">Lista dos Funcionários</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="ManagerArea" asp-action="CreateEmployee">Adicionar funcionário</a>
                                     </div>
                                 </li>
 
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Arrendamentos</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Lista das categorias</a>
+                                        @* <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Lista das categorias</a>
                                         <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Adicionar categoria</a>
                                         <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Lista das tipologias</a>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Adicionar tipologia</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Adicionar tipologia</a> *@
                                     </div>
                                 </li>
 
@@ -147,10 +154,10 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Habitações</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Lista das categorias</a>
+                                        @* <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Lista das categorias</a>
                                         <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Adicionar categoria</a>
                                         <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Lista das tipologias</a>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Adicionar tipologia</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Adicionar tipologia</a> *@
                                     </div>
                                 </li>
 

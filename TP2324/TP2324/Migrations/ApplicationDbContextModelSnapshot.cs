@@ -268,6 +268,9 @@ namespace TP2324.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("EmailDomain")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -313,6 +316,9 @@ namespace TP2324.Migrations
 
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool?>("Available")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
@@ -409,6 +415,9 @@ namespace TP2324.Migrations
 
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Available")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
