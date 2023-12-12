@@ -1,4 +1,4 @@
-﻿@model List<Company>
+﻿@model TP2324.ViewModels.CreateCompanyViewModel;
 
 
 @{
@@ -28,11 +28,32 @@
                     </ol>
                 </nav>
             </div>
+           
         </div>
     </div>
 </section><!-- End Intro Single-->
 
 <div class="container">
+    <div class="col-sm-12">
+        <div class="grid-option mb-3" style="display: flex; justify-content: space-between;">
+            <form asp-controller="CompanyManager" asp-action="Index" method="get">
+                <div class="form-group">
+                    <label for="search">Pesquisar:</label>
+                    <input type="text" class="form-control" id="search" name="TextoAPesquisar" value="@Model.TextoAPesquisar">
+                </div>
+            </form>
+            </div>
+            <div class="dropdown-priceFilter mb-3">
+                <form asp-controller="CompanyManager" asp-action="Index" method="get">
+                    <label class="dropdown-label" for="ordenacao">Ordenar por:</label>
+                    <select class="dropdown-box" id="ordenacao" asp-for="Ordenacao" onchange="this.form.submit()">
+                        <option value="">Todos</option>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                    </select>
+                </form>
+            </div>
+        </div>
     <table class="table">
         <thead>
             <tr>
@@ -46,7 +67,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ( Company company in Model)
+            @foreach ( Company company in Model.companiesList)
             {
                 <tr>
                     <td>@company.Name</td>
@@ -70,6 +91,9 @@
                         </a>
                         <a asp-controller="CompanyManager" asp-action="Edit" asp-route-Id="@company.Id">
                             <button type="submit" class="btn btn-c">Editar</button>
+                        </a>
+                        <a asp-controller="CompanyManager" asp-action="Delete" asp-route-Id="@company.Id">
+                            <button type="submit" class="btn btn-c">Apagar</button>
                         </a>
                     </td>
                 </tr>

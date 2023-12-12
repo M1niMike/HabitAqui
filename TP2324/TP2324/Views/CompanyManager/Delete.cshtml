@@ -1,81 +1,61 @@
-@model TP2324.Models.Home
+@model TP2324.Models.Company
 
 @{
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Home</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.typeResidence.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.typeResidence.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PriceToRent)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PriceToRent)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NumWC)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NumWC)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SquareFootage)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SquareFootage)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NumParks)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NumParks)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Wifi)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Wifi)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Available)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Available)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Apagar Empresa/locador</h1>
+                    <span class="color-text-a">Apague uma empresa ou locador da plataforma</span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Empresas/Locadores/Apagar
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+</section><!-- End Intro Single-->
+
+
+<div class="container mt-4">
+    <div>
+        <h4>Detalhes da Empresa</h4>
+        <dl class="row">
+            <dt class="col-sm-2 text-muted">Nome:</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
+
+            <dt class="col-sm-2 text-muted">Descrição:</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Description)</dd>
+
+            <dt class="col-sm-2 text-muted">Classificação:</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Rating)</dd>
+
+            <dt class="col-sm-2 text-muted">Estado:</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.State)</dd>
+        </dl>
+
+        <div class="mb-3">
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger">Excluir</button>
+                <a asp-action="Index" class="btn btn-c">Voltar</a>
+            </form>
+        </div>
+    </div>
 </div>

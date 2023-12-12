@@ -101,6 +101,16 @@
                                 </li>
 
                                 <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Configurações</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" asp-area="" asp-controller="CategoriesController" asp-action="Index">Lista das categorias</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="CategoriesController" asp-action="Create">Adicionar categoria</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="TypeResidencesController" asp-action="Index">Lista das tipologias</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="TypeResidencesController" asp-action="Create">Adicionar tipologia</a>
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Perfil</a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
@@ -128,10 +138,12 @@
                                 </li>
                             }
                     </div>
-                    <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
-                        <i class="bi bi-search"></i>
-                    </button>
-
+                    @if (!User.IsInRole("Admin"))
+                    {
+                        <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    }
                 </div>
             </nav>
         </header>

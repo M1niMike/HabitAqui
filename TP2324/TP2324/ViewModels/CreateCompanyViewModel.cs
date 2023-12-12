@@ -8,6 +8,8 @@ namespace TP2324.ViewModels
     {
         public Company Company { get; set; }
 
+        public List<Company> companiesList { get; set; }
+
 
         [Display(Name = "Primeiro nome", Prompt = "O primeiro nome")]
         [Required(ErrorMessage = "Introduza um nome")]

@@ -33,11 +33,47 @@ namespace TP2324.Controllers
 
 
 
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    var companies = await _context.Companies.Include(c => c.Managers).ToListAsync();
+        //    return View(companies);
+        //}
+
+
+        public IActionResult Index(CreateCompanyViewModel viewModel)
         {
-            var companies = await _context.Companies.Include(c => c.Managers).ToListAsync();
-            return View(companies);
+            IQueryable<Company> CompaniesQuery = _context.Companies.Include(m => m.Managers).Include(m => m.Employees).Include(m => m.Homes);
+
+            if (!string.IsNullOrEmpty(viewModel.TextoAPesquisar))
+            {
+                if(viewModel.TextoAPesquisar == "Todos" || viewModel.TextoAPesquisar == "todos")
+                {
+                    CompaniesQuery = CompaniesQuery.OrderBy(c => c.Name);
+                }
+                else
+                {
+                    CompaniesQuery = CompaniesQuery.Where(c => c.Name.Contains(viewModel.TextoAPesquisar)).OrderBy(c => c.Name);
+                }
+                
+            }
+
+            if (!string.IsNullOrEmpty(viewModel.Ordenacao))
+            {
+                if (viewModel.Ordenacao == "Ativo")
+                {
+                    CompaniesQuery = CompaniesQuery.Where(c => c.State).OrderBy(c => c.Name);
+                }
+                else if (viewModel.Ordenacao == "Inativo")
+                {
+                    CompaniesQuery = CompaniesQuery.Where(c => !c.State).OrderBy(c => c.Name);
+                }
+            }
+
+            viewModel.companiesList = CompaniesQuery.ToList();
+
+            return View(viewModel);
         }
+
 
 
 
@@ -206,6 +242,44 @@ namespace TP2324.Controllers
             }
 
             return View(companies);
+        }
+
+
+        // GET: Homes/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || _context.Companies == null)
+            {
+                return NotFound();
+            }
+
+            var company = await _context.Companies
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            return View(company);
+        }
+
+        // POST: Homes/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (_context.Companies == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Homes'  is null.");
+            }
+            var company = await _context.Companies.FindAsync(id);
+            if (company != null)
+            {
+                _context.Companies.Remove(company);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
 
