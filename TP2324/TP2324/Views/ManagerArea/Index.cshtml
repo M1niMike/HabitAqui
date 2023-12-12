@@ -1,5 +1,22 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model List<Manager>
+
+<div class="container">
+    <h4>Gestores e Funcionários da Empresa</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Cargo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var person in Model)
+            {
+                <tr>
+                    <td>@person.Name</td>
+                    <td>@(person is Employee ? "Funcionário" : "Gestor")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -9,7 +9,7 @@ namespace TP2324.Models
 
         [ForeignKey("company")]
         public int? CompanyId { get; set; }
-        public Company company { get; set; }
+        public Company Company { get; set; }
 
         public string? ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }

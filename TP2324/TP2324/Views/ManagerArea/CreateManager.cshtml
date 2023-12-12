@@ -1,0 +1,98 @@
+﻿@model TP2324.ViewModels.ManagerAreaViewModel
+
+@{
+    ViewData["Title"] = "CreateManager";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html>
+<body>
+
+    <!-- ======= Intro Single ======= -->
+    <section class="intro-single">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-8">
+                    <div class="title-single-box">
+                        <h1 class="title-single">Adicionar um gestor</h1>
+                        <span class="color-text-a">Adicione gestores</span>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-4">
+                    <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="#">Pagina principal</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                Adicionar
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section><!-- End Intro Single-->
+
+
+
+    <div class="container">
+
+        <h4>Gestor</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="CreateManager">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <!-- Campos do Gerente -->
+                    <div class="form-group">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <br />
+                    <div class="form-group">
+                        <input type="submit" value="Adicionar" class="btn btn-c" />
+
+                        <a asp-action="Index">
+                            <button type="submit" class="btn btn-c">Voltar</button>
+                        </a>
+                    </div>
+                </form>
+                <br />
+            </div>
+        </div>
+
+        @*  <div>
+        <a asp-action="Index">
+        <button type="submit" class="btn btn-c">Voltar</button>
+        </a>
+        </div> *@
+    </div>
+</body>
+</html>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

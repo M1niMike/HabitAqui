@@ -60,16 +60,13 @@
                                     <div class="card-header-a">
                                         <h2 class="card-title-a">
                                             <span class="color-b"> @c.typeResidence.Name </span>
-                                            <br> @c.Address
+                                            <br> @c.Address,
                                             <br> @c.District.Name
                                         </h2>
                                     </div>
                                     <div class="card-body-a">
                                         <div class="price-box d-flex">
                                             <span class="price-a">€ @c.PriceToRent</span>
-                                        </div>
-                                        <div class="price-box d-flex">
-                                            <span class="price-a">@c.MinimumPeriod Dia(s)</span>
                                         </div>
                                         <a asp-action="Details" asp-route-id=@c.Id class="link-a">
                                             Saber mais
@@ -79,22 +76,18 @@
                                     <div class="card-footer-a">
                                         <ul class="card-info d-flex justify-content-around">
                                             <li>
-                                                <h4 class="card-info-title">Área</h4>
-                                                <span>
-                                                    @c.SquareFootage m²
-                                                </span>
-                                            </li>
-                                            <li>
                                                 <h4 class="card-info-title">Categoria</h4>
                                                 <span>@c.Category.Name</span>
                                             </li>
                                             <li>
-                                                <h4 class="card-info-title">Casa(s) de banho</h4>
-                                                <span>@c.NumWC</span>
+                                                <h4 class="card-info-title">Período minímo</h4>
+                                                <span>
+                                                    @c.MinimumPeriod dia(s)
+                                                </span>
                                             </li>
                                             <li>
-                                                <h4 class="card-info-title">Estacionamentos</h4>
-                                                <span>@c.NumParks</span>
+                                                <h4 class="card-info-title">Locador</h4>
+                                                <span>@c.Company.Name</span>
                                             </li>
                                             @if (c.Ratings == null)
                                             {
@@ -110,6 +103,7 @@
                                                     <span>@c.Ratings</span>
                                                 </li>
                                             }
+
                                         </ul>
                                     </div>
                                 </div>

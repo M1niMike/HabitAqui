@@ -98,88 +98,92 @@ namespace TP2324.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Company,FirstName,LastName,UserName,Password")] CreateCompanyViewModel model)
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Create([Bind("Company,FirstName,LastName,UserName,Password")] CreateCompanyViewModel model)
+{
+    var company = model.Company;
+
+    try
+    {
+        if (ModelState.IsValid)
         {
+            // Verifica se o usuário já existe pelo e-mail
+            var user = await _userManager.FindByEmailAsync(model.UserName);
 
-            var company = model.Company;
-
-            if (ModelState.IsValid)
+            if (user == null)
             {
-                
-
-                // Verifica se o usuário já existe pelo e-mail
-                var user = await _userManager.FindByEmailAsync(model.UserName);
-               
-                if (user == null)
+                // Cria um novo usuário
+                var newManager = new ApplicationUser
                 {
-                    // Cria um novo usuário
-                    var newManager = new ApplicationUser
+                    UserName = model.UserName,
+                    Email = model.UserName,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true
+                };
+
+                await _userStore.SetUserNameAsync(newManager, newManager.UserName, CancellationToken.None);
+                var identityResult = await _userManager.CreateAsync(newManager, model.Password);
+
+                if (identityResult.Succeeded)
+                {
+                    // Adiciona o usuário à role "Manager"
+                    await _userManager.AddToRoleAsync(newManager, Roles.Manager.ToString());
+
+                    var manager = new Manager
                     {
-                        UserName = model.UserName,
-                        Email = model.UserName,
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        EmailConfirmed = true,
-                        PhoneNumberConfirmed = true
+                        Name = $"{model.FirstName} {model.LastName}",
+                        CompanyId = model.Company.Id,  // Associa à nova empresa
+                        ApplicationUserId = newManager.Id  // Associa ao novo usuário
                     };
 
+                    model.Company.Managers = new List<Manager> { manager };
 
-                    await _userStore.SetUserNameAsync(newManager,newManager.UserName, CancellationToken.None);
-                    var identityResult = await _userManager.CreateAsync(newManager, model.Password);
+                    _context.Add(model.Company);
+                    _context.Managers.Add(manager);
+                    await _context.SaveChangesAsync();
 
-                 
-                    if (identityResult.Succeeded)
-                    {
-                         // Adiciona o usuário à role "Manager"
-                        await _userManager.AddToRoleAsync(newManager, Roles.Manager.ToString());
+                    Console.WriteLine("Contador: " + model.Company.Managers.Count());
 
-                        var manager = new Manager
-                        {
-                            Name = $"{model.FirstName} {model.LastName}",
-                            CompanyId = model.Company.Id,  // Associa à nova empresa
-                            ApplicationUserId = newManager.Id  // Associa ao novo usuário
-                        };
-
-                        model.Company.Managers = new List<Manager>{ manager };
-
-                        _context.Add(model.Company);
-
-                        _context.Managers.Add(manager);
-                        await _context.SaveChangesAsync();
-
-                        Console.Write("Contador:",model.Company.Managers.Count());
-
-                        return RedirectToAction(nameof(Index));
-                    }
-                   
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {
-                    // Trata o caso em que o usuário já existe
-                    ModelState.AddModelError(string.Empty, "Um usuário com o mesmo e-mail já existe.");
+                    // Exibir todos os erros do modelo
+                    foreach (var error in identityResult.Errors)
+                    {
+                        Console.WriteLine("Erro ao criar usuário: " + error.Description);
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
             }
-         
-            return View(model);
+            else
+            {
+                // Trata o caso em que o usuário já existe
+                Console.WriteLine("Um usuário com o mesmo e-mail já existe.");
+                ModelState.AddModelError(string.Empty, "Um usuário com o mesmo e-mail já existe.");
+            }
         }
-
-        // GET: Homes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        else
         {
-            if (id == null || _context.Companies == null)
+            // Model não é válido - exibir todos os erros
+            foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
             {
-                return NotFound();
+                Console.WriteLine("Erro no modelo: " + modelError.ErrorMessage);
             }
-
-            var company = await _context.Companies.FindAsync(id);
-            if (company == null)
-            {
-                return NotFound();
-            }
-
-            return View(company);
         }
+    }
+    catch (Exception ex)
+    {
+        // Imprime detalhes da exceção
+        Console.WriteLine("Exceção: " + ex.Message);
+        ModelState.AddModelError(string.Empty, "Exceção: " + ex.Message);
+    }
+
+    return View(model);
+}
+
 
 
         // POST: Homes/Edit/5

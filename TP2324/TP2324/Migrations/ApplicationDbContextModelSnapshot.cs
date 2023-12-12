@@ -314,21 +314,18 @@ namespace TP2324.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("companyId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("companyId1")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("companyId1");
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("Employees");
                 });
@@ -414,7 +411,6 @@ namespace TP2324.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("CompanyId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -539,15 +535,13 @@ namespace TP2324.Migrations
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("TP2324.Models.Company", "company")
+                    b.HasOne("TP2324.Models.Company", "Company")
                         .WithMany("Employees")
-                        .HasForeignKey("companyId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompanyId");
 
                     b.Navigation("ApplicationUser");
 
-                    b.Navigation("company");
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("TP2324.Models.Home", b =>
@@ -556,7 +550,7 @@ namespace TP2324.Migrations
                         .WithMany("Homes")
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("TP2324.Models.Company", null)
+                    b.HasOne("TP2324.Models.Company", "Company")
                         .WithMany("Homes")
                         .HasForeignKey("CompanyId");
 
@@ -570,6 +564,8 @@ namespace TP2324.Migrations
 
                     b.Navigation("Category");
 
+                    b.Navigation("Company");
+
                     b.Navigation("District");
 
                     b.Navigation("typeResidence");
@@ -581,15 +577,13 @@ namespace TP2324.Migrations
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("TP2324.Models.Company", "company")
+                    b.HasOne("TP2324.Models.Company", "Company")
                         .WithMany("Managers")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompanyId");
 
                     b.Navigation("ApplicationUser");
 
-                    b.Navigation("company");
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("TP2324.Models.Renting", b =>

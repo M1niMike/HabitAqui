@@ -23,7 +23,7 @@ namespace TP2324.Controllers
 
         public IActionResult Index(PesquisaHabitacaoViewModel viewModel)
         {
-            IQueryable<Home> homesQuery = _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District);
+            IQueryable<Home> homesQuery = _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company);
 
             if (!string.IsNullOrEmpty(viewModel.TextoAPesquisar))
             {
@@ -58,6 +58,9 @@ namespace TP2324.Controllers
             var districts = _context.Districts.Select(c => c.Name).Distinct().ToList();
             ViewBag.HomeDistrict = new SelectList(districts);
 
+            var companies = _context.Companies.Select(c => c.Name).Distinct().ToList();
+            ViewBag.HomeCompany = new SelectList(companies);
+
             viewModel.Homeslist = homesQuery.ToList();
             viewModel.NumResultados = viewModel.Homeslist.Count;
 
@@ -78,7 +81,7 @@ namespace TP2324.Controllers
                 return NotFound();
             }
 
-            var home = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District)
+            var home = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (home == null)
             {
@@ -104,6 +107,9 @@ namespace TP2324.Controllers
             var districts = _context.Districts.Select(c => c.Name).Distinct().ToList();
             ViewBag.HomeDistrict = new SelectList(districts);
 
+            var companies = _context.Companies.Select(c => c.Name).Distinct().ToList();
+            ViewBag.HomeCompany = new SelectList(companies);
+
             if (string.IsNullOrWhiteSpace(TextoAPesquisar))
             {
 
@@ -113,6 +119,7 @@ namespace TP2324.Controllers
                    .Include(m => m.Category)
                    .Include(m => m.typeResidence)
                    .Include(m => m.District)
+                   .Include(m => m.Company)
                    .OrderBy(c => c.Category.Name)
                    .ToListAsync();
                 }
@@ -122,6 +129,7 @@ namespace TP2324.Controllers
                     .Include(m => m.Category)
                     .Include(m => m.typeResidence)
                     .Include(m => m.District)
+                    .Include(m => m.Company)
                     .Where(c =>
                         (c.typeResidence != null && c.typeResidence.Name.Contains(TipoResidenciaSelecionado)))
                     .ToListAsync();
@@ -134,6 +142,7 @@ namespace TP2324.Controllers
                     .Include(m => m.Category)
                     .Include(m => m.typeResidence)
                     .Include(m => m.District)
+                    .Include(m => m.Company)
                     .Where(c =>
                         (c.typeResidence != null && c.Category.Name.Contains(CategoriaSelecinada)))
                     .ToListAsync();
@@ -146,6 +155,7 @@ namespace TP2324.Controllers
                     .Include(m => m.Category)
                     .Include(m => m.typeResidence)
                     .Include(m => m.District)
+                    .Include(m => m.Company)
                     .Where(c =>
                         (c.typeResidence != null && c.MinimumPeriod.ToString().Contains(PeriodoMinimoSelecionado)))
                     .ToListAsync();
@@ -158,6 +168,7 @@ namespace TP2324.Controllers
                     .Include(m => m.Category)
                     .Include(m => m.typeResidence)
                     .Include(m => m.District)
+                    .Include(m => m.Company)
                     .Where(c =>
                         (c.typeResidence != null && c.District.Name.Contains(LocalizacaoSelecionada)))
                     .ToListAsync();
@@ -173,6 +184,7 @@ namespace TP2324.Controllers
                     .Include(m => m.Category)
                     .Include(m => m.typeResidence)
                     .Include(m => m.District)
+                    .Include(m => m.Company)
                     .Where(c =>
                         (c.typeResidence != null && c.typeResidence.Name.Contains(TextoAPesquisar)) ||
                         c.Description.Contains(TextoAPesquisar) ||
@@ -204,34 +216,37 @@ namespace TP2324.Controllers
             var districts = _context.Districts.Select(c => c.Name).Distinct().ToList();
             ViewBag.HomeDistrict = new SelectList(districts);
 
+            var companies = _context.Companies.Select(c => c.Name).Distinct().ToList();
+            ViewBag.HomeCompany = new SelectList(companies);
+
             if (string.IsNullOrEmpty(pesquisaHabitacao.TextoAPesquisar))
             {
                 if (string.IsNullOrEmpty(pesquisaHabitacao.TipoResidenciaSelecionado) && string.IsNullOrEmpty(pesquisaHabitacao.CategoriaSelecinada) && string.IsNullOrEmpty(pesquisaHabitacao.PeriodoMinimoSelecionado) && string.IsNullOrEmpty(pesquisaHabitacao.LocalizacaoSelecionada))
                 {
-                    pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).OrderBy(c => c.Category.Name).ToListAsync();
+                    pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company).OrderBy(c => c.Category.Name).ToListAsync();
                     pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
                 }
                 else if(!string.IsNullOrEmpty(pesquisaHabitacao.TipoResidenciaSelecionado))
                 {
-                    pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District)
+                    pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company)
                     .Where(e => e.typeResidence.Name.Contains(pesquisaHabitacao.TipoResidenciaSelecionado)).OrderBy(c => c.typeResidence.Name).ToListAsync();
                     pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
                 }
                 else if (!string.IsNullOrEmpty(pesquisaHabitacao.CategoriaSelecinada))
                 {
-                    pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District)
+                    pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company)
                     .Where(e => e.Category.Name.Contains(pesquisaHabitacao.CategoriaSelecinada)).OrderBy(c => c.typeResidence.Name).ToListAsync();
                     pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
                 }
                 else if (!string.IsNullOrEmpty(pesquisaHabitacao.PeriodoMinimoSelecionado))
                 {
-                    pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District)
+                    pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company)
                     .Where(e => e.MinimumPeriod.ToString().Contains(pesquisaHabitacao.PeriodoMinimoSelecionado)).OrderBy(c => c.typeResidence.Name).ToListAsync();
                     pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
                 }
                 else if (!string.IsNullOrEmpty(pesquisaHabitacao.LocalizacaoSelecionada))
                 {
-                    pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District)
+                    pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company)
                     .Where(e => e.District.Name.Contains(pesquisaHabitacao.LocalizacaoSelecionada)).OrderBy(c => c.typeResidence.Name).ToListAsync();
                     pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
                 }
@@ -240,7 +255,7 @@ namespace TP2324.Controllers
             }
             else
             {
-                pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District)
+                pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company)
                     .Where(e => e.typeResidence.Name.Contains(pesquisaHabitacao.TextoAPesquisar) ||
                                 e.Description.Contains(pesquisaHabitacao.TextoAPesquisar) ||
                                 e.PriceToRent.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
@@ -261,6 +276,7 @@ namespace TP2324.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
             ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name");
             ViewData["DistrictId"] = new SelectList(_context.Districts, "Id", "Name");
+            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
             return View();
         }
 
@@ -271,13 +287,14 @@ namespace TP2324.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Client")]
-        public async Task<IActionResult> Create([Bind("Id,TypeResidenceId,CategoryId,DistrictId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,MinimumPeriod,Available,ImgUrl,Ratings")] Home home)
+        public async Task<IActionResult> Create([Bind("Id,TypeResidenceId,CategoryId,DistrictId,CompanyId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,MinimumPeriod,Available,ImgUrl,Ratings")] Home home)
         {
             ModelState.Remove(nameof(home.Category));
             ModelState.Remove(nameof(home.typeResidence));
             ModelState.Remove(nameof(home.Rentings));
             ModelState.Remove(nameof(home.District));
-            
+            ModelState.Remove(nameof(home.Company));
+
 
 
             if (ModelState.IsValid)
@@ -289,6 +306,7 @@ namespace TP2324.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", home.CategoryId);
             ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name", home.TypeResidenceId);
             ViewData["DistrictId"] = new SelectList(_context.Districts, "Id", "Name", home.DistrictId);
+            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", home.CompanyId);
             return View(home);
         }
 
@@ -311,6 +329,7 @@ namespace TP2324.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", home.CategoryId);
             ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name", home.TypeResidenceId);
             ViewData["DistrictId"] = new SelectList(_context.Districts, "Id", "Name", home.DistrictId);
+            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", home.CompanyId);
 
             return View(home);
         }
@@ -320,7 +339,7 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TypeResidenceId,CategoryId,DistrictId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,BeginDate,EndDate,MinimumPeriod,Available,ImgUrl")] Home home)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TypeResidenceId,CategoryId,DistrictId,CompanyId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,BeginDate,EndDate,MinimumPeriod,Available,ImgUrl")] Home home)
         {
             if (id != home.Id)
             {
@@ -331,6 +350,7 @@ namespace TP2324.Controllers
             ModelState.Remove(nameof(home.typeResidence));
             ModelState.Remove(nameof(home.District));
             ModelState.Remove(nameof(home.Rentings));
+            ModelState.Remove(nameof(home.Company));
 
             if (ModelState.IsValid)
             {

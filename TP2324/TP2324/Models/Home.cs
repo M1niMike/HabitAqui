@@ -72,6 +72,11 @@ namespace TP2324.Models
         [Display(Name = "Distrito da habitação")]
         public District District { get; set; }
 
+        [Display(Name = "Locador/Empresa")]
+        public int? CompanyId { get; set; }
+        [Display(Name = "Locador/Empresa da habitação")]
+        public Company Company { get; set; }
+
         //Relacionamento de 1:n entre Habitação(Home) e Arrendamentos(Rentings)
         public List<Renting> Rentings { get; set; }
 

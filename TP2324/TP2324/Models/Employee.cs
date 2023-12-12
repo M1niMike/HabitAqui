@@ -11,8 +11,8 @@ namespace TP2324.Models
 
         //RELACIONAMENTOS
 
-        public string? companyId { get; set; }
-        public Company company { get; set; }
+        public int? CompanyId { get; set; }
+        public Company Company { get; set; }
 
         public string? ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }

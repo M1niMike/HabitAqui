@@ -1,14 +1,13 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using TP2324.Models;
 
 namespace TP2324.ViewModels
 {
-    public class CreateCompanyViewModel
+    public class ManagerAreaViewModel
     {
-        public Company Company { get; set; }
+        public Manager? Manager { get; set; }
 
-        public List<Company>? companiesList { get; set; }
+        //public List<Company>? companiesList { get; set; }
 
 
         [Display(Name = "Primeiro nome", Prompt = "O primeiro nome")]
@@ -26,10 +25,5 @@ namespace TP2324.ViewModels
         [Display(Name = "Senha", Prompt = "Introduza uma senha")]
         [Required(ErrorMessage = "Introduza uma senha")]
         public string Password { get; set; }
-
-        public string? Name { get; set; }
-        public string? TextoAPesquisar { get; set; }
-        public string? Ordenacao { get; set; }
-
     }
 }

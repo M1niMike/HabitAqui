@@ -127,9 +127,9 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Funcionários</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Lista dos Funcionários</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="ManagerArea" asp-action="Index">Lista dos Funcionários</a>
                                         <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Adicionar funcionário</a>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Adicionar gestor</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="ManagerArea" asp-action="CreateManager">Adicionar gestor</a>
                                     </div>
                                 </li>
 
@@ -154,6 +154,31 @@
                                     </div>
                                 </li>
 
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Perfil</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+                                        <a>
+                                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                                <button class="dropdown-item " type="submit" class="nav-link btn btn-link dropdown-item">Logout</button>
+                                            </form>
+                                        </a>
+                                    </div>
+                                </li>
+                            }
+                            else if (User.IsInRole("Employee"))
+                            {
+
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Habitações</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" asp-area="" asp-controller="HomesController" asp-action="Index">Lista das habitações</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="HomesController" asp-action="Create">Adicionar</a>
+                                    </div>
+                                </li>
+
+                               
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Perfil</a>
                                     <div class="dropdown-menu">
