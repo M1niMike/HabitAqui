@@ -1,9 +1,12 @@
 ﻿@model TP2324.Models.Home
 
 @{
-    ViewData["Title"] = "CreateHomes";
+    ViewData["Title"] = "HomesEdit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+
+
 <html>
 <body>
 
@@ -13,8 +16,8 @@
             <div class="row">
                 <div class="col-md-12 col-lg-8">
                     <div class="title-single-box">
-                        <h1 class="title-single">Adicionar habitação</h1>
-                        <span class="color-text-a">Adicione uma habitação</span>
+                        <h1 class="title-single">Editar</h1>
+                        <span class="color-text-a">Edite a habitação</span>
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-4">
@@ -24,7 +27,7 @@
                                 <a href="#">Pagina principal</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Nossas habitações / Adicionar
+                                Habitações / Lista de habitações / Editar
                             </li>
                         </ol>
                     </nav>
@@ -39,7 +42,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <form asp-action="CreateHomes" enctype="multipart/form-data">
+                <form asp-action="HomesEdit" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
                     <div class="mb-3">
@@ -53,8 +56,8 @@
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="PriceToRent" class="form-label">Preço para Alugar</label>
-                        <input asp-for="PriceToRent" class="form-control" />
+                        <label asp-for="PriceToRent" class="form-label">Preço para arrendar</label>
+                        <input type="decimal" step="any" asp-for="PriceToRent" class="form-control"/>
                         <span asp-validation-for="PriceToRent" class="text-danger"></span>
                     </div>
 
@@ -105,15 +108,16 @@
                     </div>
 
 
+                    <div class="mb-3 form-check">
+                        <input class="form-check-input" asp-for="Available" />
+                        <label class="form-check-label" for="Available">Disponível</label>
+                    </div>
+
                     <div class="mb-3">
                         <label asp-for="ImageFile" class="form-label"></label>
                         <input asp-for="ImageFile" type="file" class="form-control" />
                     </div>
-
-                    @* <div class="mb-3 form-check">
-                        <input class="form-check-input" asp-for="Available" />
-                        <label class="form-check-label" for="Available">Disponível</label>
-                    </div> *@
+                    
 
                     <div class="mb-3">
                         <button type="submit" class="btn btn-c">Adicionar</button>
@@ -129,7 +133,6 @@
 
 </body>
 </html>
-
 
 @section Scripts {
     @{

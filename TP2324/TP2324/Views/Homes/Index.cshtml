@@ -70,67 +70,71 @@
                 </div>
                 @foreach (Home c in Model.Homeslist)
                 {
-                    <div class="col-md-4">
-                        <div class="card-box-a card-shadow">
-                            <div class="img-box-a">
-                                <img src="~/img/@c.ImgUrl" alt="" class="img-a img-fluid">
-                            </div>
-                            <div class="card-overlay">
-                                <div class="card-overlay-a-content">
-                                    <div class="card-header-a">
-                                        <h2 class="card-title-a">
-                                            <span class="color-b"> @c.typeResidence.Name </span>
-                                            <br> @c.Address,
-                                            <br> @c.District.Name
-                                        </h2>
-                                    </div>
-                                    <div class="card-body-a">
-                                        <div class="price-box d-flex">
-                                            <span class="price-a">€ @c.PriceToRent</span>
+                    @if (c.Available)
+                    {
+                        <div class="col-md-4">
+                            <div class="card-box-a card-shadow">
+                                <div class="img-box-a">
+                                    <img src="~/img/@c.ImgUrl" alt="" class="img-a img-fluid">
+                                </div>
+                                <div class="card-overlay">
+                                    <div class="card-overlay-a-content">
+                                        <div class="card-header-a">
+                                            <h2 class="card-title-a">
+                                                <span class="color-b"> @c.typeResidence.Name </span>
+                                                <br> @c.Address,
+                                                <br> @c.District.Name
+                                            </h2>
                                         </div>
-                                        <a asp-action="Details" asp-route-id=@c.Id class="link-a">
-                                            Saber mais
-                                            <span class="bi bi-chevron-right"></span>
-                                        </a>
-                                    </div>
-                                    <div class="card-footer-a">
-                                        <ul class="card-info d-flex justify-content-around">
-                                            <li>
-                                                <h4 class="card-info-title">Categoria</h4>
-                                                <span>@c.Category.Name</span>
-                                            </li>
-                                            <li>
-                                                <h4 class="card-info-title">Período minímo</h4>
-                                                <span>
-                                                    @c.MinimumPeriod dia(s)
-                                                </span>
-                                            </li>
-                                            <li>
-                                                <h4 class="card-info-title">Locador</h4>
-                                                <span>@c.Company.Name</span>
-                                            </li>
-                                            @if (c.Ratings == null)
-                                            {
+                                        <div class="card-body-a">
+                                            <div class="price-box d-flex">
+                                                <span class="price-a">€ @c.PriceToRent</span>
+                                            </div>
+                                            <a asp-action="Details" asp-route-id=@c.Id class="link-a">
+                                                Saber mais
+                                                <span class="bi bi-chevron-right"></span>
+                                            </a>
+                                        </div>
+                                        <div class="card-footer-a">
+                                            <ul class="card-info d-flex justify-content-around">
                                                 <li>
-                                                    <h4 class="card-info-title">Avaliação</h4>
-                                                    <span>Por avaliar</span>
+                                                    <h4 class="card-info-title">Categoria</h4>
+                                                    <span>@c.Category.Name</span>
                                                 </li>
-                                            }
-                                            else
-                                            {
                                                 <li>
-                                                    <h4 class="card-info-title">Avaliação</h4>
-                                                    <span>@c.Ratings</span>
+                                                    <h4 class="card-info-title">Período minímo</h4>
+                                                    <span>
+                                                        @c.MinimumPeriod dia(s)
+                                                    </span>
                                                 </li>
-                                            }
+                                                <li>
+                                                    <h4 class="card-info-title">Locador</h4>
+                                                    <span>@c.Company.Name</span>
+                                                </li>
+                                                @if (c.Ratings == null)
+                                                {
+                                                    <li>
+                                                        <h4 class="card-info-title">Avaliação</h4>
+                                                        <span>Por avaliar</span>
+                                                    </li>
+                                                }
+                                                else
+                                                {
+                                                    <li>
+                                                        <h4 class="card-info-title">Avaliação</h4>
+                                                        <span>@c.Ratings</span>
+                                                    </li>
+                                                }
 
-                                        </ul>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
+                    }
+                    
+                     
                 }
             </div>
         }

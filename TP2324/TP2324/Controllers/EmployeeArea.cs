@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,18 +19,21 @@ namespace TP2324.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         //private readonly ILogger<RegisterModel> _logger;
 
         public EmployeeArea(
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IUserStore<ApplicationUser> userStore,
-            ApplicationDbContext context)
+            ApplicationDbContext context,
+            IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _context = context;
             _userStore = userStore;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> HomesList()
@@ -81,7 +85,7 @@ namespace TP2324.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize(Roles = "Employee")]
-        public async Task<IActionResult> CreateHomes([Bind("Id,TypeResidenceId,CategoryId,DistrictId,CompanyId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,MinimumPeriod,Available,ImgUrl,Ratings")] Home home)
+        public async Task<IActionResult> CreateHomes([Bind("Id,TypeResidenceId,CategoryId,DistrictId,CompanyId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,MinimumPeriod,Available,ImgUrl,Ratings,ImageFile")] Home home)
         {
             
             ModelState.Remove(nameof(home.Category));
@@ -101,7 +105,6 @@ namespace TP2324.Controllers
 
             try
             {
-                
 
                 if (employee == null)
                 {
@@ -114,24 +117,13 @@ namespace TP2324.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    //var newHome = new Home
-                    //{
-                    //    PriceToRent = viewModel.Price,
-                    //    NumWC = viewModel.numWc,
-                    //    Address = viewModel.Address,
-                    //    SquareFootage = viewModel.SquareFootage,
-                    //    NumParks = viewModel.numParks,
-                    //    Wifi = viewModel.Wifi,
-                    //    Description = viewModel.Description,
-                    //    MinimumPeriod = viewModel.minimumPeriod,
-                    //    Ratings = viewModel.ratings,
-                    //    Available = true,
-                    //    ImgUrl = viewModel.ImgUrl,
-                    //    CategoryId = viewModel.categoryId,
-                    //    TypeResidenceId = viewModel.typeResidenceId,
-                    //    DistrictId = viewModel.districtId,
-                    //    CompanyId = employee.Company.Id
-                    //};
+
+                    if (home.ImageFile != null)
+                    {
+
+                        // Processar o upload da imagem
+                        home.ImgUrl = await UploadImage(home.ImageFile);
+                    }
 
                     // Atualiza apenas as propriedades desejadas
                     home.CompanyId = company.Id;
@@ -165,5 +157,224 @@ namespace TP2324.Controllers
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", home.CompanyId);
             return View(employee);
         }
+
+
+        // GET: Homes/Edit/5
+        public async Task<IActionResult> HomesEdit(int? id)
+        {
+            if (id == null || _context.Homes == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
+            ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name");
+            ViewData["DistrictId"] = new SelectList(_context.Districts, "Id", "Name");
+            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
+
+            var home = await _context.Homes.FindAsync(id);
+            if (home == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(home);
+        }
+
+
+        // POST: Homes/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> HomesEdit(int id, [Bind("Id,TypeResidenceId,CategoryId,DistrictId,CompanyId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,BeginDate,EndDate,MinimumPeriod,Available,ImgUrl,Ratings,ImageFile")] Home home)
+        {
+            if (id != home.Id)
+            {
+                return NotFound();
+            }
+
+            ModelState.Remove(nameof(home.Category));
+            ModelState.Remove(nameof(home.typeResidence));
+            ModelState.Remove(nameof(home.Rentings));
+            ModelState.Remove(nameof(home.District));
+            ModelState.Remove(nameof(home.Company));
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        var existingHome = await _context.Homes.FindAsync(id);
+                        if (home == null)
+                        {
+                            return NotFound();
+                        }
+
+                        //Atualiza apenas as propriedades desejadas
+                        existingHome.TypeResidenceId = home.TypeResidenceId;
+                        existingHome.CategoryId = home.CategoryId;
+                        existingHome.DistrictId = home.DistrictId;
+                        existingHome.PriceToRent = home.PriceToRent;
+                        existingHome.MinimumPeriod = home.MinimumPeriod;
+                        existingHome.NumWC = home.NumWC;
+                        existingHome.Address = home.Address;
+                        existingHome.SquareFootage = home.SquareFootage;
+                        existingHome.NumParks = home.NumParks;
+                        existingHome.Description = home.Description;
+                        existingHome.Wifi = home.Wifi;
+                        existingHome.Available = home.Available;
+
+
+                        if (home.ImageFile != null)
+                        {
+                            // Processar o upload da imagem
+                            existingHome.ImgUrl = await UploadImage(home.ImageFile);
+                        }
+
+
+                        _context.Update(existingHome);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException ex)
+                    {
+                        if (!HomesExists(id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Concurrency exception: {ex.Message}");
+                            throw;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Exception: {ex.Message}");
+                        throw;
+                    }
+                    return RedirectToAction(nameof(HomesList));
+                }
+                else
+                {
+                    // Model não é válido - exibir todos os erros
+                    foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        Console.WriteLine("Erro no modelo: " + modelError.ErrorMessage);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Imprime detalhes da exceção
+                Console.WriteLine("Exceção: " + ex.Message);
+                ModelState.AddModelError(string.Empty, "Exceção: " + ex.Message);
+            }
+
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", home.CategoryId);
+            ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name", home.TypeResidenceId);
+            ViewData["DistrictId"] = new SelectList(_context.Districts, "Id", "Name", home.DistrictId);
+            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", home.CompanyId);
+            return View(home);
+
+        }
+
+
+
+        // GET: Homes/Details/5
+        public async Task<IActionResult> HomesDetails(int? id)
+        {
+            if (id == null || _context.Homes == null)
+            {
+                return NotFound();
+            }
+
+            var home = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (home == null)
+            {
+                return NotFound();
+            }
+
+            return View(home);
+        }
+
+
+
+        private bool HomesExists(int id)
+        {
+            return (_context.Homes?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+
+        // GET: Homes/Delete/5
+        public async Task<IActionResult> DeleteHomes(int? id)
+        {
+            if (id == null || _context.Homes == null)
+            {
+                return NotFound();
+            }
+
+            var home = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (home == null)
+            {
+                return NotFound();
+            }
+
+            return View(home);
+        }
+
+        // POST: Homes/Delete/5
+        [HttpPost, ActionName("DeleteHomes")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (_context.Homes == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Homes'  is null.");
+            }
+            var home = await _context.Homes.FindAsync(id);
+            if (home != null)
+            {
+                _context.Homes.Remove(home);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(HomesList));
+        }
+
+        private async Task<string> UploadImage(IFormFile imageFile)
+        {
+            if (imageFile == null || imageFile.Length == 0)
+                return null;
+
+            // Diretório para salvar as imagens (assumindo que 'img' seja o diretório virtual para as imagens)
+            var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img");
+
+            // Garante que o diretório de destino existe, caso contrário, cria-o
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }
+
+            // Gera um nome de arquivo único para evitar colisões
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+
+            // Caminho completo para o arquivo no sistema de arquivos
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            // Salva a imagem no sistema de arquivos
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+
+            // Retorna a URL da imagem (assumindo que 'img' seja o diretório virtual para as imagens)
+            return uniqueFileName;
+        }
+
     }
 }

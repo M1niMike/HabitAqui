@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TP2324.Models
 {
@@ -45,8 +46,12 @@ namespace TP2324.Models
         [Display(Name = "Está Disponível?")]
         public bool Available { get; set; }
 
+        [Display(Name = "Imagem")]
         public string? ImgUrl { get; set; }
 
+        [NotMapped] // Esta propriedade não será mapeada para o banco de dados
+        [Display(Name = "Carregar Imagem")]
+        public IFormFile? ImageFile { get; set; }
 
 
 

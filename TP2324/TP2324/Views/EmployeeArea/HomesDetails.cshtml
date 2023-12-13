@@ -1,4 +1,4 @@
-@model TP2324.Models.Home
+Ôªø@model TP2324.Models.Home
 
 @{
     ViewData["Title"] = "HomesDetails";
@@ -13,7 +13,7 @@
             <div class="col-md-12 col-lg-8">
                 <div class="title-single-box">
                     <h1 class="title-single">Detalhes</h1>
-                    <span class="color-text-a">Detalhes da habitaÁ„o</span>
+                    <span class="color-text-a">Detalhes da habita√ß√£o</span>
                 </div>
             </div>
             <div class="col-md-12 col-lg-4">
@@ -23,7 +23,7 @@
                             <a href="#">Pagina principal</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            HabitaÁıes/Lista das habitaÁıes/Detalhes
+                            Habita√ß√µes/Lista das habita√ß√µes/Detalhes
                         </li>
                     </ol>
                 </nav>
@@ -52,10 +52,10 @@
                 <dt class="col-sm-4">Distrito:</dt>
                 <dd class="col-sm-8">@Html.DisplayFor(model => model.District.Name)</dd>
 
-                <dt class="col-sm-4">PreÁo por dia:</dt>
-                <dd class="col-sm-8">Ä @Html.DisplayFor(model => model.PriceToRent)</dd>
+                <dt class="col-sm-4">Pre√ßo por dia:</dt>
+                <dd class="col-sm-8">‚Ç¨ @Html.DisplayFor(model => model.PriceToRent)</dd>
 
-                <dt class="col-sm-4">PerÌodo mÌnimo (Dia):</dt>
+                <dt class="col-sm-4">Per√≠odo m√≠nimo (Dia):</dt>
                 <dd class="col-sm-8">@Html.DisplayFor(model => model.MinimumPeriod)</dd>
 
                 <dt class="col-sm-4">Banheiros:</dt>
@@ -64,14 +64,14 @@
                 <dt class="col-sm-4">Estacionamentos:</dt>
                 <dd class="col-sm-8">@Html.DisplayFor(model => model.NumParks)</dd>
 
-                <dt class="col-sm-4">¡rea (m≤):</dt>
+                <dt class="col-sm-4">√Årea (m¬≤):</dt>
                 <dd class="col-sm-8">@Html.DisplayFor(model => model.SquareFootage)</dd>
 
-                <dt class="col-sm-4">AvaliaÁ„o:</dt>
+                <dt class="col-sm-4">Avalia√ß√£o:</dt>
                 <dd class="col-sm-8">
                     @if (Model.Ratings == null)
                     {
-                        <span>Sem avaliaÁ„o</span>
+                        <span>Sem avalia√ß√£o</span>
                     }
                     else
                     {
@@ -83,11 +83,11 @@
                 <dd class="col-sm-8">
                     @if (Model.Available)
                     {
-                        <span class="text-success">DisponÌvel</span>
+                        <span class="text-success">Dispon√≠vel</span>
                     }
                     else
                     {
-                        <span class="text-danger">IndisponÌvel</span>
+                        <span class="text-danger">Indispon√≠vel</span>
                     }
                 </dd>
 
@@ -95,37 +95,40 @@
                 <dd class="col-sm-8">
                     @if (Model.Wifi)
                     {
-                        <span class="text-success">DisponÌvel</span>
+                        <span class="text-success">Dispon√≠vel</span>
                     }
                     else
                     {
-                        <span class="text-danger">IndisponÌvel</span>
+                        <span class="text-danger">Indispon√≠vel</span>
                     }
                 </dd>
 
-                <dt class="col-sm-4">DescriÁ„o:</dt>
+                <dt class="col-sm-4">Descri√ß√£o:</dt>
                 <dd class="col-sm-8">@Html.DisplayFor(model => model.Description)</dd>
 
                 <dt class="col-sm-4">Imagem:</dt>
                 <dd class="col-sm-8">
                     @if (!string.IsNullOrEmpty(Model.ImgUrl))
                     {
-                        <img src="~/img/@Model.ImgUrl" alt="" class="img-a img-fluid">
+                        <img src = "~/img/@Model.ImgUrl" alt = "" class="img-a img-fluid">
                     }
                     else
                     {
-                        <span>Sem imagem disponÌvel</span>
+                        <span>Sem imagem dispon√≠vel</span>
                     }
                 </dd>
             </dl>
         </div>
     </div>
-
+   
     <div class="row">
         <div class="col-md-8">
             <div>
-                @* <a class="btn btn-c" asp-action="HomesEdit" asp-route-id="@Model?.Id">Editar</a> *@
-                <a class="btn btn-c" asp-action="Index">Voltar ‡ lista</a>
+                <a class="btn btn-c" asp-action="HomesEdit" asp-route-id="@Model?.Id">Editar</a>
+                <a asp-controller="EmployeeArea" asp-action="DeleteHomes" asp-route-Id="@Model?.Id">
+                    <button type="submit" class="btn btn-c">Apagar</button>
+                </a>
+                <a class="btn btn-c" asp-action="HomesList">Voltar √† lista</a>
             </div>
         </div>
     </div>

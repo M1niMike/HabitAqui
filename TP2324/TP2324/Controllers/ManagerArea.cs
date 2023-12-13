@@ -143,7 +143,8 @@ namespace TP2324.Controllers
                             {
                                 Name = $"{model.FirstName} {model.LastName}",
                                 CompanyId = manager.CompanyId,  // Usa o mesmo CompanyId do manager atual
-                                ApplicationUserId = newManager.Id  // Associa ao novo usuário
+                                ApplicationUserId = newManager.Id,
+                                Available = true
                             };
 
                             _context.Managers.Add(managerClass);
@@ -151,7 +152,7 @@ namespace TP2324.Controllers
 
                             Console.WriteLine("Contador: " + manager.Company.Managers.Count());
 
-                            return RedirectToAction(nameof(Index));
+                            return RedirectToAction(nameof(ManagerList));
                         }
                         else
                         {
