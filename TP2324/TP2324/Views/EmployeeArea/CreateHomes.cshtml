@@ -1,0 +1,132 @@
+﻿@model TP2324.Models.Home
+
+@{
+    ViewData["Title"] = "CreateHomes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<html>
+<body>
+
+    <!-- ======= Intro Single ======= -->
+    <section class="intro-single">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-8">
+                    <div class="title-single-box">
+                        <h1 class="title-single">Adicionar habitação</h1>
+                        <span class="color-text-a">Adicione uma habitação</span>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-4">
+                    <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="#">Pagina principal</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                Nossas habitações / Adicionar
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section><!-- End Intro Single-->
+
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <form asp-action="CreateHomes">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="TypeResidenceId" class="form-label">Tipo de Residência</label>
+                        <select asp-for="TypeResidenceId" class="form-select" asp-items="ViewBag.TypeResidenceId"></select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CategoryId" class="form-label">Categoria</label>
+                        <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId"></select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PriceToRent" class="form-label">Preço para Alugar</label>
+                        <input asp-for="PriceToRent" class="form-control" />
+                        <span asp-validation-for="PriceToRent" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="MinimumPeriod" class="form-label">Período Mínimo</label>
+                        <input asp-for="MinimumPeriod" class="form-control" />
+                        <span asp-validation-for="MinimumPeriod" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="NumWC" class="form-label">Número de Banheiros</label>
+                        <input asp-for="NumWC" class="form-control" />
+                        <span asp-validation-for="NumWC" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Address" class="form-label">Endereço</label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DistrictId" class="form-label">Distrito:</label>
+                        <select asp-for="DistrictId" class="form-select" asp-items="ViewBag.DistrictId"></select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="SquareFootage" class="form-label">Área em Metros Quadrados</label>
+                        <input asp-for="SquareFootage" class="form-control" />
+                        <span asp-validation-for="SquareFootage" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="NumParks" class="form-label">Número de Estacionamentos</label>
+                        <input asp-for="NumParks" class="form-control" />
+                        <span asp-validation-for="NumParks" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label">Descrição</label>
+                        <textarea rows="5" cols="5" asp-for="Description" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input class="form-check-input" asp-for="Wifi" />
+                        <label class="form-check-label" for="Wifi">Wi-Fi</label>
+                    </div>
+
+                    @* <div class="mb-3 form-check">
+                        <input class="form-check-input" asp-for="Available" />
+                        <label class="form-check-label" for="Available">Disponível</label>
+                    </div> *@
+
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-c">Adicionar</button>
+                        <a asp-action="HomesList" class="btn btn-c">Voltar</a>
+                    </div>
+                </form>
+                <br />
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+</html>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

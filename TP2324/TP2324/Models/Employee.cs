@@ -5,7 +5,7 @@ namespace TP2324.Models
     {
         public int Id { get; set; } // Primary key
         public string Name { get; set; }
-        public bool? Available { get; set; }
+        public bool Available { get; set; }
 
 
 

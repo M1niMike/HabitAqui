@@ -270,7 +270,7 @@ namespace TP2324.Controllers
 
 
         // GET: Homes/Create
-        [Authorize(Roles = "Client")]
+        [Authorize(Roles = "Employee")]
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
@@ -286,7 +286,7 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Client")]
+        [Authorize(Roles = "Employee")]
         public async Task<IActionResult> Create([Bind("Id,TypeResidenceId,CategoryId,DistrictId,CompanyId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,MinimumPeriod,Available,ImgUrl,Ratings")] Home home)
         {
             ModelState.Remove(nameof(home.Category));

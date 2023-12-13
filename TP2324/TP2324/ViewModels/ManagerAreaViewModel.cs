@@ -26,5 +26,6 @@ namespace TP2324.ViewModels
         [Display(Name = "Senha", Prompt = "Introduza uma senha")]
         [Required(ErrorMessage = "Introduza uma senha")]
         public string Password { get; set; }
+
     }
 }

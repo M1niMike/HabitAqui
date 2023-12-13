@@ -1,0 +1,136 @@
+﻿@model List<Home>
+
+@{
+    ViewData["Title"] = "HomesList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Habitações</h1>
+                    <span class="color-text-a">Subtitulo</span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                           Habitações
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section><!-- End Intro Single-->
+<!-- ======= Property Grid ======= -->
+<section class="property-grid grid">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <a class="btn btn-c mb-3" asp-action="Create">Adicionar Habitação</a>
+               @*  <div class="grid-option" style="display: flex; justify-content: space-between;">
+                    <div class="dropdown-typeResidence">
+                        <form asp-controller="Homes" asp-action="Index" method="get">
+                            <label class="dropdown-label" for="homeTypeDropdown">Selecione o Distrito:</label>
+                            <select class="dropdown-box" id="homeTypeDropdown" asp-for="LocalizacaoSelecionada" asp-items="ViewBag.HomeDistrict" onchange="this.form.submit()">
+                                <option value="">Todos</option>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="dropdown-typeResidence">
+                        <form asp-controller="Homes" asp-action="Index" method="get">
+                            <label class="dropdown-label" for="homeTypeDropdown">Selecione o Tipo:</label>
+                            <select class="dropdown-box" id="homeTypeDropdown" asp-for="TextoAPesquisar" asp-items="ViewBag.HomeTypes" onchange="this.form.submit()">
+                                <option value="">Todos</option>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="dropdown-priceFilter">
+                        <form asp-controller="Homes" asp-action="Index" method="get">
+                            <label class="dropdown-label" for="ordenacao">Ordenar por:</label>
+                            <select class="dropdown-box" id="ordenacao" asp-for="Ordenacao" onchange="this.form.submit()">
+                                <option value="MaiorPreco">Maior preço</option>
+                                <option value="MenorPreco">Menor preço</option>
+                            </select>
+                        </form>
+                    </div>
+                </div> *@
+            </div>
+            @foreach (var  homes in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card-box-a card-shadow">
+                        <div class="img-box-a">
+                            <img src="~/img/@homes.ImgUrl" alt="" class="img-a img-fluid">
+                        </div>
+                        <div class="card-overlay">
+                            <div class="card-overlay-a-content">
+                                <div class="card-header-a">
+                                    <h2 class="card-title-a">
+                                        <span class="color-b"> @homes.typeResidence.Name </span>
+                                        <br> @homes.Address,
+                                        <br> @homes.District.Name
+                                    </h2>
+                                </div>
+                                <div class="card-body-a">
+                                    <div class="price-box d-flex">
+                                        <span class="price-a">€ @homes.PriceToRent</span>
+                                    </div>
+                                    <a asp-action="Details" asp-route-id=@homes.Id class="link-a">
+                                        Saber mais
+                                        <span class="bi bi-chevron-right"></span>
+                                    </a>
+                                </div>
+                                <div class="card-footer-a">
+                                    <ul class="card-info d-flex justify-content-around">
+                                        <li>
+                                            <h4 class="card-info-title">Categoria</h4>
+                                            <span>@homes.Category.Name</span>
+                                        </li>
+                                        <li>
+                                            <h4 class="card-info-title">Período minímo</h4>
+                                            <span>
+                                                @homes.MinimumPeriod dia(s)
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <h4 class="card-info-title">Locador</h4>
+                                            <span>@homes.Company.Name</span>
+                                        </li>
+                                        @if (homes.Ratings == null)
+                                        {
+                                            <li>
+                                                <h4 class="card-info-title">Avaliação</h4>
+                                                <span>Por avaliar</span>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <h4 class="card-info-title">Avaliação</h4>
+                                                <span>@homes.Ratings</span>
+                                            </li>
+                                        }
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+    
+    </div>
+</section>
+<!-- End Property Grid Single-->

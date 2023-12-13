@@ -317,7 +317,7 @@ namespace TP2324.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool?>("Available")
+                    b.Property<bool>("Available")
                         .HasColumnType("bit");
 
                     b.Property<int?>("CompanyId")
