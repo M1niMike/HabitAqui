@@ -1,7 +1,7 @@
-﻿@model TP2324.Models.Category
+﻿@model TP2324.Models.Manager
 
 @{
-    ViewData["Title"] = "DeleteCatagory";
+    ViewData["Title"] = "ManagerDelete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -34,7 +34,7 @@
 
 <div class="container mt-4">
     <div>
-        <h4>Detalhes da Categoria</h4>
+        <h4>Detalhes do gestor</h4>
         <dl class="row">
             <dt class="col-sm-2 text-muted">Nome:</dt>
             <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
@@ -42,12 +42,27 @@
             <dt class="col-sm-2 text-muted">Estado:</dt>
             <dd class="col-sm-10">@Html.DisplayFor(model => model.Available)</dd>
 
-        <div class="mb-3">
-                <form asp-action="DeleteCategory">
-                <input type="hidden" asp-for="Id" />
-                <button type="submit" class="btn btn-danger">Excluir</button>
-                    <a asp-action="CategoryList" class="btn btn-c">Voltar</a>
-            </form>
-        </div>
+            <div class="mb-3">
+                <form asp-action="ManagerDelete">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                    <a asp-action="ManagerList" class="btn btn-c">Voltar</a>
+                </form>
+            </div>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach (var key in ViewData.ModelState.Keys)
+                        {
+                            foreach (var error in ViewData.ModelState[key].Errors)
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        }
+                    </ul>
+                </div>
+            }
     </div>
 </div>

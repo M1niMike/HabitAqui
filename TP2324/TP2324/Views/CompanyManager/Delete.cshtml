@@ -53,6 +53,21 @@
             <dd class="col-sm-10">@Html.DisplayFor(model => model.EmailDomain)</dd>
         </dl>
 
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var key in ViewData.ModelState.Keys)
+                    {
+                        foreach (var error in ViewData.ModelState[key].Errors)
+                        {
+                            <li>@error.ErrorMessage</li>
+                        }
+                    }
+                </ul>
+            </div>
+        }
+
         <div class="mb-3">
             <form asp-action="Delete">
                 <input type="hidden" asp-for="Id" />

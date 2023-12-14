@@ -1,0 +1,57 @@
+﻿@model TP2324.Models.TypeResidence
+
+@{
+    ViewData["Title"] = "typeResidenceDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Detalhes</h1>
+                    <span class="color-text-a">Detalhes da tipologia</span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Configurações/Tipologia/Detalhes
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Intro Single-->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <dl class="row">
+                <dt class="col-sm-2">Nome:</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
+
+                <dt class="col-sm-2">Estado:</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.Available)</dd>
+
+            </dl>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div>
+                <a class="btn btn-c" asp-action="typeResidenceEdit" asp-route-id="@Model?.Id">Editar</a>
+                <a class="btn btn-c" asp-action="typeResidenceList">Voltar à lista</a>
+            </div>
+        </div>
+    </div>
+</div>

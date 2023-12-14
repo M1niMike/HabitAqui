@@ -1,0 +1,92 @@
+﻿@model IEnumerable<TP2324.Models.District>
+
+@{
+    ViewData["Title"] = "DistrictsList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Distritos</h1>
+                    <span class="color-text-a">Gere os distritos disponíveis na plataforma</span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Configurações/Distritos
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+</section><!-- End Intro Single-->
+
+<div class="container">
+    <div class="col-sm-12">
+        <div class="grid-option mb-3" style="display: flex; justify-content: space-between;">
+            <a class="btn btn-c" asp-action="DistrictsCreate">Adicionar</a>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Nome
+                </th>
+                <th>
+                    Estado
+                </th>
+                <th>
+                    Opções
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+
+                    @if (item.Available)
+                    {
+                        <td>
+                            Ativo
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            Inativo
+                        </td>
+                    }
+
+
+                    <td>
+                        <a asp-action="DistrictsDetails" asp-route-Id="@item.Id">
+                            <button type="submit" class="btn btn-c">Detalhes</button>
+                        </a>
+                        <a asp-action="DistrictsEdit" asp-route-Id="@item.Id">
+                            <button type="submit" class="btn btn-c">Editar</button>
+                        </a>
+                        <a asp-action="DistrictsDelete" asp-route-Id="@item.Id">
+                            <button type="submit" class="btn btn-c">Apagar</button>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+

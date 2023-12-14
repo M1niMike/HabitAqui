@@ -40,6 +40,7 @@
                 <th>Empresa/locador</th>
                 <th>Email</th>
                 <th>Estado</th>
+                <th>Arrendamentos</th>
                 <th>Opções</th>
 
             </tr>
@@ -60,11 +61,12 @@
                         <td> Inativo </td>
 
                     }
+                    <td>@person.Rentings.Count()</td>
                     <td>
                         <a asp-controller="ManagerArea" asp-action="ManagerEdit" asp-route-Id="@person.Id">
                             <button type="submit" class="btn btn-c">Editar</button>
                         </a>
-                        <a asp-controller="" asp-action="" asp-route-Id="@person.Id">
+                        <a asp-controller="ManagerArea" asp-action="ManagerDelete" asp-route-Id="@person.Id">
                             <button type="submit" class="btn btn-c">Apagar</button>
                         </a>
                     </td>

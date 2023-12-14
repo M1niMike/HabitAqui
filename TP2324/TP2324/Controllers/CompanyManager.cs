@@ -99,29 +99,34 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Company,FirstName,LastName,UserName,Password")] CreateCompanyViewModel model)
+        public async Task<IActionResult> Create([Bind("Company,FirstName,LastName,Password")] CreateCompanyViewModel model)
         {
             var company = model.Company;
+
+
+            // Cria um novo usuário
+            var newManager = new ApplicationUser
+            {
+                UserName = $"gestorPrincipal_{model.FirstName}{company.EmailDomain}.com",
+                Email = $"gestorPrincipal_{model.FirstName}{company.EmailDomain}.com",
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+
+            // Verifica se o usuário já existe pelo e-mail
+            var user = await _userManager.FindByEmailAsync(newManager.Email);
+
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    // Verifica se o usuário já existe pelo e-mail
-                    var user = await _userManager.FindByEmailAsync(model.UserName);
-
+                    
                     if (user == null)
                     {
-                        // Cria um novo usuário
-                        var newManager = new ApplicationUser
-                        {
-                            UserName = model.UserName + company.EmailDomain + ".com",
-                            Email = model.UserName + company.EmailDomain + ".com",
-                            FirstName = model.FirstName,
-                            LastName = model.LastName,
-                            EmailConfirmed = true,
-                            PhoneNumberConfirmed = true
-                        };
+                       
 
                         await _userStore.SetUserNameAsync(newManager, newManager.UserName, CancellationToken.None);
                         var identityResult = await _userManager.CreateAsync(newManager, model.Password);
@@ -135,7 +140,8 @@ namespace TP2324.Controllers
                             {
                                 Name = $"{model.FirstName} {model.LastName}",
                                 CompanyId = model.Company.Id,  // Associa à nova empresa
-                                ApplicationUserId = newManager.Id  // Associa ao novo usuário
+                                ApplicationUserId = newManager.Id,  // Associa ao novo usuário
+                                Available = true
                             };
 
                             model.Company.Managers = new List<Manager> { manager };
@@ -268,16 +274,18 @@ namespace TP2324.Controllers
         }
 
 
-        // GET: Homes/Delete/5
+        // GET: Companies/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Companies == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var company = await _context.Companies
+                .Include(c => c.Homes).Include(c => c.Managers).Include(c => c.Employees) 
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (company == null)
             {
                 return NotFound();
@@ -287,23 +295,73 @@ namespace TP2324.Controllers
         }
 
         // POST: Homes/Delete/5
+        // POST: Companies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Companies == null)
+            var company = await _context.Companies
+            .Include(c => c.Homes)
+            .Include(c => c.Managers)
+                .ThenInclude(m => m.ApplicationUser)  // Inclua a propriedade ApplicationUser
+            .Include(c => c.Employees)
+                .ThenInclude(e => e.ApplicationUser)  // Inclua a propriedade ApplicationUser
+            .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (company == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Homes'  is null.");
-            }
-            var company = await _context.Companies.FindAsync(id);
-            if (company != null)
-            {
-                _context.Companies.Remove(company);
+                return NotFound();
             }
 
+            if (company.Homes != null && company.Homes.Count >= 1)
+            {
+                ModelState.AddModelError(string.Empty, "Não é possível excluir a empresa, pois ela possui pelo menos uma habitação.");
+                return View(company);
+            }
+            // Remover o locador
+            var manager = await _context.Managers.FirstOrDefaultAsync(l => l.CompanyId == id);
+
+            var employee = await _context.Employees.FirstOrDefaultAsync(l => l.CompanyId == id);
+
+           
+            ApplicationUser userManager = await _userManager.FindByIdAsync(manager.ApplicationUser.Id); // Usando operadores de navegação segura
+           
+
+            if (company.Employees != null && company.Employees.Count >= 1)
+            {
+                ApplicationUser userEmployee = await _userManager.FindByIdAsync(employee.ApplicationUser.Id); // Substitua pelo campo adequado no seu modelo
+                if (userEmployee != null)
+                {
+                    await _userManager.DeleteAsync(userEmployee);
+                }
+
+                if (employee != null)
+                {
+                    _context.Employees.Remove(employee);
+                }
+            }
+
+
+            if (userManager != null)
+            {
+                await _userManager.DeleteAsync(userManager);
+            }
+
+
+            if (manager != null)
+            {
+                _context.Managers.Remove(manager);
+            }
+
+            
+
+            _context.Companies.Remove(company);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+
+
 
 
     }

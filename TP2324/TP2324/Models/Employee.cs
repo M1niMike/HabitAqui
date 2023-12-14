@@ -17,6 +17,8 @@ namespace TP2324.Models
 
         public string? ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
+
+        public List<Renting> Rentings { get; set; } = new List<Renting>();
     }
 }
 

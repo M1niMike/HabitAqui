@@ -58,11 +58,13 @@
         <thead>
             <tr>
                 <th>Nome</th>
-                <th>Descrição</th>
-                <th>Avaliação</th>
+                @* <th>Descrição</th> *@
+                @* <th>Avaliação</th> *@
                 <th>Estado da subscrição</th>
                 <th>Dominío</th>
                 <th>Gestores</th>
+                <th>Funcionários</th>
+                <th>Habitações</th>
                 <th>Detalhes</th>
                 
             </tr>
@@ -72,8 +74,8 @@
             {
                 <tr>
                     <td>@company.Name</td>
-                    <td>@company.Description</td>
-                    <td>@company.Rating</td>
+                    @* <td>@company.Description</td> *@
+                    @* <td>@company.Rating</td> *@
                     @if (company.State)
                     {
                         <td>Ativo</td>
@@ -84,6 +86,8 @@
                     }
                     <td>@company.EmailDomain</td>
                     <td>@company.Managers.Count()</td>
+                    <td>@company.Employees.Count()</td>
+                    <td>@company.Homes.Count()</td>
                     
                     <td>
                         <a asp-controller="CompanyManager" asp-action="Details" asp-route-Id="@company.Id">

@@ -1,17 +1,18 @@
-﻿@model TP2324.Models.Category
+﻿@model TP2324.Models.District
 
 @{
-    ViewData["Title"] = "EditCategory";
+    ViewData["Title"] = "DistrictsCreate";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <!-- ======= Intro Single ======= -->
 <section class="intro-single">
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-lg-8">
                 <div class="title-single-box">
-                    <h1 class="title-single">Editar</h1>
-                    <span class="color-text-a">Edite as configurações da categoria</span>
+                    <h1 class="title-single">Adicionar Distritos</h1>
+                    <span class="color-text-a">Adicione distritos a plataforma</span>
                 </div>
             </div>
             <div class="col-md-12 col-lg-4">
@@ -21,7 +22,7 @@
                             <a href="#">Pagina principal</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            Configurações/Categorias/Editar
+                            Configurações/Distritos/Adicionar
                         </li>
                     </ol>
                 </nav>
@@ -30,33 +31,36 @@
     </div>
 </section><!-- End Intro Single-->
 
+
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
-            <form asp-action="EditCategory">
+        <div class="col-md-4">
+            <form asp-action="DistrictsCreate">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
 
-                <div class="mb-3">
-                    <label asp-for="Name" class="form-label"></label>
+                <div class="mb-3 form-group">
+                    <label asp-for="Name" class="control-label"></label>
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3 form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="Available" /> @Html.DisplayNameFor(model => model.Available)
-                    </label>
+                    <input class="form-check-input" asp-for="Available" />
+                    <label class="form-check-label" for="Wifi">Estado</label>
                 </div>
 
+                <br />
                 <div class="mb-3">
-                    <button type="submit" value="Save" class="btn btn-c">Salvar</button>
-                    <a asp-action="CategoryList" class="btn btn-c">Voltar</a>
+                    <button type="submit" class="btn btn-c">Adicionar</button>
+                    <a asp-action="DistrictsList" class="btn btn-c">Voltar</a>
                 </div>
             </form>
+            <br />
         </div>
     </div>
 </div>
+
+
 
 @section Scripts {
     @{

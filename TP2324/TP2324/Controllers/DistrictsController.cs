@@ -20,7 +20,7 @@ namespace TP2324.Controllers
         }
 
         // GET: Districts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> DistrictsList()
         {
               return _context.Districts != null ? 
                           View(await _context.Districts.ToListAsync()) :
@@ -28,7 +28,7 @@ namespace TP2324.Controllers
         }
 
         // GET: Districts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> DistrictsDetails(int? id)
         {
             if (id == null || _context.Districts == null)
             {
@@ -46,7 +46,7 @@ namespace TP2324.Controllers
         }
 
         // GET: Districts/Create
-        public IActionResult Create()
+        public IActionResult DistrictsCreate()
         {
             return View();
         }
@@ -56,19 +56,21 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Available")] District district)
+        public async Task<IActionResult> DistrictsCreate([Bind("Id,Name,Available,Homes")] District district)
         {
+            ModelState.Remove(nameof(district.Homes));
+
             if (ModelState.IsValid)
             {
                 _context.Add(district);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(DistrictsList));
             }
             return View(district);
         }
 
         // GET: Districts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> DistrictsEdit(int? id)
         {
             if (id == null || _context.Districts == null)
             {
@@ -88,12 +90,14 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Available")] District district)
+        public async Task<IActionResult> DistrictsEdit(int id, [Bind("Id,Name,Available,Homes")] District district)
         {
             if (id != district.Id)
             {
                 return NotFound();
             }
+
+            ModelState.Remove(nameof(district.Homes));
 
             if (ModelState.IsValid)
             {
@@ -113,13 +117,13 @@ namespace TP2324.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(DistrictsList));
             }
             return View(district);
         }
 
         // GET: Districts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> DistrictsDelete(int? id)
         {
             if (id == null || _context.Districts == null)
             {
@@ -137,7 +141,7 @@ namespace TP2324.Controllers
         }
 
         // POST: Districts/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DistrictsDelete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -152,7 +156,7 @@ namespace TP2324.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(DistrictsList));
         }
 
         private bool DistrictExists(int id)

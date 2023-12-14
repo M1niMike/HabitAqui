@@ -48,7 +48,7 @@ namespace TP2324.Controllers
 
             // Encontre o gestor associado ao usuário autenticado
             var manager = await _context.Managers
-                .Include(m => m.Company) // Inclua a empresa associada ao gestor
+                .Include(m => m.Company).Include(m => m.ApplicationUser).Include(m => m.Rentings) // Inclua a empresa associada ao gestor
                 .FirstOrDefaultAsync(m => m.ApplicationUserId == userId);
 
             if (manager == null)
@@ -62,7 +62,7 @@ namespace TP2324.Controllers
 
             // Obtenha a lista de gestores associados à empresa
             var managers = await _context.Managers
-                .Include(m => m.Company).Include(m => m.ApplicationUser)
+                .Include(m => m.Company).Include(m => m.ApplicationUser).Include(m => m.Rentings)
                 .Where(m => m.CompanyId == company.Id)
                 .ToListAsync();
 
@@ -121,6 +121,7 @@ namespace TP2324.Controllers
             // Verifica se o usuário já existe pelo e-mail
             var user = await _userManager.FindByEmailAsync(newManager.Email);
 
+
             try
             {
                 if (ModelState.IsValid)
@@ -164,11 +165,15 @@ namespace TP2324.Controllers
                             }
                         }
                     }
+                    //else if(user != null)
+                    //{
+                    //    newManager.UserName = 
+                    //}
                     else
                     {
                         // Trata o caso em que o usuário já existe
-                        Console.WriteLine("Um usuário com o mesmo e-mail já existe.");
-                        ModelState.AddModelError(string.Empty, "Um usuário com o mesmo e-mail já existe.");
+                        Console.WriteLine("Erro ao criar um novo utilizador (Gestor).");
+                        ModelState.AddModelError(string.Empty, "Erro ao criar um novo utilizador (Gestor).");
                     }
                 }
                 else
@@ -292,6 +297,80 @@ namespace TP2324.Controllers
             return (_context.Managers?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
+
+
+        // GET: Companies/Delete/5
+        public async Task<IActionResult> ManagerDelete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var manager = await _context.Managers
+                .Include(c => c.Company).Include(c => c.ApplicationUser).Include(m => m.Rentings)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (manager == null)
+            {
+                return NotFound();
+            }
+
+           
+            return View(manager);
+        }
+
+        // POST: Homes/Delete/5
+        // POST: Companies/Delete/5
+        [HttpPost, ActionName("ManagerDelete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var manager = await _context.Managers
+            .Include(c => c.Company)
+            .Include(c => c.ApplicationUser)
+            .Include(m => m.Rentings)
+            .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (manager == null)
+            {
+                return NotFound();
+            }
+
+            // Verificar se o gestor atual é o mesmo que está sendo excluído
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            if (manager.ApplicationUser.Email == currentUser.Email)
+            {
+                ModelState.AddModelError(string.Empty, "Você não pode excluir a si próprio.");
+                return View("ManagerDelete", manager); // Volte para a tela de exclusão com a mensagem de erro
+            }
+
+            if (manager.Rentings != null && manager.Rentings.Count >= 1)
+            {
+                ModelState.AddModelError(string.Empty, "Não é possível excluir o gestor, pois ele possui pelo menos um arrendamento em progresso.");
+                return View(manager);
+            }
+
+
+            ApplicationUser userManager = await _userManager.FindByIdAsync(manager.ApplicationUser.Id); // Usando operadores de navegação segura
+
+
+            if (userManager != null)
+            {
+                await _userManager.DeleteAsync(userManager);
+            }
+
+
+            if (manager != null)
+            {
+                _context.Managers.Remove(manager);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(ManagerList));
+        }
 
 
 
@@ -549,6 +628,73 @@ namespace TP2324.Controllers
         private bool EmployeeExists(int id)
         {
             return (_context.Employees?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+
+
+        // GET: Companies/Delete/5
+        public async Task<IActionResult> EmployeeDelete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var employee = await _context.Employees
+                .Include(c => c.Company).Include(c => c.ApplicationUser).Include(m => m.Rentings)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(employee);
+        }
+
+        // POST: Homes/Delete/5
+        // POST: Companies/Delete/5
+        [HttpPost, ActionName("EmployeeDelete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EmployeeDeleteConfirmed(int id)
+        {
+            var employee = await _context.Employees
+            .Include(c => c.Company)
+            .Include(c => c.ApplicationUser)
+            .Include(m => m.Rentings)
+            .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+
+            if (employee.Rentings != null && employee.Rentings.Count >= 1)
+            {
+                ModelState.AddModelError(string.Empty, "Não é possível excluir o gestor, pois ele possui pelo menos um arrendamento em progresso.");
+                return View(employee);
+            }
+
+
+            ApplicationUser userManager = await _userManager.FindByIdAsync(employee.ApplicationUser.Id); // Usando operadores de navegação segura
+
+
+            if (userManager != null)
+            {
+                await _userManager.DeleteAsync(userManager);
+            }
+
+
+            if (employee != null)
+            {
+                _context.Employees.Remove(employee);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(EmployeeList));
         }
 
 

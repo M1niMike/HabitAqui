@@ -19,9 +19,9 @@ namespace TP2324.ViewModels
         [Required(ErrorMessage = "Introduza um nome")]
         public string LastName { get; set; }
 
-        [Display(Name = "Email", Prompt = "Introduza um email")]
-        [Required(ErrorMessage = "Introduza um email")]
-        public string UserName { get; set; }
+        //[Display(Name = "Email", Prompt = "Introduza um email")]
+        //[Required(ErrorMessage = "Introduza um email")]
+        //public string UserName { get; set; }
 
         [Display(Name = "Senha", Prompt = "Introduza uma senha")]
         [Required(ErrorMessage = "Introduza uma senha")]

@@ -294,7 +294,7 @@ namespace TP2324.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool?>("Available")
+                    b.Property<bool>("Available")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -449,10 +449,16 @@ namespace TP2324.Migrations
                     b.Property<DateTime?>("BeginDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("HomeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ManagerId")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("Price")
@@ -462,7 +468,11 @@ namespace TP2324.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
+                    b.HasIndex("EmployeeId");
+
                     b.HasIndex("HomeId");
+
+                    b.HasIndex("ManagerId");
 
                     b.ToTable("Rentings");
                 });
@@ -475,7 +485,7 @@ namespace TP2324.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool?>("Available")
+                    b.Property<bool>("Available")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -601,9 +611,17 @@ namespace TP2324.Migrations
                         .WithMany("Rentings")
                         .HasForeignKey("ApplicationUserId");
 
+                    b.HasOne("TP2324.Models.Employee", null)
+                        .WithMany("Rentings")
+                        .HasForeignKey("EmployeeId");
+
                     b.HasOne("TP2324.Models.Home", "Homes")
                         .WithMany("Rentings")
                         .HasForeignKey("HomeId");
+
+                    b.HasOne("TP2324.Models.Manager", null)
+                        .WithMany("Rentings")
+                        .HasForeignKey("ManagerId");
 
                     b.Navigation("ApplicationUser");
 
@@ -634,7 +652,17 @@ namespace TP2324.Migrations
                     b.Navigation("Homes");
                 });
 
+            modelBuilder.Entity("TP2324.Models.Employee", b =>
+                {
+                    b.Navigation("Rentings");
+                });
+
             modelBuilder.Entity("TP2324.Models.Home", b =>
+                {
+                    b.Navigation("Rentings");
+                });
+
+            modelBuilder.Entity("TP2324.Models.Manager", b =>
                 {
                     b.Navigation("Rentings");
                 });

@@ -20,7 +20,7 @@ namespace TP2324.Controllers
         }
 
         // GET: TypeResidences
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> typeResidenceList()
         {
               return _context.TypeResidences != null ? 
                           View(await _context.TypeResidences.ToListAsync()) :
@@ -28,7 +28,7 @@ namespace TP2324.Controllers
         }
 
         // GET: TypeResidences/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> typeResidenceDetails(int? id)
         {
             if (id == null || _context.TypeResidences == null)
             {
@@ -46,7 +46,7 @@ namespace TP2324.Controllers
         }
 
         // GET: TypeResidences/Create
-        public IActionResult Create()
+        public IActionResult typeResidenceCreate()
         {
             return View();
         }
@@ -56,19 +56,21 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] TypeResidence typeResidence)
+        public async Task<IActionResult> typeResidenceCreate([Bind("Id,Name,Available,Homes")] TypeResidence typeResidence)
         {
+            ModelState.Remove(nameof(typeResidence.Homes));
+
             if (ModelState.IsValid)
             {
                 _context.Add(typeResidence);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(typeResidenceList));
             }
             return View(typeResidence);
         }
 
         // GET: TypeResidences/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> typeResidenceEdit(int? id)
         {
             if (id == null || _context.TypeResidences == null)
             {
@@ -88,12 +90,14 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] TypeResidence typeResidence)
+        public async Task<IActionResult> typeResidenceEdit(int id, [Bind("Id,Name,Available,Homes")] TypeResidence typeResidence)
         {
             if (id != typeResidence.Id)
             {
                 return NotFound();
             }
+
+            ModelState.Remove(nameof(typeResidence.Homes));
 
             if (ModelState.IsValid)
             {
@@ -113,13 +117,13 @@ namespace TP2324.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(typeResidenceList));
             }
             return View(typeResidence);
         }
 
         // GET: TypeResidences/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> typeResidenceDelete(int? id)
         {
             if (id == null || _context.TypeResidences == null)
             {
@@ -137,7 +141,7 @@ namespace TP2324.Controllers
         }
 
         // POST: TypeResidences/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("typeResidenceDelete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -152,7 +156,7 @@ namespace TP2324.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(typeResidenceList));
         }
 
         private bool TypeResidenceExists(int id)
