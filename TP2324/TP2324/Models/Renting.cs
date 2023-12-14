@@ -16,7 +16,10 @@ namespace TP2324.Models
         public DateTime? EndDate { get; set; }
 
         [Display(Name = "Status de Aprovação")]
-        public bool? IsApproved { get; set; }
+        public bool IsApproved { get; set; }
+
+        [Display(Name = "Status de Aprovação")]
+        public string? ResponsibleId { get; set; }
 
         // Relacionamento de 1:n entre habitação (Home) e arrendamento (Renting)
         [Display(Name = "Habitação")]
@@ -27,6 +30,11 @@ namespace TP2324.Models
         [Display(Name = "Cliente")]
         public string? ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
+
+       
+        //[Display(Name = "Funcionário responsável")]
+        //public string? EmployeeConfirmId { get; set; }
+        //public ApplicationUser EmployeeConfirm { get; set; }
     }
 
 }

@@ -57,31 +57,65 @@
                     Endereço
                 </th>
                 <th scope="col">
-                    Detalhes
+                    Estado do pedido
+                </th>
+                <th scope="col">
+                    Opções
                 </th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.BeginDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Homes.Address)
-                    </td>
-                    <td>
-                        <a class="btn btn-c" asp-action="DetailsMyRentings" asp-route-id="@item.Id">Detalhes</a>
-                    </td>
-                   
-                </tr>
+                @if (item.IsApproved)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BeginDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Homes.Address)
+                        </td>
+                        <td>
+                            Confirmado
+                        </td>
+                        <td>
+                            <a class="btn btn-c" asp-action="DetailsMyRentings" asp-route-id="@item.Id">Detalhes</a>
+                        </td>
+
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BeginDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Homes.Address)
+                        </td>
+                        <td>
+                            Aguardando confirmação...
+                        </td>
+                        <td>
+                            <a class="btn btn-c" asp-action="DetailsMyRentings" asp-route-id="@item.Id">Detalhes</a>
+                        </td>
+
+                    </tr>
+                }
+               
             }
         </tbody>
     </table>

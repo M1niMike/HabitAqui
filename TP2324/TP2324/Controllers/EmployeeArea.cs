@@ -252,7 +252,7 @@ namespace TP2324.Controllers
                     try
                     {
                         var existingHome = await _context.Homes.FindAsync(id);
-                        if (home == null)
+                        if (existingHome == null)
                         {
                             return NotFound();
                         }

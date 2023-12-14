@@ -458,7 +458,7 @@ namespace TP2324.Migrations
                     b.Property<int?>("HomeId")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("IsApproved")
+                    b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
 
                     b.Property<int?>("ManagerId")
@@ -466,6 +466,9 @@ namespace TP2324.Migrations
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ResponsibleId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

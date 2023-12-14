@@ -1,0 +1,86 @@
+﻿@model TP2324.Models.Renting
+
+@{
+    ViewData["Title"] = "Confirmar Arrendamento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Confirmar Arrendamento</h1>
+                    <span class="color-text-a">Confirme ou rejeite o arrendamento</span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a asp-action="EmployeeRentingsIndex" asp-controller="NomeDoSeuController">Arrendamentos</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Confirmar Arrendamento
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section><!-- End Intro Single-->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <dl class="row">
+                <dt class="col-sm-2">Preço:</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.Price)</dd>
+
+                <dt class="col-sm-2">Data início do contrato:</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.BeginDate)</dd>
+
+                <dt class="col-sm-2">Data final do contrato:</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.EndDate)</dd>
+
+                <dt class="col-sm-2">Cliente:</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.ApplicationUser.FirstName)</dd>
+
+              @*   <dt class="col-sm-2">Estado:</dt>
+                <dd class="col-sm-10">
+                    @if (Model.IsApproved)
+                    {
+                        <span class="badge badge-success">Aprovado</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-warning">Por aprovar</span>
+                    } *@
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="ConfirmRenting" asp-route-id="@Model.Id" method="post">
+                <div class="form-group">
+                    <label for="confirmar">Confirmar Arrendamento:</label>
+                    <button type="submit" class="btn btn-success" name="confirmar" value="true">Confirmar</button>
+                </div>
+               
+            </form>
+            <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+                <div class="form-group">
+                    <label for="rejeitar">Rejeitar Arrendamento:</label>
+                    <button type="submit" class="btn btn-danger" name="confirmar" value="false">Rejeitar</button>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
