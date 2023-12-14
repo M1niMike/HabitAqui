@@ -1,0 +1,84 @@
+﻿@model TP2324.Models.Renting
+
+@{
+    ViewData["Title"] = "DetailsMyRentings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Detalhes</h1>
+                    <span class="color-text-a">Detalhes do arrendamento</span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Meus Arrendamentos/Detalhes
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Intro Single-->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <dl class="row">
+                <div class="col-sm-6">
+                    <dt>Tipologia da habitação:</dt>
+                    <dd>@Html.DisplayFor(model => model.Homes.typeResidence.Name)</dd>
+
+                    <dt>Categoria da habitação:</dt>
+                    <dd>@Html.DisplayFor(model => model.Homes.Category.Name)</dd>
+
+                    <dt>Endereço:</dt>
+                    <dd>@Html.DisplayFor(model => model.Homes.Address)</dd>
+
+                    <dt>Distrito:</dt>
+                    <dd>@Html.DisplayFor(model => model.Homes.District.Name)</dd>
+                </div>
+
+                <div class="col-sm-6">
+                    <dt>Preço final:</dt>
+                    <dd>@Html.DisplayFor(model => model.Price)</dd>
+
+                    <dt>Preço por dia:</dt>
+                    <dd>@Html.DisplayFor(model => model.Homes.PriceToRent)</dd>
+
+                    <dt>Período mínimo de arrendamento:</dt>
+                    <dd>@Html.DisplayFor(model => model.Homes.MinimumPeriod)</dd>
+
+                    <dt>Início de contrato:</dt>
+                    <dd>@Html.DisplayFor(model => model.BeginDate)</dd>
+
+                    <dt>Fim de contrato:</dt>
+                    <dd>@Html.DisplayFor(model => model.EndDate)</dd>
+
+                    <dt>Empresa/Locador:</dt>
+                    <dd>@Html.DisplayFor(model => model.Homes.Company.Name)</dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-8">
+            <div>
+                <a class="btn btn-c mb-5" asp-action="MyRentings">Voltar à lista</a>
+            </div>
+        </div>
+    </div>
+</div>

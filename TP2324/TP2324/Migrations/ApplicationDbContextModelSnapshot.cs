@@ -458,6 +458,9 @@ namespace TP2324.Migrations
                     b.Property<int?>("HomeId")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("IsApproved")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("ManagerId")
                         .HasColumnType("int");
 

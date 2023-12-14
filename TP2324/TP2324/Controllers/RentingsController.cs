@@ -28,8 +28,10 @@ namespace TP2324.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        
+
         // GET: Rentings/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> DetailsRentings(int? id)
         {
             if (id == null || _context.Rentings == null)
             {
@@ -228,7 +230,42 @@ namespace TP2324.Controllers
           return (_context.Rentings?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        [Authorize(Roles ="Admin,Client")]
+
+
+        //#############################
+        //
+        // Rentings do Cliente
+        //
+        //#############################
+
+
+        // GET: Rentings/Details/5
+        public async Task<IActionResult> DetailsMyRentings(int? id)
+        {
+            if (id == null || _context.Rentings == null)
+            {
+                return NotFound();
+            }
+
+            var renting = await _context.Rentings
+                .Include(r => r.Homes)
+                    .ThenInclude(h => h.typeResidence) 
+                .Include(r => r.Homes)
+                    .ThenInclude(h => h.Category)
+                .Include(r => r.Homes)
+                    .ThenInclude(h => h.Company) 
+                .Include(r => r.Homes)
+                    .ThenInclude(h => h.District) 
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (renting == null)
+            {
+                return NotFound();
+            }
+
+            return View(renting);
+        }
+
+        [Authorize(Roles ="Client")]
         public IActionResult MyRentings()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

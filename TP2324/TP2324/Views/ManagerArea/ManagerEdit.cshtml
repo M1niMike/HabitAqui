@@ -57,6 +57,21 @@
                     <a asp-action="ManagerList" class="btn btn-c">Voltar</a>
                 </div>
             </form>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach (var key in ViewData.ModelState.Keys)
+                        {
+                            foreach (var error in ViewData.ModelState[key].Errors)
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        }
+                    </ul>
+                </div>
+            }
         </div>
     </div>
 </div>

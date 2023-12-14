@@ -5,50 +5,89 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Arrendamentos</h1>
+                    <span class="color-text-a">Veja os arrendamentos da empresa</span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Arrendamentos
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section><!-- End Intro Single-->
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BeginDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Homes)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BeginDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Homes.Address)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+
+<div class="container">
+    @if (Model.Count() == 0)
+    {
+        <p>Não existe(m) arrendamento(s).</p>
+        return;
+    }
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">
+                    Preço
+                </th>
+                <th scope="col">
+                    Data início do contrato
+                </th>
+                <th scope="col">
+                    Data final do contrato
+                </th>
+                <th scope="col">
+                    Endereço
+                </th>
+                <th scope="col">
+                    Cliente
+                </th>
+                <th scope="col">
+                    Detalhes
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BeginDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Homes.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApplicationUser.FirstName)
+                    </td>
+                    <td>
+                        <a class="btn btn-c" asp-action="DetailsMyRentings" asp-route-id="@item.Id">Detalhes</a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

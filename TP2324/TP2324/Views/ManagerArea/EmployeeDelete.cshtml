@@ -1,5 +1,68 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model TP2324.Models.Employee
+
 @{
+    ViewData["Title"] = "EmployeeDelete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Apagar</h1>
+                    <span class="color-text-a">Apague o funcionário</span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Funcionarios/Lista de funcionários/Apagar
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Intro Single-->
+
+<div class="container mt-4">
+    <div>
+        <h4>Detalhes do funcionário</h4>
+        <dl class="row">
+            <dt class="col-sm-2 text-muted">Nome:</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
+
+            <dt class="col-sm-2 text-muted">Estado:</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Available)</dd>
+
+            <div class="mb-3">
+                <form asp-action="EmployeeDelete">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                    <a asp-action="EmployeeList" class="btn btn-c">Voltar</a>
+                </form>
+            </div>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach (var key in ViewData.ModelState.Keys)
+                        {
+                            foreach (var error in ViewData.ModelState[key].Errors)
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        }
+                    </ul>
+                </div>
+            }
+    </div>
+</div>

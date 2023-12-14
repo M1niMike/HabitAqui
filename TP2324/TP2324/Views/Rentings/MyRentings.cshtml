@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<TP2324.Models.Renting>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "MyRentings";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -48,15 +48,17 @@
                     Preço
                 </th>
                 <th scope="col">
-                    @Html.DisplayNameFor(model => model.BeginDate)
+                    Data início do contrato
                 </th>
                 <th scope="col">
-                    @Html.DisplayNameFor(model => model.EndDate)
+                    Data final do contrato
                 </th>
-                @* <th scope="col">
+                <th scope="col">
                     Endereço
-                </th> *@
-                <th scope="col">Opções</th>
+                </th>
+                <th scope="col">
+                    Detalhes
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -72,16 +74,13 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.EndDate)
                     </td>
-                   @*  <td>
-                        @Html.DisplayFor(modelItem => item.Homes.Address)
-                    </td> *@
                     <td>
-                        <div class="btn-group" role="group">
-                            <a class="btn btn-c" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
-                            <a class="btn btn-c" asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
-                            <a class="btn btn-c" asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
-                        </div>
+                        @Html.DisplayFor(modelItem => item.Homes.Address)
                     </td>
+                    <td>
+                        <a class="btn btn-c" asp-action="DetailsMyRentings" asp-route-id="@item.Id">Detalhes</a>
+                    </td>
+                   
                 </tr>
             }
         </tbody>
