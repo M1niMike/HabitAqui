@@ -25,15 +25,27 @@ namespace TP2324.Controllers
         {
             IQueryable<Home> homesQuery = _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company);
 
-            if (!string.IsNullOrEmpty(viewModel.TextoAPesquisar))
+            if (!string.IsNullOrEmpty(viewModel.TipoResidenciaSelecionado))
             {
-                homesQuery = homesQuery.Where(c => c.typeResidence.Name == viewModel.TextoAPesquisar);
+                homesQuery = homesQuery.Where(c => c.typeResidence.Name == viewModel.TipoResidenciaSelecionado).OrderBy(c => c.Address);
             }
 
 
             if (!string.IsNullOrEmpty(viewModel.LocalizacaoSelecionada))
             {
-                homesQuery = homesQuery.Where(c => c.District.Name == viewModel.LocalizacaoSelecionada);
+                homesQuery = homesQuery.Where(c => c.District.Name == viewModel.LocalizacaoSelecionada).OrderBy(c => c.Address);
+            }
+
+
+            if (!string.IsNullOrEmpty(viewModel.CategoriaSelecinada))
+            {
+                homesQuery = homesQuery.Where(c => c.Category.Name == viewModel.CategoriaSelecinada);
+            }
+
+
+            if (!string.IsNullOrEmpty(viewModel.LocadorSelecionado))
+            {
+                homesQuery = homesQuery.Where(c => c.Company.Name == viewModel.LocadorSelecionado);
             }
 
             if (!string.IsNullOrEmpty(viewModel.Ordenacao))
@@ -59,7 +71,7 @@ namespace TP2324.Controllers
             ViewBag.HomeDistrict = new SelectList(districts);
 
             var companies = _context.Companies.Select(c => c.Name).Distinct().ToList();
-            ViewBag.HomeCompany = new SelectList(companies);
+            ViewBag.HomeCompanies = new SelectList(companies);
 
             viewModel.Homeslist = homesQuery.ToList();
             viewModel.NumResultados = viewModel.Homeslist.Count;
@@ -93,7 +105,7 @@ namespace TP2324.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Search(string? TextoAPesquisar, string? TipoResidenciaSelecionado, string? CategoriaSelecinada, string? PeriodoMinimoSelecionado, string? LocalizacaoSelecionada)
+        public async Task<IActionResult> Search(string? TextoAPesquisar, string? TipoResidenciaSelecionado, string? CategoriaSelecinada, string? PeriodoMinimoSelecionado, string? LocalizacaoSelecionada, string? LocadorSelecionado)
         {
             PesquisaHabitacaoViewModel pesquisaVM = new PesquisaHabitacaoViewModel();
             ViewData["Title"] = "Pesquisa habitações";
@@ -108,19 +120,19 @@ namespace TP2324.Controllers
             ViewBag.HomeDistrict = new SelectList(districts);
 
             var companies = _context.Companies.Select(c => c.Name).Distinct().ToList();
-            ViewBag.HomeCompany = new SelectList(companies);
+            ViewBag.HomeCompanies = new SelectList(companies);
 
             if (string.IsNullOrWhiteSpace(TextoAPesquisar))
             {
 
-                if(string.IsNullOrEmpty(TipoResidenciaSelecionado) && string.IsNullOrEmpty(CategoriaSelecinada) && string.IsNullOrEmpty(PeriodoMinimoSelecionado) && string.IsNullOrEmpty(LocalizacaoSelecionada))
+                if(string.IsNullOrEmpty(TipoResidenciaSelecionado) && string.IsNullOrEmpty(CategoriaSelecinada) && string.IsNullOrEmpty(PeriodoMinimoSelecionado) && string.IsNullOrEmpty(LocalizacaoSelecionada) && string.IsNullOrEmpty(LocadorSelecionado))
                 {
                     pesquisaVM.Homeslist = await _context.Homes
                    .Include(m => m.Category)
                    .Include(m => m.typeResidence)
                    .Include(m => m.District)
                    .Include(m => m.Company)
-                   .OrderBy(c => c.Category.Name)
+                   .OrderBy(c => c.Address)
                    .ToListAsync();
                 }
                 else if (!string.IsNullOrEmpty(TipoResidenciaSelecionado))
@@ -132,6 +144,7 @@ namespace TP2324.Controllers
                     .Include(m => m.Company)
                     .Where(c =>
                         (c.typeResidence != null && c.typeResidence.Name.Contains(TipoResidenciaSelecionado)))
+                    .OrderBy(c => c.Address)
                     .ToListAsync();
 
                     pesquisaVM.TextoAPesquisar = TipoResidenciaSelecionado;
@@ -145,6 +158,7 @@ namespace TP2324.Controllers
                     .Include(m => m.Company)
                     .Where(c =>
                         (c.typeResidence != null && c.Category.Name.Contains(CategoriaSelecinada)))
+                    .OrderBy(c => c.Address)
                     .ToListAsync();
 
                     pesquisaVM.TextoAPesquisar = CategoriaSelecinada;
@@ -158,6 +172,7 @@ namespace TP2324.Controllers
                     .Include(m => m.Company)
                     .Where(c =>
                         (c.typeResidence != null && c.MinimumPeriod.ToString().Contains(PeriodoMinimoSelecionado)))
+                    .OrderBy(c => c.Address)
                     .ToListAsync();
 
                     pesquisaVM.TextoAPesquisar = PeriodoMinimoSelecionado;
@@ -171,9 +186,24 @@ namespace TP2324.Controllers
                     .Include(m => m.Company)
                     .Where(c =>
                         (c.typeResidence != null && c.District.Name.Contains(LocalizacaoSelecionada)))
+                    .OrderBy(c => c.Address)
                     .ToListAsync();
 
                     pesquisaVM.TextoAPesquisar = LocalizacaoSelecionada;
+                }
+                else if (!string.IsNullOrEmpty(LocadorSelecionado))
+                {
+                    pesquisaVM.Homeslist = await _context.Homes
+                    .Include(m => m.Category)
+                    .Include(m => m.typeResidence)
+                    .Include(m => m.District)
+                    .Include(m => m.Company)
+                    .Where(c =>
+                        (c.typeResidence != null && c.Company.Name.Contains(LocadorSelecionado)))
+                    .OrderBy(c => c.Address)
+                    .ToListAsync();
+
+                    pesquisaVM.TextoAPesquisar = LocadorSelecionado;
                 }
 
 
@@ -191,8 +221,10 @@ namespace TP2324.Controllers
                         c.PriceToRent.ToString().Contains(TextoAPesquisar) ||
                         c.MinimumPeriod.ToString().Contains(TextoAPesquisar) ||
                         c.Category.Name.Contains(TextoAPesquisar) ||
-                        c.District.Name.Contains(TextoAPesquisar)
+                        c.District.Name.Contains(TextoAPesquisar) ||
+                        c.Company.Name.Contains(TextoAPesquisar)
                     )
+                    .OrderBy(c => c.Address)
                     .ToListAsync();
 
                 pesquisaVM.TextoAPesquisar = TextoAPesquisar;
@@ -205,7 +237,7 @@ namespace TP2324.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Search([Bind("TextoAPesquisar,TipoResidenciaSelecionado,CategoriaSelecinada,PeriodoMinimoSelecionado")] PesquisaHabitacaoViewModel pesquisaHabitacao)
+        public async Task<IActionResult> Search([Bind("TextoAPesquisar,TipoResidenciaSelecionado,CategoriaSelecinada,PeriodoMinimoSelecionado,LocalizacaoSelecionada,LocadorSelecionado")] PesquisaHabitacaoViewModel pesquisaHabitacao)
         {
             var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
             ViewBag.HomeTypes = new SelectList(typeResidences);
@@ -217,37 +249,43 @@ namespace TP2324.Controllers
             ViewBag.HomeDistrict = new SelectList(districts);
 
             var companies = _context.Companies.Select(c => c.Name).Distinct().ToList();
-            ViewBag.HomeCompany = new SelectList(companies);
+            ViewBag.HomeCompanies = new SelectList(companies);
 
             if (string.IsNullOrEmpty(pesquisaHabitacao.TextoAPesquisar))
             {
-                if (string.IsNullOrEmpty(pesquisaHabitacao.TipoResidenciaSelecionado) && string.IsNullOrEmpty(pesquisaHabitacao.CategoriaSelecinada) && string.IsNullOrEmpty(pesquisaHabitacao.PeriodoMinimoSelecionado) && string.IsNullOrEmpty(pesquisaHabitacao.LocalizacaoSelecionada))
+                if (string.IsNullOrEmpty(pesquisaHabitacao.TipoResidenciaSelecionado) && string.IsNullOrEmpty(pesquisaHabitacao.CategoriaSelecinada) && string.IsNullOrEmpty(pesquisaHabitacao.PeriodoMinimoSelecionado) && string.IsNullOrEmpty(pesquisaHabitacao.LocalizacaoSelecionada) && string.IsNullOrEmpty(pesquisaHabitacao.LocadorSelecionado))
                 {
-                    pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company).OrderBy(c => c.Category.Name).ToListAsync();
+                    pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company).OrderBy(c => c.Address).ToListAsync();
                     pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
                 }
                 else if(!string.IsNullOrEmpty(pesquisaHabitacao.TipoResidenciaSelecionado))
                 {
                     pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company)
-                    .Where(e => e.typeResidence.Name.Contains(pesquisaHabitacao.TipoResidenciaSelecionado)).OrderBy(c => c.typeResidence.Name).ToListAsync();
+                    .Where(e => e.typeResidence.Name.Contains(pesquisaHabitacao.TipoResidenciaSelecionado)).OrderBy(c => c.Address).ToListAsync();
                     pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
                 }
                 else if (!string.IsNullOrEmpty(pesquisaHabitacao.CategoriaSelecinada))
                 {
                     pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company)
-                    .Where(e => e.Category.Name.Contains(pesquisaHabitacao.CategoriaSelecinada)).OrderBy(c => c.typeResidence.Name).ToListAsync();
+                    .Where(e => e.Category.Name.Contains(pesquisaHabitacao.CategoriaSelecinada)).OrderBy(c => c.Address).ToListAsync();
                     pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
                 }
                 else if (!string.IsNullOrEmpty(pesquisaHabitacao.PeriodoMinimoSelecionado))
                 {
                     pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company)
-                    .Where(e => e.MinimumPeriod.ToString().Contains(pesquisaHabitacao.PeriodoMinimoSelecionado)).OrderBy(c => c.typeResidence.Name).ToListAsync();
+                    .Where(e => e.MinimumPeriod.ToString().Contains(pesquisaHabitacao.PeriodoMinimoSelecionado)).OrderBy(c => c.Address).ToListAsync();
                     pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
                 }
                 else if (!string.IsNullOrEmpty(pesquisaHabitacao.LocalizacaoSelecionada))
                 {
                     pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company)
-                    .Where(e => e.District.Name.Contains(pesquisaHabitacao.LocalizacaoSelecionada)).OrderBy(c => c.typeResidence.Name).ToListAsync();
+                    .Where(e => e.District.Name.Contains(pesquisaHabitacao.LocalizacaoSelecionada)).OrderBy(c => c.Address).ToListAsync();
+                    pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
+                }
+                else if (!string.IsNullOrEmpty(pesquisaHabitacao.LocadorSelecionado))
+                {
+                    pesquisaHabitacao.Homeslist = await _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company)
+                    .Where(e => e.Company.Name.Contains(pesquisaHabitacao.LocadorSelecionado)).OrderBy(c => c.Address).ToListAsync();
                     pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
                 }
 
@@ -260,8 +298,10 @@ namespace TP2324.Controllers
                                 e.Description.Contains(pesquisaHabitacao.TextoAPesquisar) ||
                                 e.PriceToRent.ToString().Contains(pesquisaHabitacao.TextoAPesquisar) ||
                                 e.Category.Name.Contains(pesquisaHabitacao.TextoAPesquisar) ||
-                                e.District.Name.Contains(pesquisaHabitacao.TextoAPesquisar)
-                    ).OrderBy(c => c.typeResidence.Name).ToListAsync();
+                                e.District.Name.Contains(pesquisaHabitacao.TextoAPesquisar) ||
+                                e.Company.Name.Contains(pesquisaHabitacao.TextoAPesquisar)
+
+                    ).OrderBy(c => c.Address).ToListAsync();
                 pesquisaHabitacao.NumResultados = pesquisaHabitacao.Homeslist.Count();
             }
 

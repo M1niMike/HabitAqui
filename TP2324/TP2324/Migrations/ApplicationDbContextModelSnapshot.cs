@@ -244,7 +244,7 @@ namespace TP2324.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool?>("Available")
+                    b.Property<bool>("Available")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")

@@ -39,35 +39,46 @@
         {
             <div class="row">
                 <div class="col-sm-12">
-                    <a class="btn btn-c mb-3" asp-action="Create">Adicionar Habitação</a>
-                    <div class="grid-option" style="display: flex; justify-content: space-between;">
-                        <div class="dropdown-typeResidence">
-                            <form asp-controller="Homes" asp-action="Index" method="get">
-                                <label class="dropdown-label" for="homeTypeDropdown">Selecione o Distrito:</label>
-                                <select class="dropdown-box" id="homeTypeDropdown" asp-for="LocalizacaoSelecionada" asp-items="ViewBag.HomeDistrict" onchange="this.form.submit()">
-                                    <option value="">Todos</option>
-                                </select>
-                            </form>
-                        </div>
-                        <div class="dropdown-typeResidence">
-                            <form asp-controller="Homes" asp-action="Index" method="get">
-                                <label class="dropdown-label" for="homeTypeDropdown">Selecione o Tipo:</label>
-                                <select class="dropdown-box" id="homeTypeDropdown" asp-for="TextoAPesquisar" asp-items="ViewBag.HomeTypes" onchange="this.form.submit()">
-                                    <option value="">Todos</option>
-                                </select>
-                            </form>
-                        </div>
-                        <div class="dropdown-priceFilter">
-                            <form asp-controller="Homes" asp-action="Index" method="get">
-                                <label class="dropdown-label" for="ordenacao">Ordenar por:</label>
-                                <select class="dropdown-box" id="ordenacao" asp-for="Ordenacao" onchange="this.form.submit()">
-                                    <option value="MaiorPreco">Maior preço</option>
-                                    <option value="MenorPreco">Menor preço</option>
-                                </select>
-                            </form>
-                        </div>
+                    <div class="grid-option">
+                        <div class="btn btn-c" onclick="toggleFilters()">Filtros</div>
+                        <form asp-controller="Homes" asp-action="Search" method="get" class="filter-form">
+                            <ul class="submenu" id="filter-submenu">
+                                <li>
+                                    <label class="submenu-label" for="homeTypeDropdown">Distritos:</label>
+                                    <select class="submenu-box" id="homeTypeDropdown" asp-for="LocalizacaoSelecionada" asp-items="ViewBag.HomeDistrict" onchange="this.form.submit()">
+                                        <option value="">Todos</option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <label class="submenu-label" for="homeTypeDropdown">Tipo:</label>
+                                    <select class="submenu-box" asp-for="TipoResidenciaSelecionado" asp-items="ViewBag.HomeTypes" onchange="this.form.submit()">
+                                        <option value="">Todos</option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <label class="submenu-label" for="homeTypeDropdown">Categoria:</label>
+                                    <select class="submenu-box" asp-for="CategoriaSelecinada" asp-items="ViewBag.HomeCategory" onchange="this.form.submit()">
+                                        <option value="">Todos</option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <label class="submenu-label" for="homeTypeDropdown">Locador:</label>
+                                    <select class="submenu-box" asp-for="LocadorSelecionado" asp-items="ViewBag.HomeCompanies" onchange="this.form.submit()">
+                                        <option value="">Todos</option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <label class="submenu-label" for="ordenacao">Ordenar por:</label>
+                                    <select class="submenu-box" id="ordenacao" asp-for="Ordenacao" onchange="this.form.submit()">
+                                        <option value="MaiorPreco">Maior preço</option>
+                                        <option value="MenorPreco">Menor preço</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </form>
                     </div>
                 </div>
+
                 @foreach (Home c in Model.Homeslist)
                 {
                     @if (c.Available)
@@ -151,3 +162,10 @@
     </div>
 </section>
 <!-- End Property Grid Single-->
+<!-- Logica do btn filter-->
+<script>
+    function toggleFilters() {
+        var submenu = document.getElementById("filter-submenu");
+        submenu.classList.toggle("active");
+    }
+</script>

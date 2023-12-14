@@ -36,15 +36,14 @@ namespace TP2324.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> HomesList()
+        public async Task<ActionResult> HomesList(PesquisaHabitacaoViewModel viewModel)
         {
-
 
             // Obtenha o ID do usuário autenticado
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             // Encontre o funcionario associado ao usuário autenticado
-            var employee = await _context.Employees
+            var employee =  await _context.Employees
                 .Include(m => m.Company) // Inclua a empresa associada ao funcionario
                 .FirstOrDefaultAsync(m => m.ApplicationUserId == userId);
 
@@ -57,15 +56,60 @@ namespace TP2324.Controllers
             // Obtenha a empresa associada ao gestor
             var company = employee.Company;
 
-            // Obtenha a lista de gestores associados à empresa
-            var homes = await _context.Homes
+            IQueryable<Home> homesQuery =  _context.Homes
                 .Include(m => m.Company).Include(m => m.typeResidence).Include(m => m.Category).Include(m => m.District)
-                .Where(m => m.CompanyId == company.Id)
-                .ToListAsync();
+                .Where(m => m.CompanyId == company.Id);
+                 
 
-            return View(homes);
+            if (!string.IsNullOrEmpty(viewModel.TipoResidenciaSelecionado))
+            {
+                homesQuery = homesQuery.Where(c => c.typeResidence.Name == viewModel.TipoResidenciaSelecionado);
+            }
+
+
+            if (!string.IsNullOrEmpty(viewModel.CategoriaSelecinada))
+            {
+                homesQuery = homesQuery.Where(c => c.Category.Name == viewModel.CategoriaSelecinada);
+            }
+
+            if (!string.IsNullOrEmpty(viewModel.Ordenacao))
+            {
+                if (viewModel.Ordenacao == "MenorPreco")
+                {
+                    homesQuery = homesQuery.OrderBy(c => c.PriceToRent);
+                }
+                else if (viewModel.Ordenacao == "MaiorPreco")
+                {
+                    homesQuery = homesQuery.OrderByDescending(c => c.PriceToRent);
+                }
+                if (viewModel.Ordenacao == "Ativo")
+                {
+                    homesQuery = homesQuery.Where(c => c.Available).OrderBy(c => c.Address);
+                }
+                else if (viewModel.Ordenacao == "Inativo")
+                {
+                    homesQuery = homesQuery.Where(c => !c.Available).OrderBy(c => c.Address);
+                }
+            }
+
+
+            var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
+            ViewBag.HomeTypes = new SelectList(typeResidences);
+
+            var category = _context.Category.Select(c => c.Name).Distinct().ToList();
+            ViewBag.HomeCategory = new SelectList(category);
+
+            var districts = _context.Districts.Select(c => c.Name).Distinct().ToList();
+            ViewBag.HomeDistrict = new SelectList(districts);
+
+            var companies = _context.Companies.Select(c => c.Name).Distinct().ToList();
+            ViewBag.HomeCompany = new SelectList(companies);
+
+            viewModel.Homeslist = homesQuery.ToList();
+            viewModel.NumResultados = viewModel.Homeslist.Count;
+
+            return View(viewModel);
         }
-
 
         // GET: Homes/Create
         //[Authorize(Roles = "Employee")]

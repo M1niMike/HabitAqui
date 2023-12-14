@@ -20,33 +20,18 @@ namespace TP2324.Controllers
         }
 
         //GET: Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> CategoryList()
         {
-            //return _context.Category != null ? 
-            //            View(await _context.Category.ToListAsync()) :
-            //            Problem("Entity set 'ApplicationDbContext.Category'  is null.");
-
-            var applicationDbContext = _context.Category.Include(r => r.Homes);
-            return View(await applicationDbContext.ToListAsync());
+            return _context.Category != null ?
+                        View(await _context.Category.ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.Category'  is null.");
 
 
         }
 
-       // public IActionResult Index()
-        //{
-        //    //var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
-        //    //ViewBag.HomeTypes = new SelectList(typeResidences);
-
-        //    //var category = _context.Category.Select(c => c.Name).Distinct().ToList();
-        //    //ViewBag.HomeCategory = new SelectList(category);
-
-        //    IQueryable<Category> category = _context.Category.Include(m => m.Homes);
-        //    return View(category.ToList());
-
-        //}
 
         // GET: Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> DetailsCategory(int? id)
         {
             if (id == null || _context.Category == null)
             {
@@ -64,7 +49,7 @@ namespace TP2324.Controllers
         }
 
         // GET: Categories/Create
-        public IActionResult Create()
+        public IActionResult CreateCategory()
         {
             return View();
         }
@@ -74,19 +59,21 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
+        public async Task<IActionResult> CreateCategory([Bind("Id,Name,Available,Homes")] Category category)
         {
+            ModelState.Remove(nameof(category.Homes));
+
             if (ModelState.IsValid)
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(CategoryList));
             }
             return View(category);
         }
 
         // GET: Categories/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> EditCategory(int? id)
         {
             if (id == null || _context.Category == null)
             {
@@ -106,12 +93,14 @@ namespace TP2324.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
+        public async Task<IActionResult> EditCategory(int id, [Bind("Id,Name,Available,Homes")] Category category)
         {
             if (id != category.Id)
             {
                 return NotFound();
             }
+
+            ModelState.Remove(nameof(category.Homes));
 
             if (ModelState.IsValid)
             {
@@ -131,13 +120,13 @@ namespace TP2324.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(CategoryList));
             }
             return View(category);
         }
 
         // GET: Categories/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> DeleteCategory(int? id)
         {
             if (id == null || _context.Category == null)
             {
@@ -155,7 +144,7 @@ namespace TP2324.Controllers
         }
 
         // POST: Categories/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteCategory")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -170,7 +159,7 @@ namespace TP2324.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(CategoryList));
         }
 
         private bool CategoryExists(int id)

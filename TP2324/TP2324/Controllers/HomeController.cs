@@ -36,35 +36,18 @@ public class HomeController : Controller
         var districts = _context.Districts.Select(c => c.Name).Distinct().ToList();
         ViewBag.HomeDistrict = new SelectList(districts);
 
+        var companies = _context.Companies.Select(c => c.Name).Distinct().ToList();
+        ViewBag.HomeCompanies = new SelectList(companies);
 
 
-        IQueryable<Home> homes = _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District);
+
+        IQueryable<Home> homes = _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company);
         return View(homes.ToList());
 
     }
 
 
     public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    public IActionResult Client()
-    {
-        return View();
-    }
-
-    public IActionResult Employee()
-    {
-        return View();
-    }
-
-    public IActionResult Manager()
-    {
-        return View();
-    }
-
-    public IActionResult Rent()
     {
         return View();
     }

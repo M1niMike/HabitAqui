@@ -44,12 +44,6 @@
             <div class="col-md-4">
                 <form asp-action="CreateEmployee">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <!-- Campos do Gerente -->
-                    @*< div class="form-group">
-                        <label asp-for="UserName" class="control-label"></label>
-                        <input asp-for="UserName" class="form-control" />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div> *@
 
                     <div class="form-group">
                         <label asp-for="FirstName" class="control-label"></label>
@@ -70,23 +64,14 @@
                     </div>
 
                     <br />
-                    <div class="form-group">
-                        <input type="submit" value="Adicionar" class="btn btn-c" />
-
-                        <a asp-action="Index">
-                            <button type="submit" class="btn btn-c">Voltar</button>
-                        </a>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-c">Adicionar</button>
+                        <a asp-action="EmployeeList" class="btn btn-c">Voltar</a>
                     </div>
                 </form>
                 <br />
             </div>
         </div>
-
-        @*  <div>
-        <a asp-action="Index">
-        <button type="submit" class="btn btn-c">Voltar</button>
-        </a>
-        </div> *@
     </div>
 </body>
 </html>

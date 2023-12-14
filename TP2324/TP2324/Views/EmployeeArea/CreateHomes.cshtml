@@ -107,13 +107,8 @@
 
                     <div class="mb-3">
                         <label asp-for="ImageFile" class="form-label"></label>
-                        <input asp-for="ImageFile" type="file" class="form-control" />
+                        <input asp-for="ImageFile" type="file" class="form-control" accept=".jpg, .jpeg, .png" />
                     </div>
-
-                    @* <div class="mb-3 form-check">
-                        <input class="form-check-input" asp-for="Available" />
-                        <label class="form-check-label" for="Available">Disponível</label>
-                    </div> *@
 
                     <div class="mb-3">
                         <button type="submit" class="btn btn-c">Adicionar</button>

@@ -1,0 +1,69 @@
+﻿@model TP2324.Models.Category
+
+@{
+    ViewData["Title"] = "CreateCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Adicionar Categorias</h1>
+                    <span class="color-text-a">Adicione categorias</span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Configurações/Categorias/Adicionar
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section><!-- End Intro Single-->
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="CreateCategory">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input class="form-check-input" asp-for="Available" />
+                    <label class="form-check-label" for="Wifi">Estado</label>
+                </div>
+               
+                <br />
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-c">Adicionar</button>
+                    <a asp-action="CategoryList" class="btn btn-c">Voltar</a>
+                </div>
+            </form> 
+            <br />
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

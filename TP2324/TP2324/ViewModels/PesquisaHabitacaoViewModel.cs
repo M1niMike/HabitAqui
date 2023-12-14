@@ -15,6 +15,7 @@ namespace TP2324.ViewModels
         public string CategoriaSelecinada { get; set; }
         public string PeriodoMinimoSelecionado { get; set; }
         public string LocalizacaoSelecionada { get; set; }
+        public string LocadorSelecionado { get; set; }
 
         public decimal? PrecoMinimo { get; set; }
         public decimal? PrecoMaximo { get; set; }
