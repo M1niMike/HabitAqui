@@ -23,25 +23,26 @@ namespace TP2324.Controllers
 
         public IActionResult Index(PesquisaHabitacaoViewModel viewModel)
         {
-            IQueryable<Home> homesQuery = _context.Homes.Include(m => m.Category).Include(m => m.typeResidence).Include(m => m.District).Include(m => m.Company);
+            IQueryable<Home> homesQuery = _context.Homes
+                .Include(m => m.Category)
+                .Include(m => m.typeResidence)
+                .Include(m => m.District)
+                .Include(m => m.Company);
 
             if (!string.IsNullOrEmpty(viewModel.TipoResidenciaSelecionado))
             {
-                homesQuery = homesQuery.Where(c => c.typeResidence.Name == viewModel.TipoResidenciaSelecionado).OrderBy(c => c.Address);
+                homesQuery = homesQuery.Where(c => c.typeResidence.Name == viewModel.TipoResidenciaSelecionado);
             }
-
 
             if (!string.IsNullOrEmpty(viewModel.LocalizacaoSelecionada))
             {
-                homesQuery = homesQuery.Where(c => c.District.Name == viewModel.LocalizacaoSelecionada).OrderBy(c => c.Address);
+                homesQuery = homesQuery.Where(c => c.District.Name == viewModel.LocalizacaoSelecionada);
             }
-
 
             if (!string.IsNullOrEmpty(viewModel.CategoriaSelecinada))
             {
                 homesQuery = homesQuery.Where(c => c.Category.Name == viewModel.CategoriaSelecinada);
             }
-
 
             if (!string.IsNullOrEmpty(viewModel.LocadorSelecionado))
             {
@@ -59,7 +60,11 @@ namespace TP2324.Controllers
                     homesQuery = homesQuery.OrderByDescending(c => c.PriceToRent);
                 }
             }
-
+            else
+            {
+                // Adicione uma ordenação padrão se nenhuma ordenação específica for fornecida
+                homesQuery = homesQuery.OrderBy(c => c.Address);
+            }
 
             var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
             ViewBag.HomeTypes = new SelectList(typeResidences);
@@ -78,6 +83,7 @@ namespace TP2324.Controllers
 
             return View(viewModel);
         }
+
 
 
 
