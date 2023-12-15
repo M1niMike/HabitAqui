@@ -42,9 +42,12 @@
 
                 <div class="mb-3">
                     <label asp-for="RentingId" class="form-label"></label>
-                    <input asp-for="RentingId" class="form-control" />
+                    <select asp-for="RentingId" asp-items="ViewBag.Rentings" class="form-control">
+                        <option value="">Selecione um Renting</option>
+                    </select>
                     <span asp-validation-for="RentingId" class="text-danger"></span>
                 </div>
+
 
                 <div class="mb-3">
                     <label asp-for="Equipments" class="form-label"></label>
@@ -69,11 +72,6 @@
                     <input asp-for="Files" type="file" multiple />
                     <span asp-validation-for="Files" class="text-danger"></span>
                 </div>
-
-                <div class="mb-3">
-                    <input asp-for="ApplicationUserId" type="hidden" />
-                </div>
-
 
                 <div class="mb-3">
                     <button type="submit" class="btn btn-c">Adicionar</button>

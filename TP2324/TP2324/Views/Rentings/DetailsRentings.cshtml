@@ -11,7 +11,7 @@
             <div class="col-md-12 col-lg-8">
                 <div class="title-single-box">
                     <h1 class="title-single">Detalhes</h1>
-                    <span class="color-text-a">Detalhesd do arrendamento</span>
+                    <span class="color-text-a">Detalhes do arrendamento</span>
                 </div>
             </div>
             <div class="col-md-12 col-lg-4">
@@ -48,7 +48,7 @@
                     <dd>@Html.DisplayFor(model => model.Homes.District.Name)</dd>
 
                     <dt>Cliente:</dt>
-                    <dd>@Html.DisplayFor(model => model.ApplicationUser)</dd>
+                    <dd>@Html.DisplayFor(model => model.ApplicationUser.FirstName)</dd>
                 </div>
 
                 <div class="col-sm-6">
@@ -77,8 +77,6 @@
     <div class="row mt-3">
         <div class="col-md-8">
             <div>
-                <a class="btn btn-c mb-5" asp-action="CreateForm">Entregar</a>
-                <a class="btn btn-c mb-5" asp-action="CreateForm">Receber</a>
                 <a class="btn btn-c mb-5" asp-action="RentingsIndex">Voltar à lista</a>
             </div>
         </div>

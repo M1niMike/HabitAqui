@@ -17,16 +17,19 @@ namespace TP2324.Models
         public string? Observation { get; set; }
 
         [Display(Name = "Utilizador", Prompt = "Utilizador que realizou a reserva")]
-        public string ApplicationUserId { get; set; }
-        public ApplicationUser? ApplicationUser { get; set; }
+        public string? ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
 
         [Display(Name = "Arrendamento", Prompt = "O arrendamento")]
-        public string RentingId { get; set; }
-        public Renting? Renting { get; set; }
+        public int? RentingId { get; set; }
+        public Renting Renting { get; set; }
+
+        [Display(Name = "Imagens")]
+        public string? ImgUrls { get; set; }
 
         [NotMapped]
         [Display(Name = "Fotografias", Prompt = "Anexe fotografias do dano da habitação")]
-        public IFormFile[]? Files { get; set; }
+        public List<IFormFile>? Files { get; set; }
 
     }
 }

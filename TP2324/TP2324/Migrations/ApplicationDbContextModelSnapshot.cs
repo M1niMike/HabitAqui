@@ -414,7 +414,6 @@ namespace TP2324.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ApplicationUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Damage")
@@ -423,21 +422,20 @@ namespace TP2324.Migrations
                     b.Property<string>("Equipments")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImgUrls")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Observation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RentingId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("RentingId1")
+                    b.Property<int?>("RentingId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("RentingId1");
+                    b.HasIndex("RentingId");
 
                     b.ToTable("HomeStatus");
                 });
@@ -637,13 +635,11 @@ namespace TP2324.Migrations
                 {
                     b.HasOne("TP2324.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("TP2324.Models.Renting", "Renting")
                         .WithMany()
-                        .HasForeignKey("RentingId1");
+                        .HasForeignKey("RentingId");
 
                     b.Navigation("ApplicationUser");
 

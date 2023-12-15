@@ -11,15 +11,15 @@
         <div class="row">
             <div class="col-md-12 col-lg-8">
                 <div class="title-single-box">
-                    <h1 class="title-single">Entregas</h1>
-                    <span class="color-text-a">Lista das entregas</span>
+                    <h1 class="title-single">Entregas/Recebidas</h1>
+                    <span class="color-text-a">Lista das entregas/recebidas</span>
                 </div>
             </div>
             <div class="col-md-12 col-lg-4">
                 <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="#">Pagina principal</a>
+                            <a href="#">Página principal</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">
                             Habitações / Forms Index
@@ -30,42 +30,44 @@
         </div>
     </div>
 </section><!-- End Intro Single-->
+<!-- Include Lightbox2 CSS and JS -->
+<link rel="stylesheet" href="path/to/lightbox.min.css">
+<script src="path/to/lightbox-plus-jquery.min.js"></script>
 
 <div class="container">
     <div class="row">
         <div class="col-md-12">
 
-            <table class="table">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Equipamentos</th>
                         <th>Danos</th>
                         <th>Observações</th>
-                        <th>Utilizador que entregou</th>
-                        <th>Arrendamento</th>
-                        <th>Fotografias</th>
+                        <th>Quem Entregou/Recebeu</th>
+                        <th>ID de Arrendamento</th>
+                        <th>Imagens</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@item.Id</td>
                             <td>@item.Equipments</td>
-                            <td>@item.Damage</td>
+                            <td>@(item.Damage ? "Sim" : "Não")</td>
                             <td>@item.Observation</td>
-                            <td>@item.ApplicationUserId</td>
+                            <td>@item.ApplicationUser.UserName</td>
                             <td>@item.RentingId</td>
                             <td>
-                                @if (item.Files != null && item.Files.Length > 0)
+                                @if (!string.IsNullOrEmpty(item.ImgUrls))
                                 {
-                                    var imagesFolderPath = $"~/imgForms/{item.Id}/";
-
-                                    foreach (var file in item.Files)
-                                    {
-                                        var imgSrc = $"{imagesFolderPath}{file.FileName}";
-                                        <img src="@Url.Content(imgSrc)" alt="Image" class="img-thumbnail" />
-                                    }
+                                    <a href="~/@item.ImgUrls" data-lightbox="images">
+                                        <img src="~/@item.ImgUrls" alt="Imagem" class="img-thumbnail img-preview" />
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span>Sem imagem disponível</span>
                                 }
                             </td>
                         </tr>
@@ -76,3 +78,18 @@
         </div>
     </div>
 </div>
+
+<!-- Estilos adicionais -->
+<style>
+    .img-preview {
+        max-width: 50px; /* Tamanho inicial da imagem na tabela */
+        cursor: pointer; /* Adiciona cursor pointer para indicar que a imagem é clicável */
+    }
+</style>
+
+<!-- Initialize Lightbox2 -->
+<script>
+    $(document).on('ready', function () {
+        $('[data-lightbox="images"]').lightbox();
+    });
+</script>

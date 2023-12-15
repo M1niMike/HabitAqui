@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -17,13 +18,15 @@ namespace TP2324.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IWebHostEnvironment _env;
 
-        public RentingsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment env)
+        public RentingsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment env, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _userManager = userManager;
             _env = env;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Rentings
@@ -59,7 +62,7 @@ namespace TP2324.Controllers
 
                 return View(await applicationDbContext.ToListAsync());
             }
-            else if(User.IsInRole("Manager"))
+            else if (User.IsInRole("Manager"))
             {
                 // Encontre o funcionario associado ao usuário autenticado
                 var manager = await _context.Managers
@@ -97,6 +100,14 @@ namespace TP2324.Controllers
 
             var renting = await _context.Rentings
                 .Include(r => r.Homes)
+                    .ThenInclude(h => h.typeResidence)
+                .Include(r => r.Homes)
+                    .ThenInclude(h => h.Category)
+                .Include(r => r.Homes)
+                    .ThenInclude(h => h.Company)
+                .Include(r => r.Homes)
+                    .ThenInclude(h => h.District)
+                .Include(h => h.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (renting == null)
             {
@@ -148,7 +159,7 @@ namespace TP2324.Controllers
                                                          .Select(h => h.MinimumPeriod)
                                                          .FirstOrDefault();
 
-                     if(durationInDays < minimumPeriod)
+                    if (durationInDays < minimumPeriod)
                     {
 
                         // Adiciona uma mensagem de erro informando que as datas são obrigatórias
@@ -162,7 +173,7 @@ namespace TP2324.Controllers
                     decimal pricePerDay = (decimal)_context.Homes.Where(h => h.Id == renting.HomeId)
                                                          .Select(h => h.PriceToRent)
                                                          .FirstOrDefault();
-                   
+
                     decimal totalPrice = durationInDays * pricePerDay;
 
                     renting.Price = totalPrice;
@@ -174,7 +185,7 @@ namespace TP2324.Controllers
                     // Adiciona uma mensagem de erro informando que as datas são obrigatórias
                     ModelState.AddModelError(string.Empty, "As datas de início e término são obrigatórias.");
 
-                   
+
                     // Retorna a view com as mensagens de erro
                     ViewData["HomeId"] = new SelectList(_context.Homes, "Id", "Address", renting.HomeId);
                     return View(renting);
@@ -278,14 +289,14 @@ namespace TP2324.Controllers
             {
                 _context.Rentings.Remove(renting);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(RentingsIndex));
         }
 
         private bool RentingExists(int id)
         {
-          return (_context.Rentings?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Rentings?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
         [Authorize(Roles = "Employee,Manager")]
@@ -322,19 +333,19 @@ namespace TP2324.Controllers
                     {
                         return NotFound();
                     }
-                    
+
                     existingRenting.IsApproved = true;
 
-                    
+
 
                     if (User.IsInRole("Employee"))
                     {
-                        
+
                         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                                        
+
                         var employee = await _context.Employees
-                            .Include(m => m.Company) 
+                            .Include(m => m.Company)
                             .Include(m => m.Rentings)
                             .FirstOrDefaultAsync(m => m.ApplicationUserId == userId);
 
@@ -349,27 +360,27 @@ namespace TP2324.Controllers
                         // Adiciona o arrendamento à lista de arrendamentos do cliente
                         employee.Rentings.Add(existingRenting);
 
-                      
+
                     }
                     else if (User.IsInRole("Manager"))
                     {
-                        
+
                         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            
+
                         var manager = await _context.Managers
                             .Include(m => m.Company)
                             .Include(m => m.Rentings)
                             .FirstOrDefaultAsync(m => m.ApplicationUserId == userId);
 
                         if (manager == null)
-                        {                        
+                        {
                             return NotFound();
                         }
-                        
-                        
+
+
                         existingRenting.ResponsibleId = manager.ApplicationUserId;
 
-                        
+
 
                         //adiciona o arrendamento a lista de arrendamentos do manager
                         manager.Rentings = new List<Renting> { existingRenting };
@@ -411,7 +422,8 @@ namespace TP2324.Controllers
         public IActionResult FormIndex()
         {
             var homeStatusList = _context.HomeStatus
-                .Include(h => h.Renting)  // Include related Renting data if needed
+                .Include(h => h.Renting)
+                .Include(h => h.ApplicationUser)
                 .ToList();
 
             return View(homeStatusList);
@@ -422,21 +434,17 @@ namespace TP2324.Controllers
 
         // GET: Rentings/Create
         [Authorize(Roles = "Employee,Manager")]
-        public async Task<IActionResult> CreateForm(int? id)
+        public async Task<IActionResult> CreateForm()
         {
-            if (id == null || _context.Rentings == null)
-            {
-                return NotFound();
-            }
-            var renting = await _context.Rentings
-                .Include(r => r.ApplicationUser)
-                .FirstOrDefaultAsync(r => r.Id == id);
 
-            if (renting == null)
-            {
-                return NotFound();
-            }
-            return View(renting);
+
+            // Obtenha o ID do usuário autenticado
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var rentings = _context.Rentings.Where(c => c.ResponsibleId == userId).Select(c => c.Id).Distinct().ToList();
+            ViewBag.Rentings = new SelectList(rentings);
+
+            return View();
         }
 
         // POST: Rentings/Create
@@ -446,37 +454,155 @@ namespace TP2324.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateForm([Bind("Id,Equipments,Damage,Observation,ApplicationUserId,Files,RentingId")] HomeStatus homeStatus)
         {
-            if (ModelState.IsValid)
+            try
             {
-                // Salvar imagens no sistema de arquivos
-                if (homeStatus.Files != null && homeStatus.Files.Length > 0)
+                ModelState.Remove(nameof(homeStatus.ApplicationUser));
+                ModelState.Remove(nameof(homeStatus.Renting));
+
+                if (ModelState.IsValid)
                 {
-                    var imagesFolderPath = Path.Combine(_env.WebRootPath, "imgForms", homeStatus.Id.ToString());
+                    // Obtenha o ID do usuário autenticado
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                    if (!Directory.Exists(imagesFolderPath))
+                    var rentings = _context.Rentings.Where(c => c.ResponsibleId == userId).Select(c => c.Id).Distinct().ToList();
+                    ViewBag.Rentings = new SelectList(rentings);
+
+                    if (User.IsInRole("Manager") || User.IsInRole("Employee"))
                     {
-                        Directory.CreateDirectory(imagesFolderPath);
-                    }
+                        var renting = await _context.Rentings.FindAsync(homeStatus.RentingId);
 
-                    foreach (var file in homeStatus.Files)
-                    {
-                        var imagePath = Path.Combine(imagesFolderPath, file.FileName);
-
-                        using (var stream = new FileStream(imagePath, FileMode.Create))
+                        if (renting == null)
                         {
-                            await file.CopyToAsync(stream);
+                            return NotFound();
+                        }
+
+                        // Salvar imagens no sistema de arquivos
+                        if (homeStatus.Files != null && homeStatus.Files.Count > 0)
+                        {
+                            var uploadedImageUrls = new List<string>();
+
+                            foreach (var file in homeStatus.Files)
+                            {
+                                var imageUrl = await UploadImage(homeStatus.Id, file);
+                                uploadedImageUrls.Add(imageUrl);
+                            }
+
+                            // Associe a URL da imagem ao modelo
+                            homeStatus.ImgUrls = uploadedImageUrls.FirstOrDefault();
+                        }
+
+                        homeStatus.ApplicationUser = await _context.Users.FindAsync(userId);
+                        homeStatus.Renting = renting;
+
+                        _context.Add(homeStatus);
+                        await _context.SaveChangesAsync();
+
+                        if (User.IsInRole("Manager") || User.IsInRole("Employee"))
+                        {
+                            return RedirectToAction(nameof(FormIndex));
                         }
                     }
                 }
-
-                _context.Add(homeStatus);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction("Details", "Rentings", new { id = homeStatus.RentingId });
+                else
+                {
+                    // Model não é válido - exibir todos os erros
+                    foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        Console.WriteLine("Erro no modelo: " + modelError.ErrorMessage);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Imprime detalhes da exceção
+                Console.WriteLine("Exceção: " + ex.Message);
+                ModelState.AddModelError(string.Empty, "Exceção: " + ex.Message);
             }
 
             return View(homeStatus);
         }
+
+
+
+
+
+        private async Task<List<string>> UploadImages(int formId, List<IFormFile> imageFiles)
+        {
+            if (imageFiles == null || imageFiles.Count == 0)
+                return null;
+
+            // Diretório base para salvar as imagens (assumindo que 'imgForms' seja o diretório virtual para as imagens dos formulários)
+            var baseUploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "imgForms");
+
+            // Diretório específico para o formulário usando seu identificador único
+            var formUploadsFolder = Path.Combine(baseUploadsFolder, formId.ToString());
+
+            // Garante que o diretório de destino existe, caso contrário, cria-o
+            if (!Directory.Exists(formUploadsFolder))
+            {
+                Directory.CreateDirectory(formUploadsFolder);
+            }
+
+            var uploadedImageUrls = new List<string>();
+
+            foreach (var imageFile in imageFiles)
+            {
+                if (imageFile.Length == 0)
+                    continue;
+
+                // Gera um nome de arquivo único para evitar colisões
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+
+                // Caminho completo para o arquivo no sistema de arquivos
+                var filePath = Path.Combine(formUploadsFolder, uniqueFileName);
+
+                // Salva a imagem no sistema de arquivos
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(fileStream);
+                }
+
+                // Adiciona a URL da imagem à lista
+                var imageUrl = Path.Combine("imgForms", formId.ToString(), uniqueFileName);
+                uploadedImageUrls.Add(imageUrl);
+            }
+
+            return uploadedImageUrls;
+        }
+
+        private async Task<string> UploadImage(int formId, IFormFile imageFile)
+        {
+            if (imageFile == null || imageFile.Length == 0)
+                return null;
+
+            // Diretório base para salvar as imagens (assumindo que 'imgForms' seja o diretório virtual para as imagens dos formulários)
+            var baseUploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "imgForms");
+
+            // Diretório específico para o formulário usando seu identificador único
+            var formUploadsFolder = Path.Combine(baseUploadsFolder, formId.ToString());
+
+            // Garante que o diretório de destino existe, caso contrário, cria-o
+            if (!Directory.Exists(formUploadsFolder))
+            {
+                Directory.CreateDirectory(formUploadsFolder);
+            }
+
+            // Gera um nome de arquivo único para evitar colisões
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+
+            // Caminho completo para o arquivo no sistema de arquivos
+            var filePath = Path.Combine(formUploadsFolder, uniqueFileName);
+
+            // Salva a imagem no sistema de arquivos
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+
+            // Retorna a URL da imagem específica do formulário
+            return Path.Combine("imgForms", formId.ToString(), uniqueFileName);
+        }
+
 
 
 
@@ -501,13 +627,13 @@ namespace TP2324.Controllers
 
             var renting = await _context.Rentings
                 .Include(r => r.Homes)
-                    .ThenInclude(h => h.typeResidence) 
+                    .ThenInclude(h => h.typeResidence)
                 .Include(r => r.Homes)
                     .ThenInclude(h => h.Category)
                 .Include(r => r.Homes)
-                    .ThenInclude(h => h.Company) 
+                    .ThenInclude(h => h.Company)
                 .Include(r => r.Homes)
-                    .ThenInclude(h => h.District) 
+                    .ThenInclude(h => h.District)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (renting == null)
             {
@@ -517,7 +643,7 @@ namespace TP2324.Controllers
             return View(renting);
         }
 
-        [Authorize(Roles ="Client")]
+        [Authorize(Roles = "Client")]
         public IActionResult MyRentings()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

@@ -492,7 +492,7 @@ namespace TP2324.Controllers
 
                             Console.WriteLine("Contador: " + manager.Company.Employees.Count());
 
-                            return RedirectToAction(nameof(Index));
+                            return RedirectToAction(nameof(EmployeeList));
                         }
                         else
                         {

@@ -7,7 +7,7 @@
 <div class="carousel-new">
     <div class="intro intro-carousel swiper position-relative">
         <div class="swiper-wrapper">
-                @foreach (var home in Model)
+            @foreach (var home in Model.Take(4))
                 {
                     <div class="swiper-slide carousel-item-a intro-item bg-image" style="background-image: url('/img/@home.ImgUrl')">
                         <div class="overlay overlay-a"></div>
