@@ -17,57 +17,75 @@ namespace TP2324.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public RentingsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public RentingsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment env)
         {
             _context = context;
             _userManager = userManager;
+            _env = env;
         }
 
         // GET: Rentings
-        public async Task<IActionResult> EmployeeRentingsIndex()
+        public async Task<IActionResult> RentingsIndex()
         {
+
             // Obtenha o ID do usuário autenticado
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-
-            // Encontre o funcionario associado ao usuário autenticado
-            var employee = await _context.Employees
-                .Include(m => m.Company) // Inclua a empresa associada ao funcionario
-                .FirstOrDefaultAsync(m => m.ApplicationUserId == userId);
-
-            if (employee == null)
+            if (User.IsInRole("Employee"))
             {
-                // O usuário autenticado não é um funcionario
-                return NotFound();
+
+
+                // Encontre o funcionario associado ao usuário autenticado
+                var employee = await _context.Employees
+                    .Include(m => m.Company) // Inclua a empresa associada ao funcionario
+                    .FirstOrDefaultAsync(m => m.ApplicationUserId == userId);
+
+                if (employee == null)
+                {
+                    // O usuário autenticado não é um funcionario
+                    return NotFound();
+                }
+
+                // Obtenha a empresa associada ao gestor
+                var company = employee.Company;
+
+                var applicationDbContext = _context.Rentings
+                    .Include(r => r.Homes)
+                        .ThenInclude(m => m.Company)
+                    .Include(r => r.ApplicationUser)
+                    .Where(m => m.Homes.CompanyId == company.Id);
+
+                return View(await applicationDbContext.ToListAsync());
+            }
+            else if(User.IsInRole("Manager"))
+            {
+                // Encontre o funcionario associado ao usuário autenticado
+                var manager = await _context.Managers
+                    .Include(m => m.Company) // Inclua a empresa associada ao funcionario
+                    .FirstOrDefaultAsync(m => m.ApplicationUserId == userId);
+
+                if (manager == null)
+                {
+                    // O usuário autenticado não é um funcionario
+                    return NotFound();
+                }
+
+                // Obtenha a empresa associada ao gestor
+                var company = manager.Company;
+
+                var applicationDbContext = _context.Rentings
+                    .Include(r => r.Homes)
+                        .ThenInclude(m => m.Company)
+                    .Include(r => r.ApplicationUser)
+                    .Where(m => m.Homes.CompanyId == company.Id);
+
+                return View(await applicationDbContext.ToListAsync());
             }
 
-            // Obtenha a empresa associada ao gestor
-            var company = employee.Company;
-
-            var applicationDbContext = _context.Rentings
-                .Include(r => r.Homes)
-                    .ThenInclude(m => m.Company)
-                .Include(r => r.ApplicationUser)
-                .Where(m => m.Homes.CompanyId == company.Id);
-
-            return View(await applicationDbContext.ToListAsync());
+            return NotFound();
         }
-
-
-        // GET: Rentings
-        public async Task<IActionResult> ManagerRentingsIndex()
-        {
-            // Obtenha o ID do usuário autenticado
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-
-
-            var applicationDbContext = _context.Rentings.Include(r => r.Homes).Include(r => r.ApplicationUser);
-            return View(await applicationDbContext.ToListAsync());
-        }
-
-
 
         // GET: Rentings/Details/5
         public async Task<IActionResult> DetailsRentings(int? id)
@@ -191,7 +209,7 @@ namespace TP2324.Controllers
         // POST: Rentings/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Employee,Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Price,BeginDate,EndDate,MinimumPeriod,MaximumPeriod,HomeId")] Renting renting)
@@ -262,7 +280,7 @@ namespace TP2324.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(EmployeeRentingsIndex));
+            return RedirectToAction(nameof(RentingsIndex));
         }
 
         private bool RentingExists(int id)
@@ -270,6 +288,7 @@ namespace TP2324.Controllers
           return (_context.Rentings?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
+        [Authorize(Roles = "Employee,Manager")]
         public async Task<IActionResult> ConfirmRenting(int? id)
         {
             if (id == null || _context.Rentings == null)
@@ -288,6 +307,7 @@ namespace TP2324.Controllers
             return View(renting);
         }
 
+        [Authorize(Roles = "Employee,Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConfirmRenting(int id)
@@ -325,8 +345,11 @@ namespace TP2324.Controllers
 
                         existingRenting.ResponsibleId = employee.ApplicationUserId;
 
-                        //adiciona o arrendamento a lista de arrendamentos do cliente
+
+                        // Adiciona o arrendamento à lista de arrendamentos do cliente
                         employee.Rentings.Add(existingRenting);
+
+                      
                     }
                     else if (User.IsInRole("Manager"))
                     {
@@ -346,6 +369,8 @@ namespace TP2324.Controllers
                         
                         existingRenting.ResponsibleId = manager.ApplicationUserId;
 
+                        
+
                         //adiciona o arrendamento a lista de arrendamentos do manager
                         manager.Rentings = new List<Renting> { existingRenting };
                     }
@@ -353,7 +378,7 @@ namespace TP2324.Controllers
                     _context.Update(existingRenting);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction(nameof(EmployeeRentingsIndex));
+                    return RedirectToAction(nameof(RentingsIndex));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -372,8 +397,87 @@ namespace TP2324.Controllers
             ModelState.AddModelError(string.Empty, "Ocorreu um erro ao confirmar o arrendamento.");
 
             // Retorna a view com a mensagem de erro
-            return RedirectToAction(nameof(EmployeeRentingsIndex));
+            return RedirectToAction(nameof(RentingsIndex));
         }
+
+        //#############################
+        //
+        // Forms Estados
+        //
+        //#############################
+
+        // GET: Rentings/Index
+        [Authorize(Roles = "Employee,Manager")]
+        public IActionResult FormIndex()
+        {
+            var homeStatusList = _context.HomeStatus
+                .Include(h => h.Renting)  // Include related Renting data if needed
+                .ToList();
+
+            return View(homeStatusList);
+        }
+
+
+
+
+        // GET: Rentings/Create
+        [Authorize(Roles = "Employee,Manager")]
+        public async Task<IActionResult> CreateForm(int? id)
+        {
+            if (id == null || _context.Rentings == null)
+            {
+                return NotFound();
+            }
+            var renting = await _context.Rentings
+                .Include(r => r.ApplicationUser)
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+            if (renting == null)
+            {
+                return NotFound();
+            }
+            return View(renting);
+        }
+
+        // POST: Rentings/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateForm([Bind("Id,Equipments,Damage,Observation,ApplicationUserId,Files,RentingId")] HomeStatus homeStatus)
+        {
+            if (ModelState.IsValid)
+            {
+                // Salvar imagens no sistema de arquivos
+                if (homeStatus.Files != null && homeStatus.Files.Length > 0)
+                {
+                    var imagesFolderPath = Path.Combine(_env.WebRootPath, "imgForms", homeStatus.Id.ToString());
+
+                    if (!Directory.Exists(imagesFolderPath))
+                    {
+                        Directory.CreateDirectory(imagesFolderPath);
+                    }
+
+                    foreach (var file in homeStatus.Files)
+                    {
+                        var imagePath = Path.Combine(imagesFolderPath, file.FileName);
+
+                        using (var stream = new FileStream(imagePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+                    }
+                }
+
+                _context.Add(homeStatus);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Details", "Rentings", new { id = homeStatus.RentingId });
+            }
+
+            return View(homeStatus);
+        }
+
 
 
 

@@ -405,6 +405,43 @@ namespace TP2324.Migrations
                     b.ToTable("Homes");
                 });
 
+            modelBuilder.Entity("TP2324.Models.HomeStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Damage")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Equipments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Observation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RentingId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RentingId1")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("RentingId1");
+
+                    b.ToTable("HomeStatus");
+                });
+
             modelBuilder.Entity("TP2324.Models.Manager", b =>
                 {
                     b.Property<int>("Id")
@@ -594,6 +631,23 @@ namespace TP2324.Migrations
                     b.Navigation("District");
 
                     b.Navigation("typeResidence");
+                });
+
+            modelBuilder.Entity("TP2324.Models.HomeStatus", b =>
+                {
+                    b.HasOne("TP2324.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TP2324.Models.Renting", "Renting")
+                        .WithMany()
+                        .HasForeignKey("RentingId1");
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Renting");
                 });
 
             modelBuilder.Entity("TP2324.Models.Manager", b =>

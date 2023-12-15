@@ -149,10 +149,8 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Arrendamentos</a>
                                     <div class="dropdown-menu">
-                                        @* <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Lista das categorias</a>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Adicionar categoria</a>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Lista das tipologias</a>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Adicionar tipologia</a> *@
+                                        <a class="dropdown-item" asp-area="" asp-controller="Rentings" asp-action="RentingsIndex">Lista dos arrendamentos</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Rentings" asp-action="FormIndex">Lista dos Estados</a>
                                     </div>
                                 </li>
 
@@ -160,10 +158,8 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Habitações</a>
                                     <div class="dropdown-menu">
-                                        @* <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Lista das categorias</a>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Adicionar categoria</a>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Lista das tipologias</a>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Adicionar tipologia</a> *@
+                                        <a class="dropdown-item" asp-area="" asp-controller="EmployeeArea" asp-action="HomesList">Lista das habitações</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="EmployeeArea" asp-action="CreateHomes">Adicionar</a>
                                     </div>
                                 </li>
 
@@ -195,8 +191,8 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Arrendamentos</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-area="" asp-controller="Rentings" asp-action="EmployeeRentingsIndex">Lista dos arrendamentos</a>
-                                        <a class="dropdown-item" asp-area="" asp-controller="EmployeeArea" asp-action="CreateHomes">Adicionar</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Rentings" asp-action="RentingsIndex">Lista dos arrendamentos</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Rentings" asp-action="FormIndex">Lista dos Estados</a>
                                     </div>
                                 </li>
 

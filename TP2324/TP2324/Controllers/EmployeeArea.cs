@@ -11,6 +11,7 @@ using TP2324.ViewModels;
 
 namespace TP2324.Controllers
 {
+    [Authorize(Roles ="Employee,Manager")]
     public class EmployeeArea : Controller
     {
 
@@ -39,76 +40,154 @@ namespace TP2324.Controllers
         public async Task<ActionResult> HomesList(PesquisaHabitacaoViewModel viewModel)
         {
 
-            // Obtenha o ID do usuário autenticado
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (User.IsInRole("Employee")){
+                // Obtenha o ID do usuário autenticado
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // Encontre o funcionario associado ao usuário autenticado
-            var employee =  await _context.Employees
-                .Include(m => m.Company) // Inclua a empresa associada ao funcionario
-                .FirstOrDefaultAsync(m => m.ApplicationUserId == userId);
+                // Encontre o funcionario associado ao usuário autenticado
+                var employee = await _context.Employees
+                    .Include(m => m.Company) // Inclua a empresa associada ao funcionario
+                    .FirstOrDefaultAsync(m => m.ApplicationUserId == userId);
 
-            if (employee == null)
+                if (employee == null)
+                {
+                    // O usuário autenticado não é um funcionario
+                    return NotFound();
+                }
+
+                // Obtenha a empresa associada ao gestor
+                var company = employee.Company;
+
+                IQueryable<Home> homesQuery = _context.Homes
+                    .Include(m => m.Company).Include(m => m.typeResidence).Include(m => m.Category).Include(m => m.District)
+                    .Where(m => m.CompanyId == company.Id);
+
+
+                if (!string.IsNullOrEmpty(viewModel.TipoResidenciaSelecionado))
+                {
+                    homesQuery = homesQuery.Where(c => c.typeResidence.Name == viewModel.TipoResidenciaSelecionado);
+                }
+
+
+                if (!string.IsNullOrEmpty(viewModel.CategoriaSelecinada))
+                {
+                    homesQuery = homesQuery.Where(c => c.Category.Name == viewModel.CategoriaSelecinada);
+                }
+
+                if (!string.IsNullOrEmpty(viewModel.Ordenacao))
+                {
+                    if (viewModel.Ordenacao == "MenorPreco")
+                    {
+                        homesQuery = homesQuery.OrderBy(c => c.PriceToRent);
+                    }
+                    else if (viewModel.Ordenacao == "MaiorPreco")
+                    {
+                        homesQuery = homesQuery.OrderByDescending(c => c.PriceToRent);
+                    }
+                    if (viewModel.Ordenacao == "Ativo")
+                    {
+                        homesQuery = homesQuery.Where(c => c.Available).OrderBy(c => c.Address);
+                    }
+                    else if (viewModel.Ordenacao == "Inativo")
+                    {
+                        homesQuery = homesQuery.Where(c => !c.Available).OrderBy(c => c.Address);
+                    }
+                }
+
+
+                var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
+                ViewBag.HomeTypes = new SelectList(typeResidences);
+
+                var category = _context.Category.Select(c => c.Name).Distinct().ToList();
+                ViewBag.HomeCategory = new SelectList(category);
+
+                var districts = _context.Districts.Select(c => c.Name).Distinct().ToList();
+                ViewBag.HomeDistrict = new SelectList(districts);
+
+                var companies = _context.Companies.Select(c => c.Name).Distinct().ToList();
+                ViewBag.HomeCompany = new SelectList(companies);
+
+                viewModel.Homeslist = homesQuery.ToList();
+                viewModel.NumResultados = viewModel.Homeslist.Count;
+
+                return View(viewModel);
+
+            }
+            else if (User.IsInRole("Manager"))
             {
-                // O usuário autenticado não é um funcionario
-                return NotFound();
+                // Obtenha o ID do usuário autenticado
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                // Encontre o funcionario associado ao usuário autenticado
+                var manager = await _context.Managers
+                    .Include(m => m.Company) // Inclua a empresa associada ao funcionario
+                    .FirstOrDefaultAsync(m => m.ApplicationUserId == userId);
+
+                if (manager == null)
+                {
+                    // O usuário autenticado não é um funcionario
+                    return NotFound();
+                }
+
+                // Obtenha a empresa associada ao gestor
+                var company = manager.Company;
+
+                IQueryable<Home> homesQuery = _context.Homes
+                    .Include(m => m.Company).Include(m => m.typeResidence).Include(m => m.Category).Include(m => m.District)
+                    .Where(m => m.CompanyId == company.Id);
+
+
+                if (!string.IsNullOrEmpty(viewModel.TipoResidenciaSelecionado))
+                {
+                    homesQuery = homesQuery.Where(c => c.typeResidence.Name == viewModel.TipoResidenciaSelecionado);
+                }
+
+
+                if (!string.IsNullOrEmpty(viewModel.CategoriaSelecinada))
+                {
+                    homesQuery = homesQuery.Where(c => c.Category.Name == viewModel.CategoriaSelecinada);
+                }
+
+                if (!string.IsNullOrEmpty(viewModel.Ordenacao))
+                {
+                    if (viewModel.Ordenacao == "MenorPreco")
+                    {
+                        homesQuery = homesQuery.OrderBy(c => c.PriceToRent);
+                    }
+                    else if (viewModel.Ordenacao == "MaiorPreco")
+                    {
+                        homesQuery = homesQuery.OrderByDescending(c => c.PriceToRent);
+                    }
+                    if (viewModel.Ordenacao == "Ativo")
+                    {
+                        homesQuery = homesQuery.Where(c => c.Available).OrderBy(c => c.Address);
+                    }
+                    else if (viewModel.Ordenacao == "Inativo")
+                    {
+                        homesQuery = homesQuery.Where(c => !c.Available).OrderBy(c => c.Address);
+                    }
+                }
+
+
+                var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
+                ViewBag.HomeTypes = new SelectList(typeResidences);
+
+                var category = _context.Category.Select(c => c.Name).Distinct().ToList();
+                ViewBag.HomeCategory = new SelectList(category);
+
+                var districts = _context.Districts.Select(c => c.Name).Distinct().ToList();
+                ViewBag.HomeDistrict = new SelectList(districts);
+
+                var companies = _context.Companies.Select(c => c.Name).Distinct().ToList();
+                ViewBag.HomeCompany = new SelectList(companies);
+
+                viewModel.Homeslist = homesQuery.ToList();
+                viewModel.NumResultados = viewModel.Homeslist.Count;
+
+                return View(viewModel);
             }
 
-            // Obtenha a empresa associada ao gestor
-            var company = employee.Company;
-
-            IQueryable<Home> homesQuery =  _context.Homes
-                .Include(m => m.Company).Include(m => m.typeResidence).Include(m => m.Category).Include(m => m.District)
-                .Where(m => m.CompanyId == company.Id);
-                 
-
-            if (!string.IsNullOrEmpty(viewModel.TipoResidenciaSelecionado))
-            {
-                homesQuery = homesQuery.Where(c => c.typeResidence.Name == viewModel.TipoResidenciaSelecionado);
-            }
-
-
-            if (!string.IsNullOrEmpty(viewModel.CategoriaSelecinada))
-            {
-                homesQuery = homesQuery.Where(c => c.Category.Name == viewModel.CategoriaSelecinada);
-            }
-
-            if (!string.IsNullOrEmpty(viewModel.Ordenacao))
-            {
-                if (viewModel.Ordenacao == "MenorPreco")
-                {
-                    homesQuery = homesQuery.OrderBy(c => c.PriceToRent);
-                }
-                else if (viewModel.Ordenacao == "MaiorPreco")
-                {
-                    homesQuery = homesQuery.OrderByDescending(c => c.PriceToRent);
-                }
-                if (viewModel.Ordenacao == "Ativo")
-                {
-                    homesQuery = homesQuery.Where(c => c.Available).OrderBy(c => c.Address);
-                }
-                else if (viewModel.Ordenacao == "Inativo")
-                {
-                    homesQuery = homesQuery.Where(c => !c.Available).OrderBy(c => c.Address);
-                }
-            }
-
-
-            var typeResidences = _context.TypeResidences.Select(c => c.Name).Distinct().ToList();
-            ViewBag.HomeTypes = new SelectList(typeResidences);
-
-            var category = _context.Category.Select(c => c.Name).Distinct().ToList();
-            ViewBag.HomeCategory = new SelectList(category);
-
-            var districts = _context.Districts.Select(c => c.Name).Distinct().ToList();
-            ViewBag.HomeDistrict = new SelectList(districts);
-
-            var companies = _context.Companies.Select(c => c.Name).Distinct().ToList();
-            ViewBag.HomeCompany = new SelectList(companies);
-
-            viewModel.Homeslist = homesQuery.ToList();
-            viewModel.NumResultados = viewModel.Homeslist.Count;
-
-            return View(viewModel);
+            return NotFound();
         }
 
         // GET: Homes/Create
@@ -131,75 +210,144 @@ namespace TP2324.Controllers
         //[Authorize(Roles = "Employee")]
         public async Task<IActionResult> CreateHomes([Bind("Id,TypeResidenceId,CategoryId,DistrictId,CompanyId,PriceToRent,NumWC,Address,SquareFootage,NumParks,Wifi,Description,MinimumPeriod,Available,ImgUrl,Ratings,ImageFile")] Home home)
         {
-            
             ModelState.Remove(nameof(home.Category));
             ModelState.Remove(nameof(home.typeResidence));
             ModelState.Remove(nameof(home.Rentings));
             ModelState.Remove(nameof(home.District));
             ModelState.Remove(nameof(home.Company));
 
-            // Obtenha o ID do usuário autenticado
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            // Encontre o gestor associado ao usuário autenticado
-            var employee = await _context.Employees
-                .Include(m => m.Company) // Inclua a empresa associada ao gestor
-                .FirstOrDefaultAsync(m => m.ApplicationUserId == userId);
-
-
-            try
+            if (User.IsInRole("Employee"))
             {
+                // Obtenha o ID do usuário autenticado
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                if (employee == null)
+                // Encontre o gestor associado ao usuário autenticado
+                var employee = await _context.Employees
+                    .Include(m => m.Company) // Inclua a empresa associada ao gestor
+                    .FirstOrDefaultAsync(m => m.ApplicationUserId == userId);
+
+
+                try
                 {
-                    // O usuário autenticado não é um gestor
-                    return NotFound();
-                }
 
-                // Obtenha a empresa associada ao gestor
-                var company = employee.Company;
-
-                if (ModelState.IsValid)
-                {
-
-                    if (home.ImageFile != null)
+                    if (employee == null)
                     {
-
-                        // Processar o upload da imagem
-                        home.ImgUrl = await UploadImage(home.ImageFile);
+                        // O usuário autenticado não é um gestor
+                        return NotFound();
                     }
 
-                    // Atualiza apenas as propriedades desejadas
-                    home.CompanyId = company.Id;
-                
-                    employee.Company.Homes = new List<Home> { home };
+                    // Obtenha a empresa associada ao gestor
+                    var company = employee.Company;
 
-                    _context.Homes.Add(home);
-                    await _context.SaveChangesAsync();
+                    if (ModelState.IsValid)
+                    {
 
-                    Console.WriteLine("Contador: " + employee.Company.Homes.Count());
+                        if (home.ImageFile != null)
+                        {
 
-                    return RedirectToAction(nameof(HomesList));
+                            // Processar o upload da imagem
+                            home.ImgUrl = await UploadImage(home.ImageFile);
+                        }
+
+                        // Atualiza apenas as propriedades desejadas
+                        home.CompanyId = company.Id;
+
+                        employee.Company.Homes = new List<Home> { home };
+
+                        _context.Homes.Add(home);
+                        await _context.SaveChangesAsync();
+
+                        Console.WriteLine("Contador: " + employee.Company.Homes.Count());
+
+                        return RedirectToAction(nameof(HomesList));
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                // Imprime detalhes da exceção
-                Console.WriteLine("Exceção ao criar home: " + ex.Message);
-                ModelState.AddModelError(string.Empty, "Exceção ao criar home: " + ex.Message);
-            }
+                catch (Exception ex)
+                {
+                    // Imprime detalhes da exceção
+                    Console.WriteLine("Exceção ao criar home: " + ex.Message);
+                    ModelState.AddModelError(string.Empty, "Exceção ao criar home: " + ex.Message);
+                }
 
-            // Adiciona os erros do ModelState à coleção de erros
-            foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
-            {
-                Console.WriteLine("Erro no modelo: " + modelError.ErrorMessage);
-            }
+                // Adiciona os erros do ModelState à coleção de erros
+                foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine("Erro no modelo: " + modelError.ErrorMessage);
+                }
 
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", home.CategoryId);
-            ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name", home.TypeResidenceId);
-            ViewData["DistrictId"] = new SelectList(_context.Districts, "Id", "Name", home.DistrictId);
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", home.CompanyId);
-            return View(employee);
+                ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", home.CategoryId);
+                ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name", home.TypeResidenceId);
+                ViewData["DistrictId"] = new SelectList(_context.Districts, "Id", "Name", home.DistrictId);
+                ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", home.CompanyId);
+                return View(employee);
+
+            }else if (User.IsInRole("Manager"))
+            {
+                // Obtenha o ID do usuário autenticado
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                // Encontre o gestor associado ao usuário autenticado
+                var manager = await _context.Managers
+                    .Include(m => m.Company) // Inclua a empresa associada ao gestor
+                    .FirstOrDefaultAsync(m => m.ApplicationUserId == userId);
+
+
+                try
+                {
+
+                    if (manager == null)
+                    {
+                        // O usuário autenticado não é um gestor
+                        return NotFound();
+                    }
+
+                    // Obtenha a empresa associada ao gestor
+                    var company = manager.Company;
+
+                    if (ModelState.IsValid)
+                    {
+
+                        if (home.ImageFile != null)
+                        {
+
+                            // Processar o upload da imagem
+                            home.ImgUrl = await UploadImage(home.ImageFile);
+                        }
+
+                        // Atualiza apenas as propriedades desejadas
+                        home.CompanyId = company.Id;
+
+                        manager.Company.Homes = new List<Home> { home };
+
+                        _context.Homes.Add(home);
+                        await _context.SaveChangesAsync();
+
+                        Console.WriteLine("Contador: " + manager.Company.Homes.Count());
+
+                        return RedirectToAction(nameof(HomesList));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Imprime detalhes da exceção
+                    Console.WriteLine("Exceção ao criar home: " + ex.Message);
+                    ModelState.AddModelError(string.Empty, "Exceção ao criar home: " + ex.Message);
+                }
+
+                // Adiciona os erros do ModelState à coleção de erros
+                foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine("Erro no modelo: " + modelError.ErrorMessage);
+                }
+
+                ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", home.CategoryId);
+                ViewData["TypeResidenceId"] = new SelectList(_context.TypeResidences, "Id", "Name", home.TypeResidenceId);
+                ViewData["DistrictId"] = new SelectList(_context.Districts, "Id", "Name", home.DistrictId);
+                ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", home.CompanyId);
+                return View(manager);
+            }
+            
+           return NotFound();
         }
 
 

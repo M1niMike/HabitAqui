@@ -404,7 +404,7 @@ namespace TP2324.Controllers
 
             // Obtenha a lista de gestores associados à empresa
             var employees = await _context.Employees
-                .Include(e => e.Company).Include(m => m.ApplicationUser)
+                .Include(e => e.Company).Include(m => m.ApplicationUser).Include(m => m.Rentings)
                 .Where(e => e.CompanyId == company.Id)
                 .ToListAsync();
 

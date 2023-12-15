@@ -1,0 +1,86 @@
+﻿@model TP2324.Models.HomeStatus
+
+@{
+    ViewData["Title"] = "CreateForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="title-single-box">
+                    <h1 class="title-single">Entregar Habitação</h1>
+                    <span class="color-text-a">Assinalar o estado em que a habitação é entregue ao cliente</span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Pagina principal</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Habitações / Entregar
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section><!-- End Intro Single-->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+
+            <form asp-action="CreateForm" enctype="multipart/form-data">
+
+                <!-- Adicione o ValidationSummary para exibir mensagens de erro -->
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="RentingId" class="form-label"></label>
+                    <input asp-for="RentingId" class="form-control" />
+                    <span asp-validation-for="RentingId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Equipments" class="form-label"></label>
+                    <input asp-for="Equipments" class="form-control" />
+                    <span asp-validation-for="Equipments" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Damage" class="form-label"></label>
+                    <input asp-for="Damage" type="checkbox" />
+                    <span asp-validation-for="Damage" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Observation" class="form-label"></label>
+                    <textarea asp-for="Observation" class="form-control"></textarea>
+                    <span asp-validation-for="Observation" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Files" class="form-label"></label>
+                    <input asp-for="Files" type="file" multiple />
+                    <span asp-validation-for="Files" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <input asp-for="ApplicationUserId" type="hidden" />
+                </div>
+
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-c">Adicionar</button>
+                    <a asp-action="RentingsIndex" class="btn btn-c">Voltar</a>
+                </div>
+            </form>
+        </div>
+        <br />
+    </div>
+</div>
